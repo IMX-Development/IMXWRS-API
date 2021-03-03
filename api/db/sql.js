@@ -1,10 +1,12 @@
 const sql = require('mssql');
 
+require('dotenv').config();
+
 var config = {
-    user: 'root',
-    password: 'Interplex',
-    server: 'localhost',
-    database: 'ipxwrs',
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    server: process.env.HOST,
+    database: process.env.DATABASE,
     options: {
         instanceName: 'SQLEXPRESS'
     }

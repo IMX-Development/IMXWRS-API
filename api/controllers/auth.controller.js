@@ -1,9 +1,11 @@
 const Sql = require('../db/sql.js');
 const jwt = require('jsonwebtoken');
 
+require('dotenv').config();
+
 exports.login = (req,res)=>{
     const user = {username: 'i.lopez'};
-    const token = jwt.sign({user},'my_secret_token');
+    const token = jwt.sign({user},process.env.TOKEN_SEED);
     return res.json({
         token
     });
