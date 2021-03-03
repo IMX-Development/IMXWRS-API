@@ -6,7 +6,8 @@ var express = require('express'),
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var routes = require('./api/routers/user.routes');
+var userRoutes = require('./api/routers/user.routes');
+var waiverRoutes = require('./api/routers/waiver.routes');
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -15,6 +16,9 @@ app.use((req, res, next) => {
     next();
 });
 
-routes(app);
-app.listen(port);
-console.log("Server started at port 3300");
+userRoutes(app);
+waiverRoutes(app);
+
+app.listen(port,()=>{
+    console.log('Server running in port ' + port)
+});

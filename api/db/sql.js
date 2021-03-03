@@ -24,3 +24,5 @@ function request(query){
         });
     });
 }
+
+module.exports.request = request;
