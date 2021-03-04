@@ -4,6 +4,6 @@ const token = require('./../middlewares/authentication');
 
 module.exports = (app) => {
     app.route('/users')
-    .post([token.verifyUser],Users.getData)
+    .post(Users.getData)
     .get(Users.getData);
 }

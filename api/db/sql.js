@@ -3,8 +3,8 @@ const sql = require('mssql');
 require('dotenv').config();
 
 var config = {
-    user: process.env.USER,
-    password: process.env.PASSWORD,
+    user: process.env.BD_USER,
+    password: process.env.BD_PASSWORD,
     server: process.env.HOST,
     database: process.env.DATABASE,
     options: {
