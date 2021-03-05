@@ -1,8 +1,8 @@
 var Sql = require('../db/sql.js');
 
 exports.getData = (req,res)=>{
-    var query = "SELECT * FROM users WHERE username = 'i.lopez'";
-    let promise = Sql.request(query);
+    var query = `INSERT INTO users() VALUES ? `;
+    let promise = Sql.query(query,data);
     promise.then(result=>{
         res.json(result);
     },error =>{
