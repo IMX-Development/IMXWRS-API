@@ -31,8 +31,26 @@ function request(query) {
     });
 }
 
+let convertToArrayAddField = (array, value)=>{
+    let newArray = [];
+    for(let entrie of Object.keys(array)){
+        array[entrie].request = value;
+        newArray.push(array[entrie]);
+    }
+    return newArray;    
+}
+
+let convertToArray = (array)=>{
+    let newArray = [];
+    for(let entrie of Object.keys(array)){
+        newArray.push(array[entrie]);
+    }
+    return newArray;
+}
+
 let isString = (myVar) => {
-    return typeof myVar === 'string' || myVar instanceof String;
+    return true;
+    // return typeof myVar === 'string' || myVar instanceof String;
 }
 
 
@@ -54,6 +72,7 @@ function getQuery(query, data) {
         }
         query = query.replace("()", "(" + columns.toString() + ")");
         query = query.replace("?", "(" + rows.toString() + ")");
+        console.log(query);
         return query;
     } else {
         for (let [index, val] of data.entries()) {
@@ -78,6 +97,7 @@ function getQuery(query, data) {
         }
         query = query.replace("()", "(" + columns.toString() + ")");
         query = query.replace("?", entries.toString());
+        console.log(query);
         return query;
     }
 }
@@ -86,4 +106,6 @@ function getQuery(query, data) {
 module.exports = {
     query,
     request,
+    convertToArray,
+    convertToArrayAddField
 };
