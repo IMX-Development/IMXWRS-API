@@ -49,8 +49,6 @@ exports.refresh = (req,res) =>{
     let query = `SELECT * FROM users WHERE username = '${ aUser['username'] }'`;
     let promise = Sql.request(query);
 
-    console.log(query);
-
     promise.then(result =>{
         if(!result || result.length == 0){
             return res.json({

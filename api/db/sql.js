@@ -48,27 +48,14 @@ let convertToArray = (array)=>{
     return newArray;
 }
 
-let isString = (myVar) => {
-    return true;
-    // return typeof myVar === 'string' || myVar instanceof String;
-}
-
-
-/***
- * My own formatter ...
- */
 function getQuery(query, data) {
     let columns = [];
     let rows = [];
     if (!Array.isArray(data)) {
         for (var key of Object.keys(data)) {
             columns.push(key);
-            if (isString(data[key])) {
-                rows.push("'" + data[key] + "'");
-            }
-            else {
-                rows.push(data[key]);
-            }
+            rows.push("'" + data[key] + "'");
+
         }
         query = query.replace("()", "(" + columns.toString() + ")");
         query = query.replace("?", "(" + rows.toString() + ")");
@@ -81,12 +68,7 @@ function getQuery(query, data) {
                 if (index === 0) {
                     columns.push(key);
                 }
-                if (isString(val[key])) {
-                    row.push("'" + val[key] + "'");
-                }
-                else {
-                    row.push(val[key]);
-                }
+                row.push("'" + val[key] + "'");
             }
             rows.push(row);
         }

@@ -1,14 +1,18 @@
 var Sql = require('../db/sql.js');
 
-exports.getData = (req,res)=>{
-    var query = "SELECT * FROM users";
+exports.getUsers = (req,res)=>{
+    var query = "SELECT username,name FROM users WHERE position = 'employee'";
     let promise = Sql.request(query);
     promise.then(result=>{
         res.json({
-            req : req.query ,
-            status: result
+            status: true,
+            users: result
         });
     },error =>{
-        res.send(error);
+        res.json(
+            {
+                status: false,
+                message: error
+            });
     });
 }

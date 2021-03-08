@@ -12,7 +12,6 @@ exports.getData = (req,res)=>{
 }
 
 exports.createWaviver = (req,res) =>{
-    console.log(req.body);
     
     let waiver = req.body.waiverRequest;
     let externalAuth = req.body.externalAuth || null;
@@ -23,17 +22,13 @@ exports.createWaviver = (req,res) =>{
     var query = "SELECT COUNT(*) AS newNumber FROM dbo.requests WHERE LEFT(number,1) = 'T'";
     let promise = Sql.request(query);
     promise.then(result=>{
-        console.log('result=>',result);
         let newNumber = result[0].newNumber.toString();
         newNumber = newNumber.padStart(4);
         newNumber = newNumber.replace(/ /g, '0');
-        console.log(newNumber);
-        number = 'T'+ 
+        number = 'TWR'+ 
             new Date().getFullYear().toString().substring(2,4)+
             newNumber;
         waiver.number = number;
-        console.log(number);
-        console.log(waiver);
         let query = "INSERT INTO requests() VALUES ? ";
         let promise = Sql.query(query,waiver);
         promise.then(result=>{
@@ -70,10 +65,11 @@ exports.createWaviver = (req,res) =>{
                 promise.then(result=>{
                     if(i==4){
                         res.json({
-                            ok:true
+                            ok:true,
+                            id: number
                         })
                     }
-                    console.log(result);
+                    console.log('ok');
                 },error=>{
                     res.json({
                         ok : false,
