@@ -1,4 +1,5 @@
 var Sql = require('../db/sql.js');
+var authorizations = require('../assets/authorizations/signed.authorizations');
 
 exports.getData = (req,res)=>{
     let data = req.body;
@@ -32,7 +33,7 @@ exports.createWaviver = (req,res) =>{
         let query = "INSERT INTO requests() VALUES ? ";
         let promise = Sql.query(query,waiver);
         promise.then(result=>{
-            for(let i=0; i<5; i++){
+            for(let i=0; i<6; i++){
                 let query, body;
                 switch(i){
                     case 0:
@@ -60,10 +61,15 @@ exports.createWaviver = (req,res) =>{
                         query = "INSERT INTO waivers() VALUES ?";
                         body =  Sql.convertToArrayAddField(req.body.deviations,number);
                         break;
+                    case 5:
+                        break;
+                        query = "INSERT INTO authorizations() VALUES ?";
+                        body = authorizations.getRequiredManagers(req.body.waiverRequest,number);
+                        break;
                 }
                 let promise = Sql.query(query,body);
                 promise.then(result=>{
-                    if(i==4){
+                    if(i==5){
                         res.json({
                             ok:true,
                             id: number
@@ -88,5 +94,25 @@ exports.createWaviver = (req,res) =>{
             ok : false,
             message : error
         });
+    });
+}
+
+exports.getAuthorizations = (req,res) =>{
+    let type = req.query.number;
+    let needsManager = req.query.manager;
+    let auth = authorizations.getManagers(type,needsManager);
+    let query = `SELECT name,username,position FROM users WHERE position in (${ auth.toString() })`;
+    let promise = Sql.request(query);
+
+    promise.then(result=>{
+        res.json({
+            ok : true,
+            managers: result
+        })
+    },error=>{
+        res.json({
+            ok: false,
+            message: error
+        })
     });
 }
