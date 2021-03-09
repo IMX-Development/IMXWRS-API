@@ -1,10 +1,6 @@
-var Waivers = require('../controllers/waivers.controller');
+var Waivers = require('../controllers/waiver.controller');
 
 module.exports = (app) => {
-    app.route('/waivers')
-    .get(Waivers.getData)
-    .post(Waivers.createWaviver);
-
-    app.route('/waivers/authorizations').
-    get(Waivers.getAuthorizations);
+    app.route('/waiver/:waiver')
+    .get(Waivers.getWaiver)
 }

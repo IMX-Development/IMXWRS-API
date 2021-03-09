@@ -62,20 +62,19 @@ exports.createWaviver = (req,res) =>{
                         body =  Sql.convertToArrayAddField(req.body.deviations,number);
                         break;
                     case 5:
-                        break;
                         query = "INSERT INTO authorizations() VALUES ?";
-                        body = authorizations.getRequiredManagers(req.body.waiverRequest,number);
+                        body = Sql.convertToArrayAddField(req.body.managers,number);
                         break;
                 }
                 let promise = Sql.query(query,body);
                 promise.then(result=>{
+                    console.log('ok');
                     if(i==5){
                         res.json({
                             ok:true,
                             id: number
                         })
                     }
-                    console.log('ok');
                 },error=>{
                     res.json({
                         ok : false,
