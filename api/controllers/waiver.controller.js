@@ -21,6 +21,15 @@ exports.getWaiver = (req, res) => {
 
             query = `SELECT * FROM ${tables[i]} WHERE request = '${number}'`;
 
+            if(i == 1){
+                query = `SELECT ${tables[i]}.*,users.name as name, users.position as title 
+                FROM ${tables[i]}, users 
+                WHERE request = '${number}' AND users.username = ${tables[i]}.manager`;
+            }else if(i  == 4){
+                query = `SELECT ${tables[i]}.*,users.name as name 
+                FROM ${tables[i]}, users 
+                WHERE request = '${number}' AND users.username = ${tables[i]}.responsable`;            
+            }
             let promise = Sql.request(query);
             promise.then(resp => {
                 if (!resp || resp.length == 0) {
