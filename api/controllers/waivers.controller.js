@@ -98,7 +98,7 @@ exports.createWaviver = (req,res) =>{
 
 exports.getAuthorizations = (req,res) =>{
     let type = req.query.number;
-    let needsManager = req.query.manager;
+    let needsManager = req.query.needsManager;
     let auth = authorizations.getManagers(type,needsManager);
     let query = `SELECT name,username,position FROM users WHERE position in (${ auth.toString() })`;
     let promise = Sql.request(query);

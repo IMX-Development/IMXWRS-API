@@ -5,6 +5,7 @@ module.exports = (app) => {
     .get(Waivers.getData)
     .post(Waivers.createWaviver);
 
-    app.route('/waivers/authorizations').
-    get(Waivers.getAuthorizations);
+    app.route('/waivers/authorizations')
+    .get(Waivers.getAuthorizations);
+
 }

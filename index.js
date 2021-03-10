@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 userRoutes(app);
 waiverRoutes(app);
 authRoutes(app);
-waiverRoutes(app);
+waiversRoutes(app);
 
 app.listen(port,()=>{
     console.log('Server running in port ' + port)

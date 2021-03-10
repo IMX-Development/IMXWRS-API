@@ -5,9 +5,7 @@ const signatures = [
     ["'employee'"]
 ]
 
-const generalManager = {
-    manager: "'developer'"
-}
+const generalManager = "'developer'";
 
 let addColumn = (field,value,arr) => {
     for(var elem of arr){
@@ -29,5 +27,6 @@ exports.getManagers = (type,needsManager) =>{
     if(needsManager){
         signs.push(generalManager);
     }
+    console.log(signs);
     return signs;
 }
