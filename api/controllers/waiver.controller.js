@@ -2,7 +2,6 @@ var Sql = require('../db/sql.js');
 
 exports.getWaiver = (req, res) => {
     let number = req.params.waiver;
-    console.log('WR NUMBER: ' + number);
     let body;
     let query = `SELECT * FROM requests WHERE number = '${number}'`;
     let promise = Sql.request(query);
@@ -16,6 +15,7 @@ exports.getWaiver = (req, res) => {
         let requests = (resp[0].type == 'external') ? 6 : 5;
         body = resp[0];
         let query;
+        let promises = [];
         tables = ['parts','authorizations','expiration','waivers','actions','externalAuthorization'];
         for (let i = 0; i < requests; i++) {
 
@@ -31,32 +31,24 @@ exports.getWaiver = (req, res) => {
                 WHERE request = '${number}' AND users.username = ${tables[i]}.responsable`;            
             }
             let promise = Sql.request(query);
-            promise.then(resp => {
-                if (!resp || resp.length == 0) {
-                    res.json({
-                        ok: false,
-                        message: 'Incomplete waiver'
-                    });
-                }
-                if (i == 2 || i == 5) {
-                    body[tables[i]] = resp[0];
-                } else {
-                    body[tables[i]] = resp;
-                }
-                console.log('Ok: ' + tables[i]);
-                console.log(body[tables[i]])
-                if(i == (requests-1)){
+            promises.push(promise);
+
+            if( i == requests - 1){
+                Promise.all(promises).then(result=>{
+                    for(let i=0; i<result.length;i++){
+                        body[tables[i]] = (i == 2 || i == 5) ? result[i][0] : result[i];
+                    }
                     res.json({
                         ok: true,
                         waiver: body
                     });
-                }
-            }, error => {
-                res.json({
-                    ok: false,
-                    message: error
+                },error=>{
+                    res.json({
+                        ok: false,
+                        message: error
+                    });
                 });
-            })
+            }
         }
     }), error => {
         res.json({

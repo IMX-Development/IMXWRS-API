@@ -33,6 +33,7 @@ exports.createWaviver = (req,res) =>{
         let query = "INSERT INTO requests() VALUES ? ";
         let promise = Sql.query(query,waiver);
         promise.then(result=>{
+            let promises = [];
             for(let i=0; i<6; i++){
                 let query, body;
                 switch(i){
@@ -67,20 +68,22 @@ exports.createWaviver = (req,res) =>{
                         break;
                 }
                 let promise = Sql.query(query,body);
-                promise.then(result=>{
-                    console.log('ok');
-                    if(i==5){
+                promises.push(promise);
+                if(i == 5){
+                    Promise.all(promises).then(result=>{
+                        console.log('ok');
                         res.json({
-                            ok:true,
+                            ok: true,
                             id: number
-                        })
-                    }
-                },error=>{
-                    res.json({
-                        ok : false,
-                        message : error
+                        });
+                    },error=>{
+                        console.log(error);
+                        res.json({
+                            ok: false,
+                            message: error
+                        });
                     });
-                });
+                }
             }
         },error=>{
             res.json({

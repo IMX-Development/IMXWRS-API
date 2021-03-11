@@ -54,7 +54,8 @@ function getQuery(query, data) {
     if (!Array.isArray(data)) {
         for (var key of Object.keys(data)) {
             columns.push(key);
-            rows.push("'" + data[key] + "'");
+            let val = data[key].toString().replace(/'/g,"''");
+            rows.push("'" + val + "'");
 
         }
         query = query.replace("()", "(" + columns.toString() + ")");
@@ -68,7 +69,8 @@ function getQuery(query, data) {
                 if (index === 0) {
                     columns.push(key);
                 }
-                row.push("'" + val[key] + "'");
+                let data = val[key].toString().replace(/'/g,"''");
+                row.push("'" + data + "'");
             }
             rows.push(row);
         }
