@@ -18,16 +18,18 @@ exports.createWaviver = (req,res) =>{
     let externalAuth = req.body.externalAuth || null;
     let expiration = req.body.expiration;
 
-    let number = '';
-
-    var query = "SELECT COUNT(*) AS newNumber FROM dbo.requests WHERE LEFT(number,1) = 'T'";
+    let number = ''; 
+    let date = new Date().getFullYear().toString().substring(2,4);
+    
+    // var query = "SELECT COUNT(*) AS newNumber FROM dbo.requests WHERE LEFT(number,1) = 'T'";
+    let query = `SELECT COALESCE(MAX(SUBSTRING(number,6,4))+1,1) AS newNumber FROM dbo.requests WHERE LEFT(number,3) = 'TWR' AND SUBSTRING(number,4,2) = '${date}'`
     let promise = Sql.request(query);
     promise.then(result=>{
         let newNumber = result[0].newNumber.toString();
         newNumber = newNumber.padStart(4);
         newNumber = newNumber.replace(/ /g, '0');
-        number = 'TWR'+ 
-            new Date().getFullYear().toString().substring(2,4)+
+        number = 'TWR' + 
+            date + 
             newNumber;
         waiver.number = number;
         let query = "INSERT INTO requests() VALUES ? ";
