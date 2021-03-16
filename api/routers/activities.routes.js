@@ -3,5 +3,6 @@ const token = require('./../middlewares/authentication');
 
 module.exports = (app) => {
     app.route('/activities/unsigned')
-    .get([token.verifyUser],Activities.getPendingActivities);
+    .get([token.verifyUser],Activities.getPendingActivities)
+    .put([token.verifyUser],Activities.signActivity);
 }

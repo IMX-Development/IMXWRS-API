@@ -25,3 +25,22 @@ exports.getPendingActivities = (req,res)=>{
         });
     });
 }
+
+exports.signActivity = (req,res) =>{
+    let user = jwt.verify(req.token, process.env.TOKEN_SEED);
+    let waiver = req.body.waiver;
+    let query = `UPDATE actions SET signed = 'signed' WHERE 
+                 responsable = '${ user.username }' AND 
+                 request = '${ waiver }'`;
+    let promise = Sql.request(query);
+    promise.then(resp=>{
+        res.json({
+            ok: true 
+        });
+    },error=>{
+        res.json({
+            ok: false,
+            message: error
+        });
+    });
+}
