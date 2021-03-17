@@ -7,5 +7,6 @@ module.exports = (app) => {
     .put([token.verifyUser],Activities.signActivity);
 
     app.route('/activities/pending')
-    .get([token.verifyUser],Activities.getAssignedActivities);
+    .get([token.verifyUser],Activities.getAssignedActivities)
+    .put([token.verifyUser],Activities.markAsDone);
 }
