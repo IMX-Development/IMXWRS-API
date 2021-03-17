@@ -6,11 +6,12 @@ exports.getWaiver = (req, res) => {
     let query = `SELECT * FROM requests WHERE number = '${number}'`;
     let promise = Sql.request(query);
     promise.then((resp => {
-        if (!resp || resp.length == 0) {
+        if (! resp || resp.length == 0) {
             res.json({
                 ok: false,
                 message: 'Error. Request not found'
             });
+            return;
         }
         let requests = (resp[0].type == 'external') ? 6 : 5;
         body = resp[0];
