@@ -1,6 +1,11 @@
 var Sql = require('../db/sql.js');
 var authorizations = require('../assets/authorizations/signed.authorizations');
 
+const { sendEmail } = require('../helpers/send-email');
+const { getInfo } = require('../middlewares/user.identification');
+
+const templates = require('../assets/email-templates/created-waiver');
+
 exports.getData = (req,res)=>{
     let data = req.body;
     var query = `INSERT INTO requests() VALUES ? `;
@@ -21,10 +26,11 @@ exports.createWaviver = (req,res) =>{
     let number = ''; 
     let date = new Date().getFullYear().toString().substring(2,4);
     
-    // var query = "SELECT COUNT(*) AS newNumber FROM dbo.requests WHERE LEFT(number,1) = 'T'";
     let query = `SELECT COALESCE(MAX(SUBSTRING(number,6,4))+1,1) AS newNumber FROM dbo.requests WHERE LEFT(number,3) = 'TWR' AND SUBSTRING(number,4,2) = '${date}'`
     let promise = Sql.request(query);
+    
     promise.then(result=>{
+        
         let newNumber = result[0].newNumber.toString();
         newNumber = newNumber.padStart(4);
         newNumber = newNumber.replace(/ /g, '0');
@@ -32,6 +38,7 @@ exports.createWaviver = (req,res) =>{
             date + 
             newNumber;
         waiver.number = number;
+
         let query = "INSERT INTO requests() VALUES ? ";
         let promise = Sql.query(query,waiver);
         promise.then(result=>{
@@ -73,7 +80,17 @@ exports.createWaviver = (req,res) =>{
                 promises.push(promise);
                 if(i == 5){
                     Promise.all(promises).then(result=>{
-                        console.log('ok');
+                        
+                        getInfo(req).then(resp=>{
+                            let data = resp[0];                            
+                            sendEmail(
+                                data['email'],
+                                templates.createdWaiver(data['name'], number)
+                            );
+                        },error=>{
+                            console.log('Failed user data');
+                        });
+
                         res.json({
                             ok: true,
                             id: number

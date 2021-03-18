@@ -2,7 +2,6 @@ const nodemailer = require('nodemailer')
 require('dotenv').config();
 
 const sendEmail = (email, template) => {
-    console.log(process.env.EMAIL_USER);
     let transporter = nodemailer.createTransport({
         service: "Outlook365",
         host: process.env.EMAIL_HOST, // Office 365 server
@@ -18,7 +17,6 @@ const sendEmail = (email, template) => {
         }
     });
 
-    console.log(transporter);
     transporter.sendMail({
         from: `IMXWRS <${ process.env.EMAIL_USER }>`, // sender address
         to: email,
