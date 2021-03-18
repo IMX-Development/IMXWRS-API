@@ -1,5 +1,7 @@
 const Sql = require('../db/sql.js');
 const jwt = require('jsonwebtoken');
+const { sendEmail } = require('../helpers/send-email');
+const templates = require('../assets/email-templates/created-waiver');
 
 require('dotenv').config();
 
@@ -17,7 +19,21 @@ exports.login = (req,res)=>{
         }
         let user = result[0];
         if(user.password == password){
-            const token = jwt.sign({username}, process.env.TOKEN_SEED);
+            let signValues = {
+                username,
+                name : user.name
+            }
+            const token = jwt.sign(signValues, process.env.TOKEN_SEED);
+
+            /***
+             * Tester
+             */
+            console.log("Trying to send email...");
+            let template = templates.createdWaiver(user.name, 'TWR210040');
+            sendEmail(
+                'i.lopez@mx.interplex.com',
+                template
+            );
             return res.json({
                 ok: true,
                 token, 
