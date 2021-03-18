@@ -18,16 +18,18 @@ const sendEmail = (email, template) => {
         }
     });
 
-    console.log('se creo el transport');
     console.log(transporter);
     transporter.sendMail({
-        from: process.env.EMAIL_USER, // sender address
+        from: `IMXWRS <${ process.env.EMAIL_USER }>`, // sender address
         to: email,
         subject: template.subject,
         html: template.html,
     }, (error) => {
-        console.log("LLEGO");
-        console.log(error);
+        if(error){
+            console.log(error);
+        }else{
+            console.log('Email sent');
+        }
     });
 }
 

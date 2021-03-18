@@ -26,7 +26,7 @@ exports.createdWaiver = (user,id) => {
                     }
             
                     .logo-image {
-                        height: 50px;
+                        height: 50px !important;
                         width: auto;
                         vertical-align: middle;
                     }
@@ -74,31 +74,70 @@ exports.createdWaiver = (user,id) => {
                         cursor: pointer;
                     }
             
-                    .invisible-a{
+                    .invisible-a {
                         text-decoration: none;
+                    }
+            
+                    .marked {
+                        font-family: Arial Bold, Arial, sans-serif; font-weight: bold;
+                    }
+            
+                    .button {
+                        border-radius: 2px;
+                    }
+            
+                    .button a {
+                        padding: 8px 12px;
+                        border: 1px solid rgb(38, 42, 105);
+                        border-radius: 2px;
+                        font-family: Helvetica, Arial, sans-serif;
+                        font-size: 14px;
+                        color: #ffffff;
+                        text-decoration: none;
+                        font-weight: bold;
+                        display: inline-block;
                     }
                 </style>
             </head>
             
             <body>
-                <div class="logo">
-                    <img src="https://dev.directorioautomotriz.com.mx/media/company/logo/8603/7bc085f9dd8182e888807d79e1af322e.png"
-                        class="logo-image">
-                    <span class="logo-title"> Waiver Requests System </span>
+                <div>
+                    <table>
+                        <tr>
+                            <td valign="top" style="vertical-align:top;">
+                                <img src="https://dev.directorioautomotriz.com.mx/media/company/logo/8603/7bc085f9dd8182e888807d79e1af322e.png"
+                                    width="50" height="50">
+                            </td>
+                            <td valign="middle">
+                                <span class="logo-title"> Waiver Requests System </span>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="content">
                     <h4 class="welcome">Hello, ${ user }</h4>
                     <p class="text">
-                        You've been successfully created the Waiver Request ${ id }.
+                        You've been successfully created the Waiver Request <span class="marked">${ id }</span>.
                     </p>
                     <p class="text">
                         You can see its status by clicking in the button below.
                     </p>
-                    <a class="invisible-a" href="${ url }">
-                        <button class="ref">
-                            See status
-                        </button>
-                    </a>
+            
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>
+                                <table cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td class="button" bgcolor="#262a69">
+                                            <a class=”link” href="${ url }" target="_blank">
+                                                See status
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </body>
             
