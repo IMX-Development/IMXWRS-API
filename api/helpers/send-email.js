@@ -19,7 +19,7 @@ const sendEmail = (email, template) => {
 
     transporter.sendMail({
         from: `IMXWRS <${ process.env.EMAIL_USER }>`, // sender address
-        to: email,
+        to: 'i.lopez@mx.interplex.com',//email,
         subject: template.subject,
         html: template.html,
     }, (error) => {

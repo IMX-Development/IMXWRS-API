@@ -2,7 +2,7 @@ var Sql = require('../db/sql.js');
 var authorizations = require('../assets/authorizations/signed.authorizations');
 
 const { sendEmail } = require('../helpers/send-email');
-const { getInfo } = require('../middlewares/user.identification');
+const { getInfoWithToken, getInfoWithField } = require('../middlewares/user.identification');
 
 const templates = require('../assets/email-templates/created-waiver');
 
@@ -81,15 +81,46 @@ exports.createWaviver = (req,res) =>{
                 if(i == 5){
                     Promise.all(promises).then(result=>{
                         
-                        getInfo(req).then(resp=>{
-                            let data = resp[0];                            
+                        let destinataryPromises = [];
+
+                        destinataryPromises.push(getInfoWithToken(req));
+                        destinataryPromises.push(getInfoWithField(Sql.convertToArray(req.body.actions),'responsable'));
+                        destinataryPromises.push(getInfoWithField(Sql.convertToArray(req.body.managers),'manager'));
+                        
+                        Promise.all(destinataryPromises).then(result=>{
+                            let originator = result[0][0];
+                            let responsables = result[1];
+                            let managers = result[2];
+                                                        
                             sendEmail(
-                                data['email'],
-                                templates.createdWaiver(data['name'], number)
+                                originator['email'],
+                                templates.createdWaiver(originator['name'],number)
                             );
+
+                            responsables.forEach(r=>{
+                                r['email'],
+                                templates.createdWaiver(r['name'],number)
+                            });
+
+                            managers.forEach(m=>{
+                                m['email'],
+                                templates.createdWaiver(m['name'].number)
+                            });
+                            
                         },error=>{
-                            console.log('Failed user data');
+                            console.log('Promises failed');
+                            console.log(error);
                         });
+
+                        // getInfoWithToken(req).then(resp=>{
+                        //     let data = resp[0];
+                        //     sendEmail(
+                        //         data['email'],
+                        //         templates.createdWaiver(data['name'], number)
+                        //     );
+                        // },error=>{
+                        //     console.log('Failed user data');
+                        // });
 
                         res.json({
                             ok: true,
