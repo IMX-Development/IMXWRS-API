@@ -6,49 +6,49 @@ const { getInfoWithToken, getInfoWithField } = require('../middlewares/user.iden
 
 const templates = require('../assets/email-templates/created-waiver');
 
-exports.getData = (req,res)=>{
+exports.getData = (req, res) => {
     let data = req.body;
     var query = `INSERT INTO requests() VALUES ? `;
-    let promise = Sql.query(query,data);
-    promise.then(result=>{
+    let promise = Sql.query(query, data);
+    promise.then(result => {
         res.json(result);
-    },error =>{
+    }, error => {
         res.send(error);
     });
 }
 
-exports.createWaviver = (req,res) =>{
-    
+exports.createWaviver = (req, res) => {
+
     let waiver = req.body.waiverRequest;
     let externalAuth = req.body.externalAuth || null;
     let expiration = req.body.expiration;
 
-    let number = ''; 
-    let date = new Date().getFullYear().toString().substring(2,4);
-    
+    let number = '';
+    let date = new Date().getFullYear().toString().substring(2, 4);
+
     let query = `SELECT COALESCE(MAX(SUBSTRING(number,6,4))+1,1) AS newNumber FROM dbo.requests WHERE LEFT(number,3) = 'TWR' AND SUBSTRING(number,4,2) = '${date}'`
     let promise = Sql.request(query);
-    
-    promise.then(result=>{
-        
+
+    promise.then(result => {
+
         let newNumber = result[0].newNumber.toString();
         newNumber = newNumber.padStart(4);
         newNumber = newNumber.replace(/ /g, '0');
-        number = 'TWR' + 
-            date + 
+        number = 'TWR' +
+            date +
             newNumber;
         waiver.number = number;
 
         let query = "INSERT INTO requests() VALUES ? ";
-        let promise = Sql.query(query,waiver);
-        promise.then(result=>{
+        let promise = Sql.query(query, waiver);
+        promise.then(result => {
             let promises = [];
-            for(let i=0; i<6; i++){
+            for (let i = 0; i < 6; i++) {
                 let query, body;
-                switch(i){
+                switch (i) {
                     case 0:
                         query = "INSERT INTO actions() VALUES ?";
-                        body = Sql.convertToArrayAddField(req.body.actions,number);
+                        body = Sql.convertToArrayAddField(req.body.actions, number);
                         break;
                     case 1:
                         query = "INSERT INTO expiration() VALUES ?";
@@ -56,7 +56,7 @@ exports.createWaviver = (req,res) =>{
                         body.request = number;
                         break;
                     case 2:
-                        if(externalAuth == null){
+                        if (externalAuth == null) {
                             continue;
                         }
                         query = "INSERT INTO externalAuthorization() VALUES ?";
@@ -65,49 +65,63 @@ exports.createWaviver = (req,res) =>{
                         break;
                     case 3:
                         query = "INSERT INTO parts() VALUES ?";
-                        body = Sql.convertToArrayAddField(req.body.parts,number);
+                        body = Sql.convertToArrayAddField(req.body.parts, number);
                         break;
                     case 4:
                         query = "INSERT INTO waivers() VALUES ?";
-                        body =  Sql.convertToArrayAddField(req.body.deviations,number);
+                        body = Sql.convertToArrayAddField(req.body.deviations, number);
                         break;
                     case 5:
                         query = "INSERT INTO authorizations() VALUES ?";
-                        body = Sql.convertToArrayAddField(req.body.managers,number);
+                        body = Sql.convertToArrayAddField(req.body.managers, number);
                         break;
                 }
-                let promise = Sql.query(query,body);
+                let promise = Sql.query(query, body);
                 promises.push(promise);
-                if(i == 5){
-                    Promise.all(promises).then(result=>{
-                        
+                if (i == 5) {
+                    Promise.all(promises).then(result => {
+
                         let destinataryPromises = [];
 
                         destinataryPromises.push(getInfoWithToken(req));
-                        destinataryPromises.push(getInfoWithField(Sql.convertToArray(req.body.actions),'responsable'));
-                        destinataryPromises.push(getInfoWithField(Sql.convertToArray(req.body.managers),'manager'));
-                        
-                        Promise.all(destinataryPromises).then(result=>{
+                        destinataryPromises.push(getInfoWithField(Sql.convertToArray(req.body.actions), 'responsable'));
+                        destinataryPromises.push(getInfoWithField(Sql.convertToArray(req.body.managers), 'manager'));
+
+                        Promise.all(destinataryPromises).then(result => {
                             let originator = result[0][0];
                             let responsables = result[1];
                             let managers = result[2];
-                                                        
+
+                            let approvalMailist = ['diskman199@gmail.com','i.lopez@mx.interplex.com'];
+                            let actionsMailist = ['diskman199@gmail.com','i.lopez@mx.interplex.com','lopezmurillo997@gmail.com'];
+                            
+                            setTimeout(() => {
+                                sendEmail(
+                                    originator['email'],
+                                    templates.createdWaiver(originator['name'], number)
+                                );
+                            }, 100 );
+
                             sendEmail(
-                                originator['email'],
-                                templates.createdWaiver(originator['name'],number)
+                                actionsMailist,
+                                templates.createdWaiver('colaborator', number)
                             );
 
-                            responsables.forEach(r=>{
-                                r['email'],
-                                templates.createdWaiver(r['name'],number)
-                            });
-
-                            managers.forEach(m=>{
-                                m['email'],
-                                templates.createdWaiver(m['name'].number)
+                            managers.forEach(m => {
+                                //approvalMailist.push(r['email']);
                             });
                             
-                        },error=>{
+                            responsables.forEach(r => {
+                                //actionsMailist.push(r['email']);
+                            });
+
+                            sendEmail(
+                                approvalMailist,
+                                templates.createdWaiver('manager', number)
+                            );
+
+
+                        }, error => {
                             console.log('Promises failed');
                             console.log(error);
                         });
@@ -126,7 +140,7 @@ exports.createWaviver = (req,res) =>{
                             ok: true,
                             id: number
                         });
-                    },error=>{
+                    }, error => {
                         console.log(error);
                         res.json({
                             ok: false,
@@ -135,33 +149,33 @@ exports.createWaviver = (req,res) =>{
                     });
                 }
             }
-        },error=>{
+        }, error => {
             res.json({
-                ok : false,
-                message : error
+                ok: false,
+                message: error
             });
         })
-    },error =>{
+    }, error => {
         res.json({
-            ok : false,
-            message : error
+            ok: false,
+            message: error
         });
     });
 }
 
-exports.getAuthorizations = (req,res) =>{
+exports.getAuthorizations = (req, res) => {
     let type = req.query.number;
     let needsManager = req.query.needsManager;
-    let auth = authorizations.getManagers(type,needsManager);
-    let query = `SELECT name,username,position FROM users WHERE position in (${ auth.toString() })`;
+    let auth = authorizations.getManagers(type, needsManager);
+    let query = `SELECT name,username,position FROM users WHERE position in (${auth.toString()})`;
     let promise = Sql.request(query);
 
-    promise.then(result=>{
+    promise.then(result => {
         res.json({
-            ok : true,
+            ok: true,
             managers: result
         })
-    },error=>{
+    }, error => {
         res.json({
             ok: false,
             message: error
