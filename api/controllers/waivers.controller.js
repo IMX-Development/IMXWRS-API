@@ -4,7 +4,7 @@ var authorizations = require('../assets/authorizations/signed.authorizations');
 const { sendEmail } = require('../helpers/send-email');
 const { getInfoWithToken, getInfoWithField } = require('../middlewares/user.identification');
 
-const templates = require('../assets/email-templates/created-waiver');
+const templates = require('../helpers/email-templates');
 
 exports.getData = (req, res) => {
     let data = req.body;
@@ -98,13 +98,13 @@ exports.createWaviver = (req, res) => {
                             setTimeout(() => {
                                 sendEmail(
                                     originator['email'],
-                                    templates.createdWaiver(originator['name'], number)
+                                    templates.newWaiver(originator['name'], number)
                                 );
                             }, 100 );
 
                             sendEmail(
                                 actionsMailist,
-                                templates.createdWaiver('colaborator', number)
+                                templates.newWaiver('colaborator', number)
                             );
 
                             managers.forEach(m => {
@@ -117,7 +117,7 @@ exports.createWaviver = (req, res) => {
 
                             sendEmail(
                                 approvalMailist,
-                                templates.createdWaiver('manager', number)
+                                templates.needsApproval(number)
                             );
 
 
@@ -125,16 +125,6 @@ exports.createWaviver = (req, res) => {
                             console.log('Promises failed');
                             console.log(error);
                         });
-
-                        // getInfoWithToken(req).then(resp=>{
-                        //     let data = resp[0];
-                        //     sendEmail(
-                        //         data['email'],
-                        //         templates.createdWaiver(data['name'], number)
-                        //     );
-                        // },error=>{
-                        //     console.log('Failed user data');
-                        // });
 
                         res.json({
                             ok: true,
