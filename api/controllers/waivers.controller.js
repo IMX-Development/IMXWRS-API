@@ -92,34 +92,33 @@ exports.createWaviver = (req, res) => {
                             let responsables = result[1];
                             let managers = result[2];
 
-                            let approvalMailist = ['diskman199@gmail.com','i.lopez@mx.interplex.com'];
-                            let actionsMailist = ['diskman199@gmail.com','i.lopez@mx.interplex.com','lopezmurillo997@gmail.com'];
-                            
-                            setTimeout(() => {
-                                sendEmail(
-                                    originator['email'],
-                                    templates.newWaiver(originator['name'], number)
-                                );
-                            }, 100 );
-
-                            sendEmail(
-                                actionsMailist,
-                                templates.newWaiver('colaborator', number)
-                            );
-
                             managers.forEach(m => {
                                 //approvalMailist.push(r['email']);
                             });
-                            
+
                             responsables.forEach(r => {
                                 //actionsMailist.push(r['email']);
                             });
 
-                            sendEmail(
-                                approvalMailist,
-                                templates.needsApproval(number)
-                            );
+                            let approvalMailist = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com'];
+                            let actionsMailist = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com', 'lopezmurillo997@gmail.com'];
 
+                            sendEmail(
+                                originator['email'],
+                                templates.newWaiver(originator['name'], number),
+                                (cb) => {
+                                    sendEmail(
+                                        actionsMailist,
+                                        templates.newWaiver('colaborator', number),
+                                        (cb) =>{
+                                            sendEmail(
+                                                approvalMailist,
+                                                templates.needsApproval(number)
+                                            );
+                                        }
+                                    );
+                                }
+                            );
 
                         }, error => {
                             console.log('Promises failed');

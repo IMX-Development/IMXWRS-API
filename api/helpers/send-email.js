@@ -16,9 +16,10 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-const sendEmail = (email, template) => {
+const sendEmail = (email, template, cb) => {
 
     console.log('Sending email to ' + email + ' about ' + template.subject);
+
     transporter.sendMail({
         from: `IMXWRS <${ process.env.EMAIL_USER }>`, // sender address
         to: email,
@@ -28,8 +29,10 @@ const sendEmail = (email, template) => {
         if(error){
             console.log('error');
             console.log(error);
+            cb(false)
         }else{
             console.log('Email sent');
+            cb(true)
         }
     });
 }
