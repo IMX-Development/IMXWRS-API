@@ -2,10 +2,10 @@ require('dotenv').config();
 
 let base_url = process.env.EMAIL_LINK
 
-exports.needsApproval = (name,id) => {
-    let url = base_url + '/waivers/authorize/' + id;
+exports.hasActivity = (name,id) => {
+    let url = base_url + '/waivers/sign/' + id;
     return {
-        subject : 'Waiver Request ' + id + ' needs your approval',
+        subject : 'Waiver Request ' + id + ' needs your participation',
         html : `
         <!DOCTYPE html
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -123,13 +123,13 @@ exports.needsApproval = (name,id) => {
                 </table>
             </div>
             <div class="content">
-                <h4 class="welcome">Hello, manager</h4>
+                <h4 class="welcome">Hello, teammate</h4>
                 <p class="text">
                     <span class="mention"> ${ name } </span> has created a new Waiver Request with number <span class="marked">${ id }</span> 
-                    and it needs your approval.
+                    and it needs your participation.
                 </p>
                 <p class="text">
-                    Please check the details about this waiver and authorize it by clicking in the button below
+                    Please check the details about this waiver and sign your participation by clicking in the button below
                     as soon as possible
                 </p>
         

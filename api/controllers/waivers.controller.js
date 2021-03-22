@@ -91,6 +91,7 @@ exports.createWaviver = (req, res) => {
                             let originator = result[0][0];
                             let responsables = result[1];
                             let managers = result[2];
+                            let creator = originator['name'];
 
                             managers.forEach(m => {
                                 //approvalMailist.push(r['email']);
@@ -105,15 +106,15 @@ exports.createWaviver = (req, res) => {
 
                             sendEmail(
                                 originator['email'],
-                                templates.newWaiver(originator['name'], number),
+                                templates.newWaiver(creator, number),
                                 (cb) => {
                                     sendEmail(
                                         actionsMailist,
-                                        templates.newWaiver('colaborator', number),
+                                        templates.hasActivity(creator, number),
                                         (cb) =>{
                                             sendEmail(
                                                 approvalMailist,
-                                                templates.needsApproval(number)
+                                                templates.needsApproval(creator,number)
                                             );
                                         }
                                     );
