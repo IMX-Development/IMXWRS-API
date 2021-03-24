@@ -112,8 +112,8 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
                 }
         
                 .separator{
-                    border-left: 10px solid transparent;
-                    border-right: 10px solid transparent;
+                    border-left: 10px solid #ffffff;
+                    border-right: 10px solid #ffffff;
                 }
         
             </style>
@@ -156,10 +156,8 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
                                             See status
                                         </a>
                                     </td>
-                                    <td>
-                                        <span class="separator">
-                                            or 
-                                        </span>
+                                    <td class="separator">
+                                        or 
                                     </td>
                                     <td class="button" bgcolor="#262a69">
                                         <a class="link" href="${ url2 }" target="_blank">

@@ -3,8 +3,6 @@ const Sql = require('../db/sql.js');
 const { sendEmail } = require('../helpers/send-email');
 const templates = require('../helpers/email-templates');
 
-let actionsMailist = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com', 'lopezmurillo997@gmail.com'];
-
 exports.getEmailData = (id) => {
     let promises = [];
     let waiverData = `SELECT customer, users.name as originator, users.email as origEmail, creationDate, area, type, typeNumber
@@ -64,7 +62,8 @@ exports.update = (id) => {
                                     waiverData['creationDate']
                                 ),
                                 (cb=>{
-                                    emailList = actionsMailist;
+                                    //Comment on production !!!WARNING!!!
+                                    emailList = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com', 'lopezmurillo997@gmail.com'];
                                     sendEmail(
                                         actionsMailist,
                                         templates.newActivity(

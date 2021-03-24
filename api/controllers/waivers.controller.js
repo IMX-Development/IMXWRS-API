@@ -92,17 +92,20 @@ exports.createWaviver = (req, res) => {
                             let responsables = result[1];
                             let managers = result[2];
                             let creator = originator['name'];
+                            let approvalMailist = [];
+                            let actionsMailist = [];
 
                             managers.forEach(m => {
-                                //approvalMailist.push(r['email']);
+                                approvalMailist.push(r['email']);
                             });
 
                             responsables.forEach(r => {
-                                //actionsMailist.push(r['email']);
+                                actionsMailist.push(r['email']);
                             });
 
-                            let approvalMailist = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com'];
-                            let actionsMailist = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com', 'lopezmurillo997@gmail.com'];
+                            //Comment when it's in use. !!! WARNING
+                            approvalMailist = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com'];
+                            actionsMailist = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com', 'lopezmurillo997@gmail.com'];
 
                             sendEmail(
                                 originator['email'],
