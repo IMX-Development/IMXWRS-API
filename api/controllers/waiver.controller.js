@@ -3,7 +3,7 @@ var Sql = require('../db/sql.js');
 exports.getWaiver = (req, res) => {
     let number = req.params.waiver;
     let body;
-    let query = `SELECT * FROM requests WHERE number = '${number}'`;
+    let query = `SELECT * FROM requests WHERE number = '${ number }' OR oldNumber = '${ number }'`;
     let promise = Sql.request(query);
     promise.then((resp => {
         if (! resp || resp.length == 0) {
@@ -13,6 +13,7 @@ exports.getWaiver = (req, res) => {
             });
             return;
         }
+        number = resp[0].number;
         let requests = (resp[0].type == 'external') ? 6 : 5;
         body = resp[0];
         let query;

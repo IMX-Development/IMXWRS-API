@@ -17,6 +17,7 @@ CREATE TABLE requests(
   requiresManager BIT NOT NULL DEFAULT 0,
   status VARCHAR(10) NOT NULL DEFAULT 'approving',
   area VARCHAR(30),
+  oldNumber VARCHAR(11) DEFAULT '',
   originator VARCHAR(30) NOT NULL
 );
 
@@ -80,40 +81,40 @@ CREATE TABLE externalAuthorization(
 
 ALTER TABLE requests
 ADD CONSTRAINT FK_originator
-FOREIGN KEY (originator) REFERENCES users(username);
+FOREIGN KEY (originator) REFERENCES users(username) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE actions
 ADD CONSTRAINT FK_responsable
-FOREIGN KEY (responsable) REFERENCES users(username);
+FOREIGN KEY (responsable) REFERENCES users(username) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE actions
 ADD CONSTRAINT FK_action_request
-FOREIGN KEY (request) REFERENCES requests(number);
+FOREIGN KEY (request) REFERENCES requests(number) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE authorizations 
 ADD CONSTRAINT PK_auth
-PRIMARY KEY CLUSTERED(manager,request);
+PRIMARY KEY CLUSTERED(manager,request) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE authorizations
 ADD CONSTRAINT FK_manager
-FOREIGN KEY (manager) REFERENCES users(username);
+FOREIGN KEY (manager) REFERENCES users(username) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE authorizations
 ADD CONSTRAINT FK_auth_request
-FOREIGN KEY (request) REFERENCES requests(number);
+FOREIGN KEY (request) REFERENCES requests(number) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE waivers
 ADD CONSTRAINT FK_waiver_request
-FOREIGN KEY (request) REFERENCES requests(number);
+FOREIGN KEY (request) REFERENCES requests(number) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE parts
 ADD CONSTRAINT FK_parts_request
-FOREIGN KEY (request) REFERENCES requests(number);
+FOREIGN KEY (request) REFERENCES requests(number) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE expiration
 ADD CONSTRAINT FK_exp_request
-FOREIGN KEY (request) REFERENCES requests(number);
+FOREIGN KEY (request) REFERENCES requests(number) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE externalAuthorization
 ADD CONSTRAINT FK_ext_auth_request
-FOREIGN KEY (request) REFERENCES requests(number);
+FOREIGN KEY (request) REFERENCES requests(number) ON DELETE CASCADE ON UPDATE CASCADE;
