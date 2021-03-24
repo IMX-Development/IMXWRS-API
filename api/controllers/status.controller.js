@@ -1,5 +1,20 @@
 const Sql = require('../db/sql.js');
 
+const { sendEmail } = require('../helpers/send-email');
+const templates = require('../helpers/email-templates');
+
+exports.getEmailData = (id) => {
+    let promises = [];
+    let waiverData = `SELECT customer, users.name as originator, users.email as origEmail creationDate, area, type, typeNumber
+                        FROM requests, users WHERE requests.originator = users.username AND 
+                        requests.number = '${ id }'`;
+    let waiverReceivers = `SELECT users.name, users.email FROM users, actions WHERE 
+                            actions.responsable = users.username AND actions.request = '${ id }'`;
+    promises.push(Sql.request(waiverData));
+    promises.push(Sql.request(waiverReceivers));
+    return promises;
+}
+
 exports.update = (id) => {
     let promise = new Promise((resolve,reject)=>{
         checkStatus(id).then(resp=>{

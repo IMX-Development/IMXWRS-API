@@ -1,5 +1,6 @@
 const Sql = require('../db/sql.js');
 const jwt = require('jsonwebtoken');
+const status = require('./status.controller');
 
 require('dotenv').config();
 
@@ -41,8 +42,15 @@ exports.authorizeWaiver = (req, res) => {
     let promise = Sql.request(query);
 
     promise.then(resp => {
-        res.json({
-            ok: true
+        status.update(waiver).then(resp=>{
+            res.json({
+                ok: true
+            });
+        },error=>{
+            res.json({
+                ok: false,
+                message: error
+            });
         });
     }, error => {
         res.json({

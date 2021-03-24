@@ -75,11 +75,6 @@ exports.signActivity = (req,res) =>{
     let promise = Sql.request(query);
     promise.then(resp=>{
         status.update(waiver).then(resp=>{
-            if(!resp){
-                console.log('Not quite yet');
-            }else{
-                console.log('Done');
-            }
             res.json({
                 ok: true,
             });
