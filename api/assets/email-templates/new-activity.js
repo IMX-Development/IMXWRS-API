@@ -4,6 +4,7 @@ let base_url = process.env.EMAIL_LINK
 
 exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
     let url = base_url + '/waivers/view/' + id;
+    let url2 = base_url + '/tasks/pending';
     createdOn = new Date(createdOn).toString();
     if(team.length > 1){
         team = team.slice(0, -1).join(',')+' and '+ team.slice(-1);
@@ -109,6 +110,12 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
                     text-decoration: underline;
                     font-weight: bolder;
                 }
+        
+                .separator{
+                    border-left: 10px solid transparent;
+                    border-right: 10px solid transparent;
+                }
+        
             </style>
         </head>
         
@@ -127,16 +134,16 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
                 </table>
             </div>
             <div class="content">
-                <h4 class="welcome">Hello, ${ user }</h4>
+                <h4 class="welcome">Hello, ${ team }</h4>
                 <p class="text">
-                    Your <span class="marked">${ customer }</span> waiver request with number <span class="marked">${ oldId }</span>  created on ${ createdOn }
-                    has been approved. <br>The corresponding unique new number is <span class="marked new">${ id }</span> 
+                    A <span class="marked">${ customer }</span> waiver request with number <span class="marked new">${ id }</span> (formerly ${ oldId }) created on ${ createdOn }
+                    by ${ user } has been recently approved.
                 </p>
                 <p class="text">
-                    Please coordinate with <span class="marked"> ${ team } </span> in order to fully complete this waiver request.
+                    Please check the activities you're involved in and complete them as soon as possible.
                 </p>
                 <p class="text">
-                    You can check its status by clicking in the button below.
+                    You can check its status and your activities by clicking in the buttons below.
                 </p>
         
                 <table width="100%" cellspacing="0" cellpadding="0">
@@ -149,7 +156,18 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
                                             See status
                                         </a>
                                     </td>
+                                    <td>
+                                        <span class="separator">
+                                            or 
+                                        </span>
+                                    </td>
+                                    <td class="button" bgcolor="#262a69">
+                                        <a class="link" href="${ url2 }" target="_blank">
+                                            See activities
+                                        </a>
+                                    </td>
                                 </tr>
+                                
                             </table>
                         </td>
                     </tr>
