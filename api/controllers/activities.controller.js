@@ -1,5 +1,6 @@
 const Sql = require('../db/sql.js');
 const jwt = require('jsonwebtoken');
+const status = require('./status.controller');
 
 require('dotenv').config();
 
@@ -73,9 +74,22 @@ exports.signActivity = (req,res) =>{
                  request = '${ waiver }'`;
     let promise = Sql.request(query);
     promise.then(resp=>{
-        res.json({
-            ok: true 
+        status.update(waiver).then(resp=>{
+            if(!resp){
+                console.log('Not quite yet');
+            }else{
+                console.log('Done');
+            }
+            res.json({
+                ok: true,
+            });
+        },error=>{
+            res.json({
+                ok: false,
+                message: error
+            });
         });
+
     },error=>{
         res.json({
             ok: false,

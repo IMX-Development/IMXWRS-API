@@ -12,7 +12,6 @@ exports.getInfoWithToken = (req) =>{
 
 exports.getInfoWithField = (arr, field) =>{
     let users = [];
-    console.log(arr);
     arr.forEach(a=>{
         users.push("'" + a[field] + "'");
     });
