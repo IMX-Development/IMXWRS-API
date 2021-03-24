@@ -3,13 +3,18 @@ const Sql = require('../db/sql.js');
 const { sendEmail } = require('../helpers/send-email');
 const templates = require('../helpers/email-templates');
 
+let approvalMailist = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com'];
+let actionsMailist = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com', 'lopezmurillo997@gmail.com'];
+
 exports.getEmailData = (id) => {
     let promises = [];
-    let waiverData = `SELECT customer, users.name as originator, users.email as origEmail creationDate, area, type, typeNumber
+    let waiverData = `SELECT customer, users.name as originator, users.email as origEmail, creationDate, area, type, typeNumber
                         FROM requests, users WHERE requests.originator = users.username AND 
                         requests.number = '${ id }'`;
     let waiverReceivers = `SELECT users.name, users.email FROM users, actions WHERE 
                             actions.responsable = users.username AND actions.request = '${ id }'`;
+    console.log(waiverData);
+    console.log(waiverReceivers);
     promises.push(Sql.request(waiverData));
     promises.push(Sql.request(waiverReceivers));
     return promises;
@@ -37,7 +42,36 @@ exports.update = (id) => {
                         date +
                         newNumber;
                     updateWaiver(id,number).then(resp=>{
-                        resolve(number);
+                        //resolve(number);
+                        Promise.all(this.getEmailData(number)).then(resp=>{
+                            let waiverData = resp[0][0];
+                            let teamContact = resp[1];
+                            let team = [];
+                            let emailList = [];
+                            teamContact.forEach(t=>{
+                                team.push(t.name);
+                                emailList.push(t.email);
+                            });
+                            sendEmail(
+                                waiverData['origEmail'],
+                                templates.waiverApproved(
+                                    waiverData['originator'],
+                                    number,
+                                    id,
+                                    team,
+                                    waiverData['customer'],
+                                    waiverData['creationDate']
+                                ),
+                                (cb=>{
+                                    console.log(cb);
+                                },error=>{
+                                    resolve(false);
+                                })
+                            );
+                        },error=>{
+                            console.log(error);
+                            resolve(false);
+                        })
                     },error=>{
                         console.log(error);
                         reject('Updating number failed');
@@ -71,7 +105,7 @@ let openWaiver = (id) => {
 let getNextWaiver = () => {
     let date = new Date().getFullYear().toString().substring(2, 4);
 
-    let query = `SELECT COALESCE(MAX(SUBSTRING(number,6,4))+1,1) AS newNumber FROM dbo.requests WHERE LEFT(number,2) = 'WR' AND SUBSTRING(number,4,2) = '${date}'`;
+    let query = `SELECT COALESCE(MAX(SUBSTRING(number,6,4))+1,1) AS newNumber FROM dbo.requests WHERE LEFT(number,2) = 'WR' AND SUBSTRING(number,3,2) = '${date}'`;
     return Sql.request(query);
 }
 
