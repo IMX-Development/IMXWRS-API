@@ -2,23 +2,33 @@ var Sql = require('../db/sql.js');
 var authorizations = require('../assets/authorizations/signed.authorizations');
 
 const { sendEmail } = require('../helpers/send-email');
-const { getInfoWithToken, getInfoWithField } = require('../middlewares/user.identification');
+const { getInfoWithToken, getInfoWithField, getUser } = require('../middlewares/user.identification');
 
 const templates = require('../helpers/email-templates');
 
 exports.getData = (req, res) => {
-    let data = req.body;
-    var query = `INSERT INTO requests() VALUES ? `;
-    let promise = Sql.query(query, data);
-    promise.then(result => {
-        res.json(result);
-    }, error => {
-        res.send(error);
-    });
+    let username = getUser(req);
+    let query = `SELECT number, customer, creationDate, status 
+                FROM requests WHERE originator = '${ username }' 
+                ORDER BY creationDate DESC`;
+    
+    Sql.request(query).then(
+        resp=>{
+            res.json({
+                ok: true,
+                waivers: resp
+            });
+        },
+        error=>{
+            res.json({
+                ok: false,
+                message: error
+            });
+        }
+    );
 }
 
 exports.createWaviver = (req, res) => {
-
     let waiver = req.body.waiverRequest;
     let externalAuth = req.body.externalAuth || null;
     let expiration = req.body.expiration;
