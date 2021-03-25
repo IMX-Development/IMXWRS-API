@@ -8,8 +8,10 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
     createdOn = new Date(createdOn).toString();
     if(team.length > 1){
         team = team.slice(0, -1).join(',')+' and '+ team.slice(-1);
-    }else{
+    }else if(team.length > 0){
         team = team[0];
+    }else{
+        team = '';
     }
 
     return {

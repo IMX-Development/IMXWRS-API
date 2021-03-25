@@ -9,4 +9,7 @@ module.exports = (app) => {
     app.route('/waivers/authorizations')
     .get(Waivers.getAuthorizations);
 
+    app.route('/waivers/all')
+    .get(Waivers.getWaivers);
+
 }

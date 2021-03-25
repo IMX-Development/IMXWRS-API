@@ -31,6 +31,20 @@ function request(query) {
     });
 }
 
+let applyFilters = (obj) => {
+    let params = [];
+    for(let entrie of Object.keys(obj)){
+        params.push( entrie + ' = ' + obj[entrie]);
+    }
+    if(params.length > 1){
+        return params.join(' AND ');
+    }else if(params.length>0){
+        return params[0];
+    }else{
+        return '';
+    }
+}
+
 let convertToArrayAddField = (array, value)=>{
     let newArray = [];
     for(let entrie of Object.keys(array)){
@@ -91,5 +105,6 @@ module.exports = {
     query,
     request,
     convertToArray,
-    convertToArrayAddField
+    convertToArrayAddField,
+    applyFilters
 };

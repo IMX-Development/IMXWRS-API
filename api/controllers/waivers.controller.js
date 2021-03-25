@@ -175,3 +175,28 @@ exports.getAuthorizations = (req, res) => {
         })
     });
 }
+
+//Here we'll filter data later
+exports.getWaivers = (req, res) => {
+    let query = `SELECT number, customer, creationDate, users.name as name, status
+    FROM requests, users
+    WHERE status != 'pending' AND users.username = requests.originator
+    ORDER BY creationDate DESC;`;
+
+    // let filters = Sql.applyFilters(req.query);
+
+    Sql.request(query).then(
+        resp=>{
+            res.json({
+                ok: true,
+                waivers: resp,
+            });
+        },
+        error=>{
+            res.json({
+                ok: false,
+                waivers: resp
+            });
+        }
+    );
+}
