@@ -190,10 +190,14 @@ exports.getAuthorizations = (req, res) => {
 exports.getWaivers = (req, res) => {
     let query = `SELECT number, customer, creationDate, users.name as name, status
     FROM requests, users
-    WHERE status != 'pending' AND users.username = requests.originator
+    WHERE users.username = requests.originator ?  
     ORDER BY creationDate DESC;`;
 
-    // let filters = Sql.applyFilters(req.query);
+    let filters = Sql.applyFilters(req.query);
+
+    query = query.replace('?',filters);
+
+    console.log(query);
 
     Sql.request(query).then(
         resp=>{

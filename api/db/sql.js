@@ -33,16 +33,34 @@ function request(query) {
 
 let applyFilters = (obj) => {
     let params = [];
-    for(let entrie of Object.keys(obj)){
-        params.push( entrie + ' = ' + obj[entrie]);
-    }
+
+    Object.keys(obj).forEach(key=>{
+        let filter;
+        switch(key){
+            case 'from':
+                filter = `creationDate >= ${obj[key]}`;
+                break;
+            case 'to':
+                filter = `creationDate <= ${obj[key]}`;
+                break;
+            case 'originator':
+                filter = `${key} IN (SELECT username FROM users WHERE name LIKE '%${obj[key]}%' OR 
+                username LIKE '%${ obj[key] }%')`;
+                break;
+            default:
+                filter = `${key} LIKE '%${ obj[key] }%'`;
+                break;
+        }
+        params.push(filter);
+    });
+
     if(params.length > 1){
-        return params.join(' AND ');
-    }else if(params.length>0){
-        return params[0];
-    }else{
-        return '';
+        return ' AND ' + params.join(' AND ');
     }
+    if(params.length>0){
+        return ' AND ' + params[0];
+    }
+    return '';
 }
 
 let convertToArrayAddField = (array, value)=>{
