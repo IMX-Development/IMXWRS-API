@@ -9,9 +9,12 @@ const templates = require('../helpers/email-templates');
 exports.getData = (req, res) => {
     let username = getUser(req);
     let query = `SELECT number, customer, creationDate, status 
-                FROM requests WHERE originator = '${ username }' 
+                FROM requests WHERE originator = '${ username }' ?
                 ORDER BY creationDate DESC`;
-    
+
+    let filters = Sql.applyFilters(req.query);
+    query = query.replace('?',filters);
+
     Sql.request(query).then(
         resp=>{
             res.json({
@@ -194,11 +197,9 @@ exports.getWaivers = (req, res) => {
     ORDER BY creationDate DESC;`;
 
     let filters = Sql.applyFilters(req.query);
-
     query = query.replace('?',filters);
 
     console.log(query);
-
     Sql.request(query).then(
         resp=>{
             res.json({

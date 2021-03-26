@@ -33,26 +33,33 @@ function request(query) {
 
 let applyFilters = (obj) => {
     let params = [];
+    let hasStatus = false;
 
     Object.keys(obj).forEach(key=>{
         let filter;
         switch(key){
             case 'from':
-                filter = `creationDate >= ${obj[key]}`;
+                filter = `creationDate >= '${obj[key]}'`;
                 break;
             case 'to':
-                filter = `creationDate <= ${obj[key]}`;
+                filter = `creationDate <= '${obj[key]}'`;
                 break;
             case 'originator':
                 filter = `${key} IN (SELECT username FROM users WHERE name LIKE '%${obj[key]}%' OR 
                 username LIKE '%${ obj[key] }%')`;
                 break;
+            case 'status':
+                hasStatus = true;
             default:
                 filter = `${key} LIKE '%${ obj[key] }%'`;
                 break;
         }
         params.push(filter);
     });
+
+    if(!hasStatus){
+        params.push(`status != 'pending'`);
+    }
 
     if(params.length > 1){
         return ' AND ' + params.join(' AND ');
