@@ -96,6 +96,8 @@ exports.update = (id) => {
                     reject('Could not get next number');
                 });
 
+            }else{
+                resolve(false);
             }
         }, error => {
             reject('Could not check status');

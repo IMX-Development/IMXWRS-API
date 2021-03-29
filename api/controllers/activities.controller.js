@@ -28,7 +28,7 @@ exports.getAssignedActivities = (req,res)=>{
     let user = jwt.verify(req.token, process.env.TOKEN_SEED);
     let query = `SELECT requests.customer as customer, actions.* FROM 
                 dbo.requests, dbo.actions WHERE requests.number = actions.request 
-                AND actions.signed = 'signed' AND actions.responsable = '${user.username}' ORDER BY actions.date DESC`;
+                AND actions.signed = 'signed' AND actions.responsable = '${user.username}' ORDER BY actions.date ASC`;
 
     let promise = Sql.request(query);
 
@@ -49,7 +49,7 @@ exports.getPendingActivities = (req,res)=>{
     let user = jwt.verify(req.token, process.env.TOKEN_SEED);
     let query = `SELECT requests.customer as customer, actions.* FROM 
                 dbo.requests, dbo.actions WHERE requests.number = actions.request 
-                AND actions.signed = 'pending' AND actions.responsable = '${user.username}' ORDER BY actions.date DESC`;
+                AND actions.signed = 'pending' AND actions.responsable = '${user.username}' ORDER BY actions.date ASC`;
 
     let promise = Sql.request(query);
 
@@ -79,6 +79,7 @@ exports.signActivity = (req,res) =>{
                 ok: true,
             });
         },error=>{
+            console.log(error);
             res.json({
                 ok: false,
                 message: error

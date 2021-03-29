@@ -109,7 +109,7 @@ exports.createWaviver = (req, res) => {
                             let actionsMailist = [];
 
                             managers.forEach(m => {
-                                approvalMailist.push(r['email']);
+                                approvalMailist.push(m['email']);
                             });
 
                             responsables.forEach(r => {
