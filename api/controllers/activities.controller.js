@@ -26,7 +26,7 @@ exports.markAsDone = (req,res)=>{
 
 exports.getAssignedActivities = (req,res)=>{
     let user = jwt.verify(req.token, process.env.TOKEN_SEED);
-    let query = `SELECT requests.customer as customer, actions.* FROM 
+    let query = `SELECT requests.customer as customer, actions.*, requests.status as status FROM 
                 dbo.requests, dbo.actions WHERE requests.number = actions.request 
                 AND actions.signed = 'signed' AND actions.responsable = '${user.username}' ORDER BY actions.date ASC`;
 
@@ -47,7 +47,7 @@ exports.getAssignedActivities = (req,res)=>{
 
 exports.getPendingActivities = (req,res)=>{
     let user = jwt.verify(req.token, process.env.TOKEN_SEED);
-    let query = `SELECT requests.customer as customer, actions.* FROM 
+    let query = `SELECT requests.customer as customer, actions.*, requests.status as status FROM 
                 dbo.requests, dbo.actions WHERE requests.number = actions.request 
                 AND actions.signed = 'pending' AND actions.responsable = '${user.username}' ORDER BY actions.date ASC`;
 

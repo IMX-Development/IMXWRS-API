@@ -68,7 +68,7 @@ exports.getAuthorizations = (req, res) => {
                 authorizations.* FROM requests, authorizations, users 
                 WHERE requests.number = authorizations.request AND 
                 requests.originator = users.username AND  
-                authorizations.manager = '${user}' `;
+                authorizations.manager = '${user}' AND authorizations.signed != 'signed'`;
     let promise = Sql.request(query);
 
     promise.then(resp => {
