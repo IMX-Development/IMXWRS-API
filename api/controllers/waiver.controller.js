@@ -3,7 +3,9 @@ var Sql = require('../db/sql.js');
 exports.getWaiver = (req, res) => {
     let number = req.params.waiver;
     let body;
-    let query = `SELECT * FROM requests WHERE number = '${ number }' OR oldNumber = '${ number }'`;
+    let query = `SELECT requests.*,users.name as name FROM requests, users 
+    WHERE (number = '${ number }' OR oldNumber = '${ number }') AND
+    users.username = requests.originator`;
     let promise = Sql.request(query);
     promise.then((resp => {
         if (! resp || resp.length == 0) {
