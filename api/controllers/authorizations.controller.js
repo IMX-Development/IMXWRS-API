@@ -1,7 +1,6 @@
 const Sql = require('../db/sql.js');
 const jwt = require('jsonwebtoken');
 const status = require('./status.controller');
-const users = require('../middlewares/user.identification');
 
 require('dotenv').config();
 
@@ -12,17 +11,23 @@ function getUsername(req) {
 exports.addRemark = (req,res)=>{
     let body = req.body;
     body['manager'] = getUsername(req);
+    let promises = [];
 
     let query = `INSERT INTO remarks() VALUES ?`;
-    let promise = Sql.query(query, body);
+    promises.push(Sql.query(query, body));
+    
+    query = `UPDATE requests SET status = 'on hold' WHERE number = '${ body.request }'`;
+    promises.push(Sql.request(query));
 
-    promise.then(resp=>{
-        users.getOriginator(req.body.request).then(resp=>{
+    Promise.all(promises).then(resp=>{
+        
+        status.sendRemark(req).then(resp=>{
             console.log(resp);
-            resp.json({
+            res.json({
                 ok: true
             });
         },error=>{
+            console.log(error);
             res.json({
                 ok: true,
                 message: error

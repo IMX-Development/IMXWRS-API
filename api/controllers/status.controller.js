@@ -3,6 +3,24 @@ const Sql = require('../db/sql.js');
 const { sendEmail } = require('../helpers/send-email');
 const templates = require('../helpers/email-templates');
 
+const { getOriginator, getInfoWithToken } = require('../middlewares/user.identification')
+
+exports.sendRemark = (req) => {
+    let promise = new Promise((resolve,reject)=>{
+        let promises = [];
+        promises.push(getOriginator(req.body.request));
+        promises.push(getInfoWithToken(req));
+        Promise.all(promises).then(resp=>{
+            let receiver = resp[0][0];
+            let managerName = resp[1][0]['name'];
+            resolve('Here we go');
+        },error=>{
+            reject(error);
+        })
+    });
+    return promise;
+}
+
 exports.getEmailData = (id) => {
     let promises = [];
     let waiverData = `SELECT customer, users.name as originator, users.email as origEmail, creationDate, area, type, typeNumber

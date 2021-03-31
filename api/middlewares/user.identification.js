@@ -9,7 +9,7 @@ exports.getUser = (req) =>{
 
 exports.getOriginator = (number) => {
     let query = `SELECT username, name, email FROM users WHERE username = 
-    (SELECT originator FROM requests WHERE number = ${number})`;
+    (SELECT originator FROM requests WHERE number = '${number}')`;
     return Sql.request(query);
 }
 
