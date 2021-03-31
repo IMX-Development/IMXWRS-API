@@ -8,6 +8,10 @@ function getUsername(req) {
     return jwt.verify(req.token, process.env.TOKEN_SEED)['username'];
 }
 
+exports.addRemark = (req,res)=>{
+
+}
+
 exports.getApproved = (req, res) => {
     let user = getUsername(req);
 
