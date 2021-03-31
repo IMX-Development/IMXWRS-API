@@ -13,7 +13,21 @@ exports.sendRemark = (req) => {
         Promise.all(promises).then(resp=>{
             let receiver = resp[0][0];
             let managerName = resp[1][0]['name'];
-            resolve('Here we go');
+            sendEmail(
+                receiver.email,
+                templates.newRemark(
+                    receiver.name,
+                    req.body.request,
+                    managerName,
+                    req.body.comment),
+                cb=>{
+                    if(cb){
+                        resolve(true);
+                    }else{
+                        resolve(false);
+                    }
+                }
+            )
         },error=>{
             reject(error);
         })

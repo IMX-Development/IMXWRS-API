@@ -3,11 +3,13 @@ const needsApproval = require('../assets/email-templates/needs-approval');
 const hasActivity = require('../assets/email-templates/has-activity');
 const waiverApproved = require('../assets/email-templates/waiver-approved')
 const newActivity = require('../assets/email-templates/new-activity');
+const newRemark = require('../assets/email-templates/new-remark');
 
 module.exports = {
     newWaiver : newWaiver.createdWaiver,
     needsApproval : needsApproval.needsApproval,
     hasActivity : hasActivity.hasActivity,
     waiverApproved : waiverApproved.waiverApproved,
-    newActivity : newActivity.waiverApproved
+    newActivity : newActivity.waiverApproved,
+    newRemark : newRemark.newRemark,
 }
