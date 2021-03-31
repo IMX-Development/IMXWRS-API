@@ -7,6 +7,12 @@ exports.getUser = (req) =>{
     return jwt.verify(req.token, process.env.TOKEN_SEED)['username'];
 }
 
+exports.getOriginator = (number) => {
+    let query = `SELECT username, name, email FROM users WHERE username = 
+    (SELECT originator FROM requests WHERE number = ${number})`;
+    return Sql.request(query);
+}
+
 exports.getInfoWithToken = (req) =>{
     let token = jwt.verify(req.token, process.env.TOKEN_SEED);
     let username = token['username'];
