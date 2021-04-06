@@ -70,3 +70,23 @@ exports.getWaiver = (req, res) => {
         })
     });
 }
+
+exports.modifyWaiver = (req,res) => {
+    let promises = [];
+    let body = req.body;
+    
+    let query = "UPDATE requests SET () WHERE ? ";
+    promises.push(Sql.update(query,body));
+
+    Promise.all(promises).then(resps=>{
+        res.json({
+            ok: true,
+            message: resps 
+        });
+    },error=>{
+        res.json({
+            ok: false,
+            message : error
+        });
+    });
+}
