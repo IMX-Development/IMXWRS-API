@@ -74,9 +74,67 @@ exports.getWaiver = (req, res) => {
 exports.modifyWaiver = (req,res) => {
     let promises = [];
     let body = req.body;
-    
+    let id = req.body.number;
+
+    //Update body of waiver
     let query = "UPDATE requests SET () WHERE ? ";
     promises.push(Sql.update(query,body));
+
+    //Update external Authorization
+    query = `DELETE FROM externalAuthorization WHERE request = '${ id }'`;
+    promises.push(Sql.request(query));
+
+    if(req.body.type == 'external'){
+        query = "INSERT INTO externalAuthorization() VALUES ?";
+        body = Sql.convertToArrayAddField(req.body.externalAuthoriation, id);
+        promises.push(Sql.query(query,body));
+    }
+
+    //Update required waivers (it's easier to delete everything and then add it again)
+    query = `DELETE FROM waivers WHERE request = '${ id }'`;
+    promises.push(Sql.request(query));
+
+    query = "INSERT INTO waivers() VALUES ?";
+    body = Sql.convertToArrayAddField(req.body.waivers, id);
+    promises.push(Sql.query(query,body));
+
+    //Update expiration  (it's easier to delete everything and then add it again)
+    query = `DELETE FROM expiration WHERE request = '${ id }'`;
+    promises.push(Sql.request(query));
+    
+    query = "INSERT INTO expiration() VALUES ?";
+    body = req.body.expiration;
+    body.request = id;
+    promises.push(Sql.query(query,body));
+
+    //Update parts  (it's easier to delete everything and then add it again)
+    query = `DELETE FROM parts WHERE request = '${ id }'`;
+    promises.push(Sql.request(query));
+
+    query = "INSERT INTO parts() VALUES ?";
+    body = Sql.convertToArrayAddField(req.body.parts, id);
+    promises.push(Sql.query(query,body));
+
+    //Update auth 
+    query = `DELETE FROM authorizations WHERE request = '${ id }'`;
+    promises.push(Sql.request(query));
+
+    query = "INSERT INTO authorizations() VALUES ?";
+    body = Sql.convertToArrayAddField(req.body.authorizations, id);
+    promises.push(Sql.query(query,body));
+
+    //Update actions
+    body = Sql.extractIdInList(req.body.equalActions,'id');
+    query = `DELETE FROM actions WHERE id NOT IN ${ body }`;
+    promises.push(Sql.request(query));
+
+    query = "INSERT INTO actions() VALUES ?";
+    body = Sql.convertToArrayAddField(req.body.newActions, id);
+    promises.push(Sql.query(query,body));    
+    
+    //Update remarks
+    query = `UPDATE remarks SET status = 'solved' WHERE request = '${ id }'`;
+    promises.push(Sql.request(query));
 
     Promise.all(promises).then(resps=>{
         res.json({

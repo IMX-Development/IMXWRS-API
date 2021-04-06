@@ -148,6 +148,19 @@ function getQuery(query, data) {
     }
 }
 
+function extractIdInList(list,field='id'){
+    list = convertToArray(list);
+
+    let values = [];
+
+    list.forEach(elem=>{
+        values.push(elem[field]);
+    });
+
+    return '(' + values.join(',') + ')';
+    
+}
+
 
 module.exports = {
     query,
@@ -155,5 +168,6 @@ module.exports = {
     convertToArray,
     convertToArrayAddField,
     applyFilters,
-    update
+    update,
+    extractIdInList
 };
