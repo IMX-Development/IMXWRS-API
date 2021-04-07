@@ -1,4 +1,5 @@
 var Sql = require('../db/sql.js');
+const status = require('./status.controller');
 
 exports.getWaiver = (req, res) => {
     let number = req.params.waiver;
@@ -128,20 +129,33 @@ exports.modifyWaiver = (req,res) => {
     query = `DELETE FROM actions WHERE id NOT IN ${ body }`;
     promises.push(Sql.request(query));
 
-    query = "INSERT INTO actions() VALUES ?";
-    body = Sql.convertToArrayAddField(req.body.newActions, id);
-    promises.push(Sql.query(query,body));    
+    if(req.body.newActions?.length > 0){
+        query = "INSERT INTO actions() VALUES ?";
+        body = Sql.convertToArrayAddField(req.body.newActions, id);
+        promises.push(Sql.query(query,body));  
+    }
     
     //Update remarks
     query = `UPDATE remarks SET status = 'solved' WHERE request = '${ id }'`;
     promises.push(Sql.request(query));
 
     Promise.all(promises).then(resps=>{
-        res.json({
-            ok: true,
-            message: resps 
+        let emailPromise = status.resendActivity(id);
+        console.log('promising...')
+        console.log(emailPromise);
+        emailPromise.then(resp=>{
+            res.json({
+                ok: true 
+            });
+        },error=>{
+            res.json({
+                ok: true,
+                message : 'Cannot send emails'
+            });
         });
+
     },error=>{
+        console.log(error);
         res.json({
             ok: false,
             message : error
