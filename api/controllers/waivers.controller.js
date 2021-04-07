@@ -98,26 +98,26 @@ exports.createWaviver = (req, res) => {
 
                         destinataryPromises.push(getInfoWithToken(req));
                         destinataryPromises.push(getInfoWithField(Sql.convertToArray(req.body.actions), 'responsable'));
-                        destinataryPromises.push(getInfoWithField(Sql.convertToArray(req.body.managers), 'manager'));
+                        // destinataryPromises.push(getInfoWithField(Sql.convertToArray(req.body.managers), 'manager'));
 
                         Promise.all(destinataryPromises).then(result => {
                             let originator = result[0][0];
                             let responsables = result[1];
-                            let managers = result[2];
+                            // let managers = result[2];
                             let creator = originator['name'];
-                            let approvalMailist = [];
+                            // let approvalMailist = [];
                             let actionsMailist = [];
 
-                            managers.forEach(m => {
-                                approvalMailist.push(m['email']);
-                            });
+                            // managers.forEach(m => {
+                            //     approvalMailist.push(m['email']);
+                            // });
 
                             responsables.forEach(r => {
                                 actionsMailist.push(r['email']);
                             });
 
                             //Comment when it's in use. !!! WARNING
-                            approvalMailist = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com'];
+                            // approvalMailist = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com'];
                             actionsMailist = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com', 'lopezmurillo997@gmail.com'];
 
                             sendEmail(
@@ -127,12 +127,12 @@ exports.createWaviver = (req, res) => {
                                     sendEmail(
                                         actionsMailist,
                                         templates.hasActivity(creator, number),
-                                        (cb) =>{
-                                            sendEmail(
-                                                approvalMailist,
-                                                templates.needsApproval(creator,number)
-                                            );
-                                        }
+                                        // (cb) =>{
+                                        //     sendEmail(
+                                        //         approvalMailist,
+                                        //         templates.needsApproval(creator,number)
+                                        //     );
+                                        // }
                                     );
                                 }
                             );

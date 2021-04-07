@@ -74,7 +74,7 @@ exports.signActivity = (req,res) =>{
                  request = '${ waiver }'`;
     let promise = Sql.request(query);
     promise.then(resp=>{
-        status.update(waiver).then(resp=>{
+        status.update(waiver,false).then(resp=>{
             res.json({
                 ok: true,
             });

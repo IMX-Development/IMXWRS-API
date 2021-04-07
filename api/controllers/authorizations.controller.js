@@ -76,7 +76,7 @@ exports.authorizeWaiver = (req, res) => {
     let promise = Sql.request(query);
 
     promise.then(resp => {
-        status.update(waiver).then(resp=>{
+        status.update(waiver,true).then(resp=>{
             res.json({
                 ok: true
             });

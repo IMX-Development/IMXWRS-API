@@ -2,7 +2,14 @@ require('dotenv').config();
 
 let base_url = process.env.EMAIL_LINK
 
-exports.needsApproval = (name,id) => {
+exports.needsApproval = (name,id,team = 'managers') => {
+    if(team.length > 1){
+        team = team.slice(0, -1).join(',')+' and '+ team.slice(-1);
+    }else if(team.length > 0){
+        team = team[0];
+    }else{
+        team = '';
+    }
     let url = base_url + '/waivers/authorize/' + id;
     return {
         subject : 'Waiver Request ' + id + ' needs your approval',
@@ -123,7 +130,7 @@ exports.needsApproval = (name,id) => {
                 </table>
             </div>
             <div class="content">
-                <h4 class="welcome">Hello, manager</h4>
+                <h4 class="welcome">Hello, ${ team }</h4>
                 <p class="text">
                     <span class="mention"> ${ name } </span> has created a new Waiver Request with number <span class="marked">${ id }</span> 
                     and it needs your approval.
