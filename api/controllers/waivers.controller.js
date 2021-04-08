@@ -215,3 +215,29 @@ exports.getWaivers = (req, res) => {
         }
     );
 }
+    
+exports.getRemarked = (req,res) => {
+    let username = getUser(req);
+    let query = `SELECT number, customer, creationDate, status 
+                FROM requests WHERE originator = '${ username }' 
+                AND status = 'on hold' ?
+                ORDER BY creationDate DESC`;
+
+    let filters = Sql.applyFilters(req.query);
+    query = query.replace('?',filters);
+
+    Sql.request(query).then(
+        resp=>{
+            res.json({
+                ok: true,
+                waivers: resp
+            });
+        },
+        error=>{
+            res.json({
+                ok: false,
+                message: error
+            });
+        }
+    );
+}

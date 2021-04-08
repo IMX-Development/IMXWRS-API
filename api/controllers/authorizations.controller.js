@@ -99,10 +99,16 @@ exports.getAuthorizations = (req, res) => {
     let user = getUsername(req);
 
     let query = `SELECT requests.customer, users.name as originator, requests.creationDate, 
+                requests.status,
+               (SELECT COUNT(*) FROM actions WHERE 
+                actions.request = requests.number AND actions.signed = 'pending') as pendingActivities,
+                (SELECT COUNT(*) FROM actions WHERE 
+                actions.request = requests.number) as totalActivities,
                 authorizations.* FROM requests, authorizations, users 
                 WHERE requests.number = authorizations.request AND 
                 requests.originator = users.username AND  
-                authorizations.manager = '${user}' AND authorizations.signed != 'signed'`;
+                authorizations.manager = '${user}' AND authorizations.signed != 'signed'
+                ORDER BY pendingActivities ASC, requests.status DESC, requests.number ASC`;
     let promise = Sql.request(query);
 
     promise.then(resp => {

@@ -12,4 +12,6 @@ module.exports = (app) => {
     app.route('/waivers/all')
     .get(Waivers.getWaivers);
 
+    app.route('/waivers/remarks')
+    .get([token.verifyUser], Waivers.getRemarked);
 }

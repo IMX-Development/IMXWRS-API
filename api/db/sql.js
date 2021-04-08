@@ -18,6 +18,7 @@ function query(query, data) {
 }
 
 function request(query) {
+    console.info(query);
     return new Promise((resolve, reject) => {
         new sql.ConnectionPool(config).connect().then(pool => {
             return pool.request().query(query);
@@ -25,6 +26,7 @@ function request(query) {
             sql.close();
             resolve(result.recordset);
         }).catch(err => {
+            console.error(err);
             sql.close();
             reject(err);
         });
@@ -106,7 +108,7 @@ function getUpdates(query, data){
     query = query.replace("()", updates.toString());
     query = query.replace("?", " number = '" + data.number +"'");
 
-    console.log(query);
+    // console.log(query);
     return query;
 }
 
@@ -122,7 +124,7 @@ function getQuery(query, data) {
         }
         query = query.replace("()", "(" + columns.toString() + ")");
         query = query.replace("?", "(" + rows.toString() + ")");
-        console.log(query);
+        // console.log(query);
         return query;
     } else {
         for (let [index, val] of data.entries()) {
@@ -143,7 +145,7 @@ function getQuery(query, data) {
         }
         query = query.replace("()", "(" + columns.toString() + ")");
         query = query.replace("?", entries.toString());
-        console.log(query);
+        // console.log(query);
         return query;
     }
 }
