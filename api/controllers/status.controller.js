@@ -40,6 +40,8 @@ exports.resendActivity = (id) => {
                         resolve(cb);
                     })
                 );
+            }else{
+                resolve(true);
             }
 
         }, error => {
