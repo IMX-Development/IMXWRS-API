@@ -5,7 +5,7 @@ const templates = require('../helpers/email-templates');
 
 const { getOriginator, getInfoWithToken } = require('../middlewares/user.identification')
 
-exports.resendActivity = (id) => {
+exports.resendActivity = (id, actions) => {
 
     let promise = new Promise((resolve, reject) => {
         let promises = [];
@@ -14,9 +14,14 @@ exports.resendActivity = (id) => {
                 WHERE number = '${id}' AND requests.originator = users.username`;
         promises.push(Sql.request(query));
 
+        let noId = Sql.extractIdInList(actions,'id');
         query = `SELECT DISTINCT users.email, users.name FROM users, actions 
                 WHERE users.username = actions.responsable AND 
-                actions.request = '${id}' AND actions.signed = 'pending'`;
+                actions.request = '${ id }' AND actions.signed = 'pending'`;
+
+        if(noId != ''){
+            query = query + ` AND actions.id NOT IN ${ noId }`;
+        }
 
         promises.push(Sql.request(query));
 
@@ -127,9 +132,6 @@ exports.update = (id, isManager) => {
                         receivers.push(m['name'])
                     });
 
-                    receivers = ['ivan', 'diana', 'chop'];
-                    mailList = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com'];
-
                     sendEmail(
                         mailList,
                         templates.needsApproval(originator, id, receivers),
@@ -180,7 +182,7 @@ exports.update = (id, isManager) => {
                                 ),
                                 (_cb => {
                                     //Comment on production !!!WARNING!!!
-                                    emailList = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com', 'lopezmurillo997@gmail.com'];
+                                    // emailList = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com', 'lopezmurillo997@gmail.com'];
                                     sendEmail(
                                         actionsMailist,
                                         templates.newActivity(

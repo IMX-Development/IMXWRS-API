@@ -156,11 +156,11 @@ function extractIdInList(list,field='id'){
     let values = [];
 
     list.forEach(elem=>{
-        values.push(elem[field]);
+        let value = elem[field].toString().replace(/'/g,"''");
+        values.push("'" + value + "'");
     });
 
-    return '(' + values.join(',') + ')';
-    
+    return values.length > 0 ? '(' + values.join(',') + ')' : '';
 }
 
 
