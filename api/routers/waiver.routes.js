@@ -7,4 +7,8 @@ module.exports = (app) => {
 
     app.route('/waiver')
     .put([token.verifyUser],Waiver.modifyWaiver);
+
+    app.route('/waiver/ia')
+    .post(Waiver.modifyWaiver);
+    
 }

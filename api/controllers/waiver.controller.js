@@ -1,5 +1,21 @@
 var Sql = require('../db/sql.js');
 const status = require('./status.controller');
+const ia = require('../helpers/ia.basic');
+
+exports.getSimilar = (req, res) =>{
+    
+    ia.getSimilar(req.body).then(resp=>{
+        res.json({
+            ok : true,
+            coincidences : resp
+        });
+    },error=>{
+        res.json({
+            ok : true, 
+            message : error
+        });
+    });
+}
 
 exports.getWaiver = (req, res) => {
     let number = req.params.waiver;
