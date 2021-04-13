@@ -11,7 +11,7 @@ exports.getSimilar = (body) =>{
                 FROM requests, users, parts
                 WHERE requests.originator = users.username AND 
                 parts.request = requests.number AND 
-                (parts.customerPN IN ${ intPieces }) OR (parts.interplexPN IN ${ extPieces}) AND
+                (parts.customerPN IN ${ extPieces }) OR (parts.interplexPN IN ${ intPieces }) AND
                 requests.type = '${ type }' AND 
                 requests.customer = '${ customer }' AND
                 creationDate >= DATEADD(MONTH, -3, GETDATE())`;

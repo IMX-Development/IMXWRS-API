@@ -9,6 +9,6 @@ module.exports = (app) => {
     .put([token.verifyUser],Waiver.modifyWaiver);
 
     app.route('/waiver/ia')
-    .post(Waiver.modifyWaiver);
+    .post(Waiver.getSimilar);
     
 }
