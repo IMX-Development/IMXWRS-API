@@ -152,7 +152,7 @@ exports.modifyWaiver = (req, res) => {
         body = Sql.convertToArrayAddField(req.body.authorizations, id);
         promises.push(Sql.query(query, body));
 
-        if (req.body.newActions?.length > 0) {
+        if (req.body.newActions != null && req.body.newActions.length > 0) {
             query = "INSERT INTO actions() VALUES ?";
             body = Sql.convertToArrayAddField(req.body.newActions, id);
             promises.push(Sql.query(query, body));
