@@ -14,7 +14,7 @@ var storage = multer.diskStorage({
   filename: (req, file, callback) => {
     const body = JSON.parse(JSON.stringify(req.body));
     let id = body.request;
-    var filename = `${file.originalname}-${id}-${Date.now()}`;
+    var filename = `${id}-${file.originalname}`;
     callback(null, filename);
   }
 });
