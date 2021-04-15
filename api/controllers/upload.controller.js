@@ -5,9 +5,11 @@ const upload = require("../middlewares/upload");
 const closeWaiver = async (req, res) => {
   try {
     await upload(req, res);
+    // console.log('-------------------- REQ --------------------');
+    // console.log(req);
     console.log('-------------------- NUMBER --------------------');
     const body = JSON.parse(JSON.stringify(req.body));
-    console.log(body.request);
+    console.log(body);
     console.log('-------------------- FILES --------------------');
     console.log(req.files);
 
