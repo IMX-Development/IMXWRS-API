@@ -6,24 +6,49 @@ const path = require("path");
 const closeWaiver = async (req, res) => {
   try {
     await upload(req, res);
-    // console.log('-------------------- REQ --------------------');
-    // console.log(req);
     console.log('-------------------- NUMBER --------------------');
     const body = JSON.parse(JSON.stringify(req.body));
     console.log(body);
     console.log('-------------------- FILES --------------------');
     console.log(req.files);
-
+    
     if (req.files.length <= 0) {
       return res.json({
         ok: false,
         message: 'You must select at least 1 file'
       });
     }
-    return res.json({
-      ok: true,
-      message: 'Files has been uploaded.'
+
+    let request = body.request;
+    let promises = [];
+
+    promises.push(status.closeWaiver(request));
+
+    let bodies = [];
+    req.files.forEach(file=>{
+      let body = {
+        filename : file.filename,
+        request : request
+      };
+      bodies.push(body);
     });
+    
+    let query = "INSERT INTO evidences() VALUES ?";
+    promises.push(Sql.query(query,bodies));
+
+    Promise.all(promises).then(resp=>{
+      return res.json({
+        ok: true,
+        message: 'Files has been uploaded.'
+      });
+    },error=>{
+      console.log(error);
+      return res.json({
+        ok: false,
+        message: 'error'
+      });
+    })
+
   } catch (error) {
     console.log(error);
 
