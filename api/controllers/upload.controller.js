@@ -1,6 +1,7 @@
 var Sql = require('../db/sql.js');
 const status = require('./status.controller');
 const upload = require("../middlewares/upload");
+const path = require("path");
 
 const closeWaiver = async (req, res) => {
   try {
@@ -39,6 +40,23 @@ const closeWaiver = async (req, res) => {
   }
 };
 
+const retrieveFile = async (req, res) => {
+  let fileName = req.params.name;
+  let folder = fileName.split('-')[0];
+  const directoryPath =`${__dirname}/../../upload/${folder}/`;
+
+  res.download(directoryPath + fileName, fileName, (err) => {
+    if (err) {
+      console.log(err);
+      res.json({
+        ok : false,
+        message: err
+      });
+    }
+  });
+}
+
 module.exports = {
-  closeWaiver: closeWaiver
+  closeWaiver: closeWaiver,
+  retrieveFile : retrieveFile
 };

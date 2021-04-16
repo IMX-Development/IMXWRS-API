@@ -10,6 +10,7 @@ app.use(bodyParser.json());
 
 var userRoutes = require('./api/routers/user.routes');
 var authRoutes = require('./api/routers/auth.routes');
+var fileRoutes = require('./api/routers/files.routes');
 var waiverRoutes = require('./api/routers/waiver.routes');
 var waiversRoutes = require('./api/routers/waivers.routes');
 var activitiesRoutes = require('./api/routers/activities.routes');
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
 
 userRoutes(app);
 authRoutes(app);
+fileRoutes(app);
 waiverRoutes(app);
 waiversRoutes(app);
 activitiesRoutes(app);
