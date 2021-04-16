@@ -33,11 +33,11 @@ exports.getWaiver = (req, res) => {
             return;
         }
         number = resp[0].number;
-        let requests = (resp[0].type == 'external') ? 7 : 6;
+        let requests = (resp[0].type == 'external') ? 8 : 7;
         body = resp[0];
         let query;
         let promises = [];
-        tables = ['parts', 'authorizations', 'expiration', 'waivers', 'actions', 'remarks', 'externalAuthorization'];
+        tables = ['parts', 'authorizations', 'expiration', 'waivers', 'actions', 'remarks','evidences', 'externalAuthorization'];
         for (let i = 0; i < requests; i++) {
 
             switch (i) {
@@ -66,7 +66,7 @@ exports.getWaiver = (req, res) => {
             if (i == requests - 1) {
                 Promise.all(promises).then(result => {
                     for (let i = 0; i < result.length; i++) {
-                        body[tables[i]] = (i == 2 || i == 6) ? result[i][0] : result[i];
+                        body[tables[i]] = (i == 2 || i == 7) ? result[i][0] : result[i];
                     }
                     res.json({
                         ok: true,
