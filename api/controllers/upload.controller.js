@@ -68,17 +68,34 @@ const closeWaiver = async (req, res) => {
 const retrieveFile = async (req, res) => {
   let fileName = req.params.name;
   let folder = fileName.split('-')[0];
-  const directoryPath =`${__dirname}/../../upload/${folder}/`;
+  const directoryPath = `upload/${folder}/`;
+  const finalPath = path.resolve(directoryPath + fileName);
 
-  res.download(directoryPath + fileName, fileName, (err) => {
-    if (err) {
-      console.log(err);
-      res.json({
-        ok : false,
-        message: err
-      });
-    }
-  });
+  console.log(finalPath);
+
+  // let type = fileName.split('.');
+  // type = type[type.length - 1];
+  // if(true || type == 'png'|| type=='jpg' || type=='jpeg'){
+    res.sendFile(finalPath, (err) => {
+      if (err) {
+        console.log(err);
+        res.json({
+          ok : false,
+          message: err
+        });
+      }
+    });
+  // }else{
+  //   res.download(finalPath, fileName, (err) => {
+  //     if (err) {
+  //       console.log(err);
+  //       res.json({
+  //         ok : false,
+  //         message: err
+  //       });
+  //     }
+  //   });
+  // }
 }
 
 module.exports = {
