@@ -32,5 +32,6 @@ activitiesRoutes(app);
 authorizationRoutes(app);
 
 app.listen(port,()=>{
+    console.clear();
     console.log('Server running in port ' + port)
 });

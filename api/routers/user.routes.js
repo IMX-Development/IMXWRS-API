@@ -6,4 +6,7 @@ module.exports = (app) => {
     app.route('/users')
     .post(Users.getUsers)
     .get(Users.getUsers);
+
+    app.route('/user/recover')
+    .post(Users.recoverPassword);
 }

@@ -255,6 +255,6 @@ let updateWaiver = (actualNumber, nextNumber) => {
 
 exports.closeWaiver = (id) => {
     //status = closed; CHANGED FOR TESTING !!!!!
-    let query = `UPDATE requests SET status = 'open' WHERE number = '${id}'`;
+    let query = `UPDATE requests SET status = 'closed' WHERE number = '${id}'`;
     return Sql.request(query);
 }

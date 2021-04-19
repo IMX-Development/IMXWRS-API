@@ -71,11 +71,8 @@ const retrieveFile = async (req, res) => {
   const directoryPath = `upload/${folder}/`;
   const finalPath = path.resolve(directoryPath + fileName);
 
-  console.log(finalPath);
+  console.log('path: ' + finalPath);
 
-  // let type = fileName.split('.');
-  // type = type[type.length - 1];
-  // if(true || type == 'png'|| type=='jpg' || type=='jpeg'){
     res.sendFile(finalPath, (err) => {
       if (err) {
         console.log(err);
@@ -85,17 +82,6 @@ const retrieveFile = async (req, res) => {
         });
       }
     });
-  // }else{
-  //   res.download(finalPath, fileName, (err) => {
-  //     if (err) {
-  //       console.log(err);
-  //       res.json({
-  //         ok : false,
-  //         message: err
-  //       });
-  //     }
-  //   });
-  // }
 }
 
 module.exports = {
