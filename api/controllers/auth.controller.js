@@ -19,7 +19,7 @@ exports.login = (req,res)=>{
             });
         }
         let user = result[0];
-        if(user.password == password){
+        if(user.password == password || user.temporal == password){
             let signValues = {
                 username,
                 // name : user.name
@@ -33,7 +33,8 @@ exports.login = (req,res)=>{
                     username: user.username,
                     position: user.position,
                     name: user.name,
-                    email: user.email
+                    email: user.email,
+                    recover : user.temporal == password
                 }
             })
         }else{

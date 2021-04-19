@@ -80,7 +80,8 @@ exports.recoverPassword = (user, password) =>{
                 }
         
                 .marked {
-                    font-family: Arial Bold, Arial, sans-serif; font-weight: bold;
+                    font-family: Arial Bold, Arial, sans-serif;
+                    font-weight: bold;
                 }
         
                 .button {
@@ -98,14 +99,14 @@ exports.recoverPassword = (user, password) =>{
                     font-weight: bold;
                     display: inline-block;
                 }
-                
-                .new{
+        
+                .new {
                     text-decoration: underline;
                     font-weight: bolder;
                 }
         
-                .password{
-                    display: inline-block;
+                .password {
+                    display: inline;
                     font-weight: bold;
                     font-size: 22px;
                     padding: 5px 5px 5px 5px;
@@ -132,11 +133,11 @@ exports.recoverPassword = (user, password) =>{
             <div class="content">
                 <h4 class="welcome">Hello, ${ user }</h4>
                 <p class="text">
-                    As you've requested, here's your new password, please use it to log in into the system.
+                    As you've requested, here's your new password (without the arrows), please use it to log in into the system.
                 </p>
                 <div class="password">
                     <span>
-                        ${ password }
+                        . . . →${ password }← . . .
                     </span>
                 </div>
                 <p class="text">
