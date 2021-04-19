@@ -4,7 +4,10 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 exports.login = (req,res)=>{
-    const { username, password } = req.body;
+    let { username, password } = req.body;
+    username = username.toString().replace(/'/g,"''");
+    password = password.toString().replace(/'/g,"''");
+
     let query = `SELECT * FROM users WHERE username = '${ username }' `;
     let promise = Sql.request(query);
 

@@ -26,7 +26,8 @@ CREATE TABLE users(
   name VARCHAR(60) NOT NULL,
   email VARCHAR(50) NOT NULL,
   password VARCHAR(30) NOT NULL,
-  position VARCHAR(40)
+  position VARCHAR(40),
+  temporal VARCHAR(30)
 )
 
 CREATE TABLE authorizations(

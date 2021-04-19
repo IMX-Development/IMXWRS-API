@@ -2,11 +2,24 @@ var Sql = require('../db/sql.js');
 require('dotenv').config();
 
 exports.recoverPassword = (req,res) => {
+    let { username } = req.body;
+    username = username.toString().replace(/'/g,"''");
+    
     let number = getRandom();
-    res.json({
-        ok: false,
-        number
-    });
+    let query = `UPDATE users SET temporal = '${number}' WHERE username = '${username}'`;
+
+    Sql.request(query).then(resp=>{
+        console.log(error);
+        res.json({
+            ok : true
+        });
+    },error=>{
+        console.log(error);
+        res.json({
+            ok : false,
+            message : error
+        });
+    })
 }
 
 const getRandom = () =>{
