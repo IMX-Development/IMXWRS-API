@@ -4,6 +4,7 @@ const hasActivity = require('../assets/email-templates/has-activity');
 const waiverApproved = require('../assets/email-templates/waiver-approved')
 const newActivity = require('../assets/email-templates/new-activity');
 const newRemark = require('../assets/email-templates/new-remark');
+const recoverPassword = require('../assets/email-templates/restore-password');
 
 module.exports = {
     newWaiver : newWaiver.createdWaiver,
@@ -12,4 +13,5 @@ module.exports = {
     waiverApproved : waiverApproved.waiverApproved,
     newActivity : newActivity.waiverApproved,
     newRemark : newRemark.newRemark,
+    recoverPassword : recoverPassword.recoverPassword
 }
