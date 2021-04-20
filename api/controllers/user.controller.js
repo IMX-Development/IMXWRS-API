@@ -5,7 +5,7 @@ const templates = require('../helpers/email-templates');
 var identification = require('../middlewares/user.identification');
 
 exports.changePassword = (req,res) => {
-    const user = identification.getInfoWithToken(req);
+    const user = identification.getUser(req);
     let newPassword = req.body.password;
     newPassword = newPassword.toString().replace(/'/g, "''");
 
