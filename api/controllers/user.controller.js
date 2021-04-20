@@ -2,6 +2,26 @@ var Sql = require('../db/sql.js');
 require('dotenv').config();
 const { sendEmail } = require('../helpers/send-email');
 const templates = require('../helpers/email-templates');
+var identification = require('../middlewares/user.identification');
+
+exports.changePassword = (req,res) => {
+    const user = identification.getInfoWithToken(req);
+    let newPassword = req.body.password;
+    newPassword = newPassword.toString().replace(/'/g, "''");
+
+    let query = `UPDATE users SET password = '${ newPassword }' WHERE username = '${ user }'`;
+
+    Sql.request(query).then(resp=>{
+        res.json({
+            ok : true,
+        });
+    },error=>{
+        res.json({
+            ok : false,
+            message : error
+        });
+    });
+}
 
 exports.recoverPassword = (req, res) => {
     let username = req.body.username;
