@@ -1,4 +1,6 @@
 require('dotenv').config();
+const cron = require('node-cron');
+const events = require('./api/helpers/tasks');
 
 var express = require('express'),
     app = express(),
@@ -35,3 +37,11 @@ app.listen(port,()=>{
     console.clear();
     console.log('Server running in port ' + port)
 });
+
+const task = cron.schedule('59 31 8 * * *', ()=>{
+    let date = new Date().toString();
+    console.log('Running task at ' + date);
+    events.pendingTasks();
+});
+
+task.start();
