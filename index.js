@@ -1,6 +1,5 @@
 require('dotenv').config();
-const cron = require('node-cron');
-const events = require('./api/helpers/tasks');
+var cron = require('node-cron');
 
 var express = require('express'),
     app = express(),
@@ -18,6 +17,8 @@ var waiversRoutes = require('./api/routers/waivers.routes');
 var activitiesRoutes = require('./api/routers/activities.routes');
 var authorizationRoutes = require('./api/routers/authorizations.routes');
 
+var scheduledTasks = require('./api/controllers/tasker.controller');
+
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
     res.header('Access-Control-Allow-Origin', '*');
@@ -33,17 +34,9 @@ waiversRoutes(app);
 activitiesRoutes(app);
 authorizationRoutes(app);
 
+console.clear();
+scheduledTasks(cron);
+
 app.listen(port,()=>{
-    console.clear();
     console.log('Server running in port ' + port)
 });
-
-let everyMonday = '0 0 8 * * 1';
-
-const task = cron.schedule('*/20 * * * * *', ()=>{
-    let date = new Date().toString();
-    console.log('Running task at ' + date);
-    // events.pendingTasks();
-});
-
-task.start();
