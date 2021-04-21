@@ -38,10 +38,12 @@ app.listen(port,()=>{
     console.log('Server running in port ' + port)
 });
 
-const task = cron.schedule('59 31 8 * * *', ()=>{
+let everyMonday = '0 0 8 * * 1';
+
+const task = cron.schedule('*/20 * * * * *', ()=>{
     let date = new Date().toString();
     console.log('Running task at ' + date);
-    events.pendingTasks();
+    // events.pendingTasks();
 });
 
 task.start();

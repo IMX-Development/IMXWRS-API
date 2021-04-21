@@ -163,6 +163,17 @@ function extractIdInList(list,field='id'){
     return values.length > 0 ? '(' + values.join(',') + ')' : '';
 }
 
+let getPropertyAsArray = (array,field) => {
+    list = convertToArray(array);
+
+    result = [];
+
+    list.forEach(elem => {
+        result.push(elem[field]);
+    });
+
+    return result;
+}
 
 module.exports = {
     query,
@@ -171,5 +182,6 @@ module.exports = {
     convertToArrayAddField,
     applyFilters,
     update,
-    extractIdInList
+    extractIdInList,
+    getPropertyAsArray
 };

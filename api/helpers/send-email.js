@@ -20,21 +20,27 @@ const sendEmail = (email, template, cb) => {
 
     console.log('Sending email to ' + email + ' about ' + template.subject);
 
-    transporter.sendMail({
-        from: `IMXWRS <${ process.env.EMAIL_USER }>`, // sender address
-        to: email,
-        subject: template.subject,
-        html: template.html,
-    }, (error) => {
-        if(error){
-            console.log('error');
-            console.log(error);
-            cb(false);
-        }else{
-            console.log('Email sent');
-            cb(true);
-        }
-    });
+    if(email.length > 0){
+        transporter.sendMail({
+            from: `IMXWRS <${ process.env.EMAIL_USER }>`, // sender address
+            to: email,
+            subject: template.subject,
+            html: template.html,
+        }, (error) => {
+            if(error){
+                console.log('error');
+                console.log(error);
+                cb(false);
+            }else{
+                console.log('Email sent');
+                cb(true);
+            }
+        });
+    }else{
+        console.log('Emails avoided');
+        cb(true);
+    }
+
     // console.log('Email avoided');
     // cb(true);
 }
