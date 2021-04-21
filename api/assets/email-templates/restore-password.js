@@ -137,7 +137,7 @@ exports.recoverPassword = (user, password) =>{
                 </p>
                 <div class="password">
                     <span>
-                        . . . →${ password }← . . .
+                        . . . ->${ password }<- . . .
                     </span>
                 </div>
                 <p class="text">
