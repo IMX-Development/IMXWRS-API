@@ -5,15 +5,13 @@ const fs = require("fs");
 
 var storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    const body = JSON.parse(JSON.stringify(req.body));
-    let folder = body.request;
+    let folder = req.params.waiver;
     let path = `${__dirname}/../../upload/${folder}`;
     fs.mkdirSync(path, { recursive: true });
     callback(null, path);
   },
   filename: (req, file, callback) => {
-    const body = JSON.parse(JSON.stringify(req.body));
-    let id = body.request;
+    let id = req.params.waiver;
     var filename = `${id}-${file.originalname}`;
     callback(null, filename);
   }

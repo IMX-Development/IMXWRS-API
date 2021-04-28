@@ -2,13 +2,12 @@ var Sql = require('../db/sql.js');
 const status = require('./status.controller');
 const upload = require("../middlewares/upload");
 const path = require("path");
-
+ 
 const closeWaiver = async (req, res) => {
   try {
     await upload(req, res);
     console.log('-------------------- NUMBER --------------------');
-    const body = JSON.parse(JSON.stringify(req.body));
-    console.log(body);
+    console.log(req.params.waiver);
     console.log('-------------------- FILES --------------------');
     console.log(req.files);
     
@@ -19,7 +18,7 @@ const closeWaiver = async (req, res) => {
       });
     }
 
-    let request = body.request;
+    let request = req.params.waiver;
     let promises = [];
 
     promises.push(status.closeWaiver(request));

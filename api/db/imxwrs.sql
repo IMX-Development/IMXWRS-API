@@ -27,7 +27,7 @@ CREATE TABLE users(
   email VARCHAR(50) NOT NULL,
   password VARCHAR(30) NOT NULL,
   position VARCHAR(40),
-  temporal VARCHAR(30)
+  temporal VARCHAR(30) DEFAULT 'Interplex.WR'
 )
 
 CREATE TABLE authorizations(
