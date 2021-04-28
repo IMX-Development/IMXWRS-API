@@ -35,7 +35,7 @@ activitiesRoutes(app);
 authorizationRoutes(app);
 
 console.clear();
-scheduledTasks(cron);
+// scheduledTasks(cron);
 
 app.listen(port,()=>{
     console.log('Server running in port ' + port)
