@@ -3,3 +3,4 @@ node_modules
 .DS_Store
 assets/.DS_Store
 api/db/backup/users.txt
+api/db/backup/query.txt
