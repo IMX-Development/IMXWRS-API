@@ -20,29 +20,34 @@ const sendEmail = (email, template, cb) => {
 
     console.log('Sending email to ' + email + ' about ' + template.subject);
 
-    if(email.length > 0){
-        transporter.sendMail({
-            from: `IMXWRS <${ process.env.EMAIL_USER }>`, // sender address
-            to: email,
-            subject: template.subject,
-            html: template.html,
-        }, (error) => {
-            if(error){
-                console.log('error');
-                console.log(error);
-                cb(false);
-            }else{
-                console.log('Email sent');
-                cb(true);
-            }
-        });
+    let sendEmail = process.env.EMAIL_ON == 'true'
+
+    if(sendEmail){
+        if(email.length > 0){
+            transporter.sendMail({
+                from: `IMXWRS <${ process.env.EMAIL_USER }>`, // sender address
+                to: email,
+                subject: template.subject,
+                html: template.html,
+            }, (error) => {
+                if(error){
+                    console.log('error');
+                    console.log(error);
+                    cb(false);
+                }else{
+                    console.log('Email sent');
+                    cb(true);
+                }
+            });
+        }else{
+            console.log('Error: VOID destinatary');
+            cb(true);
+        }
     }else{
-        console.log('Emails avoided');
+        console.log('Server is not on production');
         cb(true);
     }
-
-    // console.log('Email avoided');
-    // cb(true);
+    
 }
 
 module.exports = {

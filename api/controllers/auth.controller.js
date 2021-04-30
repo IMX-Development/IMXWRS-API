@@ -7,8 +7,8 @@ exports.login = (req,res)=>{
     let { username, password } = req.body;
     username = username.toString().replace(/'/g,"''");
     password = password.toString().replace(/'/g,"''");
-
-    let query = `SELECT * FROM users WHERE username = '${ username }' `;
+    
+    let query = `SELECT * FROM users WHERE username = '${ username }' OR email = '${ username }'`;
     let promise = Sql.request(query);
 
     promise.then(result=>{
@@ -21,7 +21,7 @@ exports.login = (req,res)=>{
         let user = result[0];
         if(user.password == password || user.temporal == password){
             let signValues = {
-                username,
+                username : user.username,
                 // name : user.name
             }
             const token = jwt.sign(signValues, process.env.TOKEN_SEED);
