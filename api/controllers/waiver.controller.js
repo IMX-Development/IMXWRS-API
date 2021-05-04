@@ -32,8 +32,6 @@ exports.reopenWaiver = (req, res) =>{
 }
 
 exports.getSimilar = (req, res) =>{
-
-    console.log('upload??')
     
     ia.getSimilar(req.body).then(resp=>{
         res.json({

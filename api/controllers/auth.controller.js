@@ -7,11 +7,12 @@ exports.login = (req,res)=>{
     let { username, password } = req.body;
     username = username.toString().replace(/'/g,"''");
     password = password.toString().replace(/'/g,"''");
-    
-    let query = `SELECT * FROM users WHERE username = '${ username }' OR email = '${ username }'`;
+
+    let query = `EXEC dbo.getUser @Username = '${ username }'`;
     let promise = Sql.request(query);
 
     promise.then(result=>{
+        console.log(result);
         if(!result || result.length == 0){
             return res.json({
                 ok: false,
