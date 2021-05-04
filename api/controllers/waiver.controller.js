@@ -2,7 +2,38 @@ var Sql = require('../db/sql.js');
 const status = require('./status.controller');
 const ia = require('../helpers/ia.basic');
 
+exports.reopenWaiver = (req, res) =>{
+    let startDate = req.body.startDate;
+    let endDate = req.body.endDate;
+    let request = req.params.waiver;
+
+    let queries = [];
+
+    let query = `UPDATE requests SET status = 'open' WHERE 
+                number = '${ request }'`;
+
+    queries.push(Sql.request(query));
+
+    query = `INSERT INTO expiration(startDate,endDate,request) VALUES 
+    ('${startDate}','${endDate}','${request}')`;
+
+    queries.push(Sql.request(query));
+    
+    Promise.all(queries).then(resp=>{
+        res.json({
+            ok: true
+        });
+    },error=>{
+        res.json({
+            ok: false,
+            message: error
+        });
+    });
+}
+
 exports.getSimilar = (req, res) =>{
+
+    console.log('upload??')
     
     ia.getSimilar(req.body).then(resp=>{
         res.json({
@@ -59,6 +90,9 @@ exports.getWaiver = (req, res) => {
                 default:
                     query = `SELECT * FROM ${tables[i]} WHERE request = '${number}'`;
                     break;
+            }
+            if(i==2){
+                query = query + ' ORDER BY id DESC';
             }
             let promise = Sql.request(query);
             promises.push(promise);

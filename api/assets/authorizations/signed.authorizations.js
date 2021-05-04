@@ -1,11 +1,11 @@
 const signatures = [
-    ["'employee'"],
-    ["'employee'"],
+    ["'developer'","'operations manager'"],
+    ["'developer'", "'operations manager'"],
     ["'employee'"],
     ["'employee'"]
 ]
 
-const generalManager = "'developer'";
+const generalManager = "'general manager'";
 
 let addColumn = (field,value,arr) => {
     for(var elem of arr){

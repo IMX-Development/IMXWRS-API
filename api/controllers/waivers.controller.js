@@ -8,7 +8,7 @@ const templates = require('../helpers/email-templates');
 
 exports.getData = (req, res) => {
     let username = getUser(req);
-    let query = `SELECT number, customer, creationDate, status 
+    let query = `SELECT number, customer, creationDate, status, typeNumber 
                 FROM requests WHERE originator = '${ username }' ?
                 ORDER BY creationDate DESC`;
 
