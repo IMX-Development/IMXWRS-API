@@ -20,9 +20,14 @@ const sendEmail = (email, template, cb) => {
 
     console.log('Sending email to ' + email + ' about ' + template.subject);
 
-    let sendEmail = process.env.EMAIL_ON == 'true'
+    let sendEmail = process.env.EMAIL_ON == 'true';
+    let debug = process.env.DEBUG_MAIL == 'true';
 
     if(sendEmail){
+        if(debug){
+            console.log('Debug emailing is on!');
+            email = 'i.lopez@mx.interplex.com';
+        }
         if(email.length > 0){
             transporter.sendMail({
                 from: `IMXWRS <${ process.env.EMAIL_USER }>`, // sender address
