@@ -38,20 +38,29 @@ exports.recoverPassword = (req, res) => {
     promises.push(Sql.request(query));
 
     Promise.all(promises).then(resp => {
-        let user = resp[1][0];
+                
+        if(resp[1].length != 0){
+            let user = resp[1][0];
+            sendEmail(
+                user.email,
+                templates.recoverPassword(
+                    user.name,
+                    number
+                ),
+                cb => {
+                    res.json({
+                        ok : cb
+                    });
+                }
+            )
+        }else{
+            res.json({
+                ok: false,
+                message: 'User not found'
+            })
+        }
 
-        sendEmail(
-            user.email,
-            templates.recoverPassword(
-                user.name,
-                number
-            ),
-            cb => {
-                res.json({
-                    ok : cb
-                });
-            }
-        )
+        
     }, error => {
         console.log(error);
         res.json({
