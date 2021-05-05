@@ -5,6 +5,10 @@ const signatures = [
     ["'employee'"]
 ]
 
+const specialCustomers = [
+    "continental"
+]
+
 const generalManager = "'general manager'";
 
 let addColumn = (field,value,arr) => {
@@ -16,15 +20,15 @@ let addColumn = (field,value,arr) => {
 
 exports.getRequiredManagers = (req,id) => {
     let signs = signatures[req.typeNumber - 1];
-    if(req.requiresManager){
+    if(req.requiresManager || specialCustomers.includes(req.customer.toLowerCase())){
         signs.push(generalManager);
     }
     return addColumn('request',id,signs);
 }
 
-exports.getManagers = (type,needsManager) =>{
+exports.getManagers = (type,needsManager,customer='') =>{
     let signs = signatures[type-1];
-    if(needsManager){
+    if(needsManager, specialCustomers.includes(customer.toLowerCase())){
         signs.push(generalManager);
     }
     console.log(signs);

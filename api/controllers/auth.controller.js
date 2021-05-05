@@ -56,7 +56,7 @@ exports.refresh = (req,res) =>{
     console.log(req.token);
     let aUser = jwt.verify(req.token, process.env.TOKEN_SEED);
 
-    let query = `SELECT * FROM users WHERE username = '${ aUser['username'] }'`;
+    let query = `EXEC dbo.getUser @Username = '${ aUser['username'] }'`;
     let promise = Sql.request(query);
 
     promise.then(result =>{
