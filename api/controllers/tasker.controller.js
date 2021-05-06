@@ -1,20 +1,22 @@
+const events = require('../helpers/tasks');
+
 
 module.exports = (cron) => {
     let everyMondayMorning = '0 0 8 * * 1';
     let tasks = [];
     
-    var task = cron.schedule('*/20 * * * * *', ()=>{
+    var task = cron.schedule('0 0 8 * * 1', ()=>{
         let date = new Date().toString();
         console.log('Running task at ' + date);
-        // events.pendingTasks();
+        events.pendingTasks();
     });
 
     tasks.push(task);
 
-    task = cron.schedule('*/5 * * * * *', ()=>{
+    task = cron.schedule('0 0 7 * * 1', ()=>{
         let date = new Date().toString();
         console.log('Running task at ' + date);
-        // events.pendingTasks();
+        events.unfinishedWaivers();
     });
 
     tasks.push(task);
@@ -23,5 +25,5 @@ module.exports = (cron) => {
 
     tasks.forEach(t=>{
         t.start();
-    })
+    });
 }
