@@ -1,8 +1,8 @@
 const signatures = [
     ["'developer'","'operations manager'", "'quality manager'","'engineering manager'"],
     ["'developer'", "'operations manager'", "'quality manager'"],
-    ["'employee'","'finances manager'","'operations manager'", "'quality manager'","'engineering manager'"],
-    ["'employee'","'finances manager'","'general manager'","'operations manager'", "'quality manager'","'engineering manager'"]
+    ["'developer'","'finances manager'","'operations manager'", "'quality manager'","'engineering manager'"],
+    ["'developer'","'finances manager'","'general manager'","'operations manager'", "'quality manager'","'engineering manager'"]
 ];
 
 const specialCustomers = [

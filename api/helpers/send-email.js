@@ -16,6 +16,40 @@ let transporter = nodemailer.createTransport({
     }
 });
 
+const sendMailAysnc = async(email, template) => {
+    console.log('Sending email to ' + email + ' about ' + template.subject);
+
+    let sendEmail = process.env.EMAIL_ON == 'true';
+    let debug = process.env.DEBUG_MAIL == 'true';
+
+    if(sendEmail){
+        if(debug){
+            console.log('Debug emailing is on!');
+            email = 'i.lopez@mx.interplex.com';
+        }
+        if(email.length > 0){
+            transporter.sendMail({
+                from: `IMXWRS <${ process.env.EMAIL_USER }>`, // sender address
+                to: email,
+                subject: template.subject,
+                html: template.html,
+            }, (error) => {
+                if(error){
+                    console.log('error');
+                    console.log(error);
+                }else{
+                    console.log('Email sent');
+                }
+            });
+        }else{
+            console.log('Error: VOID destinatary');
+        }
+    }else{
+        console.log('Server is not on production');
+    }
+}
+
+
 const sendEmail = (email, template, cb) => {
 
     console.log('Sending email to ' + email + ' about ' + template.subject);
@@ -56,5 +90,6 @@ const sendEmail = (email, template, cb) => {
 }
 
 module.exports = {
-    sendEmail: sendEmail
+    sendEmail: sendEmail,
+    sendMailAysnc: sendMailAysnc
 }

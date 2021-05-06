@@ -3,7 +3,7 @@ require('dotenv').config();
 let base_url = process.env.EMAIL_LINK
 
 exports.hasActivity = (name,id, team = 'teammate') => {
-    if(team.length > 1){
+    if(team.length > 1 && Array.isArray(team)){
         team = team.slice(0, -1).join(',')+' and '+ team.slice(-1);
     }else if(team.length > 0){
         team = team[0];
