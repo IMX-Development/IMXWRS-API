@@ -2,15 +2,19 @@ require('dotenv').config();
 
 let base_url = process.env.EMAIL_LINK
 
-exports.hasActivity = (name,id, team = 'teammate') => {
-    if(team.length > 1 && Array.isArray(team)){
-        team = team.slice(0, -1).join(',')+' and '+ team.slice(-1);
-    }else if(team.length > 0){
-        team = team[0];
-    }else{
-        team = '';
+exports.hasActivity = (name,id, team = ['teammate']) => {
+    if(Array.isArray(team)){
+        if(team.length > 1){
+            team = team.slice(0, -1).join(',')+' and '+ team.slice(-1);
+        }else if(team.length > 0){
+            team = team[0];
+        }else{
+            team = '';
+        }
     }
+
     let url = base_url + '/waivers/sign/' + id;
+    
     return {
         subject : 'Waiver Request ' + id + ' needs your participation',
         html : `

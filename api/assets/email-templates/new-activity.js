@@ -6,12 +6,14 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
     let url = base_url + '/waivers/view/' + id;
     let url2 = base_url + '/tasks/pending';
     createdOn = new Date(createdOn).toString();
-    if(team.length > 1){
-        team = team.slice(0, -1).join(',')+' and '+ team.slice(-1);
-    }else if(team.length > 0){
-        team = team[0];
-    }else{
-        team = '';
+    if(Array.isArray(team)){
+        if(team.length > 1){
+            team = team.slice(0, -1).join(',')+' and '+ team.slice(-1);
+        }else if(team.length > 0){
+            team = team[0];
+        }else{
+            team = '';
+        }
     }
 
     return {

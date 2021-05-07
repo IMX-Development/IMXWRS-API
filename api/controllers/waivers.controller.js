@@ -32,6 +32,7 @@ exports.getData = (req, res) => {
 }
 
 exports.createWaviver = (req, res) => {
+    console.log(req.body);
     let waiver = req.body.waiverRequest;
     let externalAuth = req.body.externalAuth || null;
     let expiration = req.body.expiration;
@@ -99,7 +100,7 @@ exports.createWaviver = (req, res) => {
                         destinataryPromises.push(getInfoWithToken(req));
                         destinataryPromises.push(getInfoWithField(Sql.convertToArray(req.body.actions), 'responsable'));
 
-                        Promise.all(destinataryPromises).then(result => {
+                        Promise.all(destinataryPromises).then( async (result) => {
                             console.log(result);
                             let originator = result[0][0];
                             let responsables = result[1];
@@ -112,11 +113,11 @@ exports.createWaviver = (req, res) => {
                                 actionsMailist.push(r['email']);
                             });
 
-                            sendMailAysnc(
+                            await sendMailAysnc(
                                 originator['email'],
                                 templates.newWaiver(creator,number));
 
-                            sendMailAysnc(
+                            await sendMailAysnc(
                                 actionsMailist,
                                 templates.hasActivity(creator,number)
                             );
