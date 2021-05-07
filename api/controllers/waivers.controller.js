@@ -108,9 +108,11 @@ exports.createWaviver = (req, res) => {
                             let creator = originator['name'];
                             
                             let actionsMailist = [];
+                            let team = [];
 
                             responsables.forEach(r => {
                                 actionsMailist.push(r['email']);
+                                team.push(r['name']);
                             });
 
                             await sendMailAysnc(
@@ -119,7 +121,7 @@ exports.createWaviver = (req, res) => {
 
                             await sendMailAysnc(
                                 actionsMailist,
-                                templates.hasActivity(creator,number)
+                                templates.hasActivity(creator,number,team)
                             );
 
                             console.log('All emails sent');

@@ -21,11 +21,7 @@ exports.getInfoWithToken = (req) =>{
 }
 
 exports.getInfoWithField = (arr, field) =>{
-    let users = [];
-    arr.forEach(a=>{
-        users.push("'" + a[field] + "'");
-    });
-    let query = users.join(' OR username = ');
-    let request = `SELECT username, name, email FROM users WHERE username = ${ query }`;
+    let query = Sql.extractIdInList(arr,field);
+    let request = `SELECT  username, name, email FROM users WHERE username IN ${ query }`;
     return Sql.request(request);
 }

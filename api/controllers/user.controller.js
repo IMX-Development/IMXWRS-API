@@ -31,10 +31,12 @@ exports.recoverPassword = (req, res) => {
     let promises = [];
 
     let number = getRandom();
-    let query = `UPDATE users SET temporal = '${number}' WHERE username = '${username}'`;
+    let query = `UPDATE users SET temporal = '${number}' WHERE username = '${username}' 
+    OR email = '${username}'`;
     promises.push(Sql.request(query));
 
-    query = `SELECT name, email FROM users WHERE username = '${username}'`;
+    query = `SELECT name, email FROM users WHERE username = '${username}' 
+    OR email = '${username}'`;
     promises.push(Sql.request(query));
 
     Promise.all(promises).then(resp => {
