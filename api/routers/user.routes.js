@@ -9,4 +9,7 @@ module.exports = (app) => {
     app.route('/user/recover')
     .post(Users.recoverPassword)
     .put([token.verifyUser], Users.changePassword);
+
+    app.route('/users/:user')
+    .get([token.verifyUser], Users.getUser);
 }

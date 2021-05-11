@@ -4,6 +4,31 @@ const { sendEmail } = require('../helpers/send-email');
 const templates = require('../helpers/email-templates');
 var identification = require('../middlewares/user.identification');
 
+exports.getUser = (req,res) => {
+    let promises = [];
+    console.log(req.params.user);
+
+    let user = req.params.user;
+    user = Sql.avoidInjection(user);
+
+    let query = `SELECT username, name, email, position FROM users WHERE username = '${ user }'`;
+    promises.push(Sql.request(query));
+
+    Promise.all(promises).then(resps=>{
+        res.json({
+            ok : true,
+            user : resps[0][0],
+            stats : "xd"
+        });
+    },error=>{
+        res.json({
+            ok : false,
+            message : error
+        });
+    })
+    
+}
+
 exports.changePassword = (req,res) => {
     const user = identification.getUser(req);
     let newPassword = req.body.password;

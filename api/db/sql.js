@@ -12,6 +12,10 @@ var config = {
     }
 }
 
+function avoidInjection(str){
+    return str.toString().replace(/'/g, "''") || "";
+}
+
 function query(query, data) {
     let req = getQuery(query,data);
     return request(req);
@@ -183,5 +187,6 @@ module.exports = {
     applyFilters,
     update,
     extractIdInList,
-    getPropertyAsArray
+    getPropertyAsArray,
+    avoidInjection
 };
