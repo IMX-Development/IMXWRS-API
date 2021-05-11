@@ -14,11 +14,40 @@ exports.getUser = (req,res) => {
     let query = `SELECT username, name, email, position FROM users WHERE username = '${ user }'`;
     promises.push(Sql.request(query));
 
+    query = `SELECT COUNT(status) as data, status as label 
+                 FROM dbo.requests 
+                 WHERE originator = '${ user }' 
+                 GROUP BY status`;
+    promises.push(Sql.request(query));
+
+    query = `SELECT COUNT(signed) as data, signed as label 
+                FROM dbo.actions 
+                WHERE responsable = '${ user }' 
+                GROUP BY signed`;
+    promises.push(Sql.request(query));
+
+    query = `SELECT COUNT(signed) as data, signed as label 
+            FROM dbo.authorizations 
+            WHERE manager = '${ user }' 
+            GROUP BY signed`;
+    promises.push(Sql.request(query));
+
+    query = `SELECT COUNT(status) as data, status as label 
+            FROM dbo.remarks 
+            WHERE manager = '${ user }' 
+            GROUP BY status`;
+    promises.push(Sql.request(query));
+
     Promise.all(promises).then(resps=>{
         res.json({
             ok : true,
             user : resps[0][0],
-            stats : "xd"
+            stats : {
+                waivers : resps[1],
+                actions : resps[2],
+                authorizations : resps[3],
+                remarks  : resps[4]
+            }
         });
     },error=>{
         res.json({
