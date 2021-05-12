@@ -61,7 +61,7 @@ exports.getUser = (req,res) => {
 exports.changePassword = (req,res) => {
     const user = identification.getUser(req);
     let newPassword = req.body.password;
-    newPassword = newPassword.toString().replace(/'/g, "'");
+    newPassword = newPassword.toString().replace(/'/g, "''");
 
     let query = `UPDATE users SET password = '${ newPassword }' WHERE username = '${ user }'`;
 
@@ -80,7 +80,7 @@ exports.changePassword = (req,res) => {
 exports.recoverPassword = (req, res) => {
     let username = req.body.username;
     console.log(req.body);
-    username = username.toString().replace(/'/g, "'");
+    username = username.toString().replace(/'/g, "''");
 
     let promises = [];
 
