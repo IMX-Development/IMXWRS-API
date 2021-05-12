@@ -6,7 +6,7 @@ require('dotenv').config();
 exports.login = (req,res)=>{
     let { username, password } = req.body;
     username = username.toString().replace(/'/g,"''");
-    password = password.toString().replace(/'/g,"''");
+    password = password.toString().replace(/'/g,"'");
 
     let query = `EXEC dbo.getUser @Username = '${ username }'`;
     let promise = Sql.request(query);
@@ -20,6 +20,7 @@ exports.login = (req,res)=>{
             });
         }
         let user = result[0];
+        console.log([password, user.password]);
         if(user.password == password || user.temporal == password){
             let signValues = {
                 username : user.username,

@@ -13,7 +13,7 @@ var config = {
 }
 
 function avoidInjection(str){
-    return str.toString().replace(/'/g, "''") || "";
+    return str.toString().replace(/'/g, "'") || "";
 }
 
 function query(query, data) {
