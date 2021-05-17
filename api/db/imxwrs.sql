@@ -1,3 +1,4 @@
+CREATE DATABASE ipxwrs;
 
 /* AQUI VA CON CAMELCASE*/
 CREATE TABLE requests(
@@ -13,7 +14,6 @@ CREATE TABLE requests(
   originalRisk VARCHAR(7) NOT NULL,
   currentRisk VARCHAR(7) NOT NULL,
   riskWithActions VARCHAR(7) NOT NULL,
-  riskDescription TEXT NOT NULL,
   requiresManager BIT NOT NULL DEFAULT 0,
   status VARCHAR(10) NOT NULL DEFAULT 'approving',
   area VARCHAR(30),
@@ -122,7 +122,7 @@ FOREIGN KEY (request) REFERENCES requests(number) ON DELETE CASCADE ON UPDATE CA
 
 ALTER TABLE authorizations 
 ADD CONSTRAINT PK_auth
-PRIMARY KEY CLUSTERED(manager,request) ON DELETE CASCADE ON UPDATE CASCADE;
+PRIMARY KEY CLUSTERED(manager,request);
 
 ALTER TABLE authorizations
 ADD CONSTRAINT FK_manager
