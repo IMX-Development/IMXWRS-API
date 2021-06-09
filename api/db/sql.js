@@ -67,11 +67,8 @@ let applyFilters = (obj) => {
         params.push(`status != 'pending'`);
     }
 
-    if(params.length > 1){
+    if(params.length > 0){
         return ' AND ' + params.join(' AND ');
-    }
-    if(params.length>0){
-        return ' AND ' + params[0];
     }
     return '';
 }

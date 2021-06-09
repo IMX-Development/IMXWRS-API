@@ -1,7 +1,7 @@
 var Sql = require('../db/sql.js');
 var authorizations = require('../assets/authorizations/signed.authorizations');
 
-const { sendEmail, sendMailAysnc } = require('../helpers/send-email');
+const { sendMailAysnc } = require('../helpers/send-email');
 const { getInfoWithToken, getInfoWithField, getUser } = require('../middlewares/user.identification');
 
 const templates = require('../helpers/email-templates');
@@ -130,28 +130,6 @@ exports.createWaviver = (req, res) => {
                                 ok: true,
                                 id: number
                             });
-                            
-
-                            // sendEmail(
-                            //     originator['email'],
-                            //     templates.newWaiver(creator, number),
-                            //     (cb) => {
-                            //         console.log([actionsMailist, cb]);
-                            //         console.log('XD');
-                            //         sendEmail(
-                            //             actionsMailist,
-                            //             templates.hasActivity(creator, number),
-                            //             (cb1) =>{
-                            //                 console.log('All emails sent');
-                            //                 res.json({
-                            //                     ok: true,
-                            //                     id: number
-                            //                 });
-                            //             }
-                            //         );
-                            //         console.log('umh');
-                            //     }
-                            // );
 
                         }, error => {
                             console.log('Promises failed');
