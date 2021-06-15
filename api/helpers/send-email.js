@@ -40,7 +40,7 @@ const sendMailAysnc = async(email, template) => {
         }
 
         transporter.sendMail({
-            from: `Calibraciones IMX <${process.env.EMAIL_USER}>`, // sender address
+            from: `IMXWRS <${process.env.EMAIL_USER}>`, // sender address
             to: email,
             subject: template.subject,
             html: template.html,

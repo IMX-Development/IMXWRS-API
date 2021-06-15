@@ -40,12 +40,22 @@ exports.createWaviver = async(req, res) => {
     let number = '';
     let date = new Date().getFullYear().toString().substring(2, 4);
 
-    let query = `SELECT COALESCE(MAX(SUBSTRING(number,6,4))+1,1) AS newNumber FROM dbo.requests WHERE LEFT(number,3) = 'TWR' AND SUBSTRING(number,4,2) = '${date}'`
+    let query = `SELECT 
+        (SELECT COALESCE(MAX(SUBSTRING(number,6,4))+1,1) 
+        FROM dbo.requests 
+        WHERE LEFT(number,3) = 'TWR' AND SUBSTRING(number,4,2) = '21') as num1, 
+        (SELECT COALESCE(MAX(SUBSTRING(oldNumber,6,4))+1,1) 
+        FROM dbo.requests 
+        WHERE LEFT(oldNumber,3) = 'TWR' AND SUBSTRING(oldNumber,4,2) = '21') as num2`;
+
     let promise = Sql.request(query);
 
     promise.then(async(result) => {
 
-        let newNumber = result[0].newNumber.toString();
+        let r = result[0];
+        let newNumber = Number(r.num1) > Number(r.num2) ? r.num1.toString() : r.num2.toString();
+
+        // let newNumber = result[0].newNumber.toString();
         newNumber = newNumber.padStart(4);
         newNumber = newNumber.replace(/ /g, '0');
         number = 'TWR' +
