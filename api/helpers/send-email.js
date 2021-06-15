@@ -19,34 +19,42 @@ let transporter = nodemailer.createTransport({
 const sendMailAysnc = async(email, template) => {
     console.log('Sending email to ' + email + ' about ' + template.subject);
 
-    let sendEmail = process.env.EMAIL_ON == 'true';
-    let debug = process.env.DEBUG_MAIL == 'true';
+    const sendEmail = process.env.EMAIL_ON == 'true';
+    const debug = process.env.DEBUG_MAIL == 'true';
 
-    if(sendEmail){
-        if(debug){
-            console.log('Debug emailing is on!');
-            email = 'i.lopez@mx.interplex.com';
-        }
-        if(email.length > 0){
-            transporter.sendMail({
-                from: `IMXWRS <${ process.env.EMAIL_USER }>`, // sender address
-                to: email,
-                subject: template.subject,
-                html: template.html,
-            }, (error) => {
-                if(error){
-                    console.log('error');
-                    console.log(error);
-                }else{
-                    console.log('Email sent');
-                }
-            });
-        }else{
-            console.log('Error: VOID destinatary');
-        }
-    }else{
-        console.log('Server is not on production');
+    if (debug) {
+        console.log('Debug emailing is on!');
+        email = 'i.lopez@mx.interplex.com'; //Just sent it to me 
+        template.html = template.html.replace('&nbsp;','Este es un correo de prueba, por favor ignore su contenido');
     }
+
+    return new Promise((resolve, reject) => {
+        if (!sendEmail) {
+            console.log('Server is not on production');
+            return resolve(true);
+        }
+
+        if (email.length <= 0) {
+            console.log('Error: VOID destinatary');
+            return resolve(false);
+        }
+
+        transporter.sendMail({
+            from: `Calibraciones IMX <${process.env.EMAIL_USER}>`, // sender address
+            to: email,
+            subject: template.subject,
+            html: template.html,
+        }, (error, info) => {
+            if (error) {
+                console.log('Error sending email');
+                console.log(error);
+                return reject(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+                return resolve(true);
+            }
+        });
+    });
 }
 
 

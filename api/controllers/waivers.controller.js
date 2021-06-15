@@ -31,7 +31,7 @@ exports.getData = (req, res) => {
     );
 }
 
-exports.createWaviver = (req, res) => {
+exports.createWaviver = async(req, res) => {
     console.log(req.body);
     let waiver = req.body.waiverRequest;
     let externalAuth = req.body.externalAuth || null;
@@ -43,7 +43,7 @@ exports.createWaviver = (req, res) => {
     let query = `SELECT COALESCE(MAX(SUBSTRING(number,6,4))+1,1) AS newNumber FROM dbo.requests WHERE LEFT(number,3) = 'TWR' AND SUBSTRING(number,4,2) = '${date}'`
     let promise = Sql.request(query);
 
-    promise.then(result => {
+    promise.then(async(result) => {
 
         let newNumber = result[0].newNumber.toString();
         newNumber = newNumber.padStart(4);
@@ -55,7 +55,7 @@ exports.createWaviver = (req, res) => {
 
         let query = "INSERT INTO requests() VALUES ? ";
         let promise = Sql.query(query, waiver);
-        promise.then(result => {
+        promise.then(async(result) => {
             let promises = [];
             for (let i = 0; i < 6; i++) {
                 let query, body;
@@ -93,7 +93,7 @@ exports.createWaviver = (req, res) => {
                 let promise = Sql.query(query, body);
                 promises.push(promise);
                 if (i == 5) {
-                    Promise.all(promises).then(result => {
+                    Promise.all(promises).then(async(result) => {
 
                         let destinataryPromises = [];
 
