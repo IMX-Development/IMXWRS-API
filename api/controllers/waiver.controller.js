@@ -151,7 +151,7 @@ exports.modifyWaiver = (req, res) => {
     //Update actions
     body = Sql.extractIdInList(req.body.equalActions, 'id');
     if (body != '') {
-        query = `DELETE FROM actions WHERE id NOT IN ${body}`;
+        query = `DELETE FROM actions WHERE id NOT IN ${body} AND request = '${id}'`;
         promises.push(Sql.request(query));
     }
 

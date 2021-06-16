@@ -1,6 +1,13 @@
 var Sql = require('../db/sql.js');
 
-exports.getWaiverStats = (req,res) =>{
+exports.getData = (req, res) => {
+    return res.json({
+        ok: true,
+        data: req.query
+    });
+}
+
+exports.getWaiverStats = (req, res) =>{
     let filter = req.params.filter;
     
     filter = Sql.avoidInjection(filter);
