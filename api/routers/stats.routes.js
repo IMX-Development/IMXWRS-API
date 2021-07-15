@@ -8,12 +8,12 @@ module.exports = (app) => {
     .get(Stats.getWaiverData);
 
     app.route('/stats/data/remarks/:user/:type')
-    .get(Stats.getData);
+    .get(Stats.getRemarksData);
 
     app.route('/stats/data/actions/:user/:type')
-    .get(Stats.getData);
+    .get(Stats.getActionData);
 
     app.route('/stats/data/authorizations/:user/:type')
-    .get(Stats.getData);
+    .get(Stats.getAuthorizationsData);
 
 }
