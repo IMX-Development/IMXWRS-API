@@ -21,6 +21,22 @@ function query(query, data) {
     return request(req);
 }
 
+async function asyncRequest(query){
+    console.info(query);
+    return new Promise((resolve, reject) => {
+        new sql.ConnectionPool(config).connect().then(pool => {
+            return pool.request().query(query);
+        }).then(result => {
+            sql.close();
+            resolve(result.recordset);
+        }).catch(err => {
+            console.error(err);
+            sql.close();
+            reject(err);
+        });
+    });
+}
+
 function request(query) {
     console.info(query);
     return new Promise((resolve, reject) => {
@@ -179,6 +195,7 @@ let getPropertyAsArray = (array,field) => {
 module.exports = {
     query,
     request,
+    asyncRequest,
     convertToArray,
     convertToArrayAddField,
     applyFilters,
