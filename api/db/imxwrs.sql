@@ -41,7 +41,7 @@ CREATE TABLE actions(
   id INT IDENTITY(1,1) PRIMARY KEY,
   description TEXT NOT NULL,
   date DATE,
-  signed VARCHAR(9) NOT NULL DEFAULT 'pending',
+  signed VARCHAR(9) NOT NULL DEFAULT 'signed',
   responsable VARCHAR(30) NOT NULL,
   request VARCHAR(11) NOT NULL
 )
@@ -93,8 +93,14 @@ CREATE TABLE evidences(
   id INT IDENTITY(1,1) PRIMARY KEY,
   filename TEXT,
   date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  request VARCHAR(11) NOT NULL,
+  description VARCHAR(60) DEFAULT 'Reference file',
+  author VARCHAR(30) NOT NULL,
+  request VARCHAR(11) NOT NULL
 )
+
+ALTER TABLE evidences
+ADD CONSTRAINT FK_evidence_author
+FOREIGN KEY (author) REFERENCES users(username) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE evidences
 ADD CONSTRAINT FK_evidence_request

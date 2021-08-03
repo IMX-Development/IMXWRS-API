@@ -2,6 +2,7 @@ var Sql = require('../db/sql.js');
 const status = require('./status.controller');
 const upload = require("../middlewares/upload");
 const path = require("path");
+const Id = require('../middlewares/user.identification');
  
 const closeWaiver = async (req, res) => {
   try {
@@ -23,11 +24,17 @@ const closeWaiver = async (req, res) => {
 
     promises.push(status.closeWaiver(request));
 
+    console.log('--------------- TEST AREA ---------------------');
+    let author = Id.getUser(req);
+    let description = req.body?.description || 'Resource file';
+
     let bodies = [];
     req.files.forEach(file=>{
       let body = {
         filename : file.filename,
-        request : request
+        request : request,
+        author: author,
+        description : description
       };
       bodies.push(body);
     });
@@ -66,7 +73,7 @@ const closeWaiver = async (req, res) => {
 
 const retrieveFile = async (req, res) => {
   let fileName = req.params.name;
-  let folder = fileName.split('-')[0];
+  let folder = fileName.split('_')[0];
   const directoryPath = `upload/${folder}/`;
   const finalPath = path.resolve(directoryPath + fileName);
 

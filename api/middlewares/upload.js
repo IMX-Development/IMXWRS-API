@@ -19,7 +19,8 @@ var storage = multer.diskStorage({
   },
   filename: (req, file, callback) => {
     let id = req.params.waiver;
-    var filename = `${id}-${file.originalname}`;
+    let unique = Number(new Date());
+    var filename = `${id}_${unique}-${file.originalname}`;
     callback(null, filename);
   }
 });
