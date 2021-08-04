@@ -21,7 +21,9 @@ var authorizationRoutes = require('./api/routers/authorizations.routes');
 var scheduledTasks = require('./api/controllers/tasker.controller');
 
 app.use((req, res, next) => {
-    console.log(req.originalUrl);
+    let ip = req.ip;
+    ip = ip.substr(ip.lastIndexOf(':') + 1);
+    console.table([{ Timestamp: new Date().toLocaleString(), Method: req.method, Request: req.originalUrl, Client: ip}]);
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');

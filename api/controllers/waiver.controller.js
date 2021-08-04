@@ -85,6 +85,11 @@ exports.getWaiver = (req, res) => {
                     FROM ${tables[i]}, users
                     WHERE request = '${number}' AND users.username = ${tables[i]}.manager`;
                     break;
+                case 6:
+                    query = `SELECT ${tables[i]}.*, users.name as name
+                    FROM ${tables[i]}, users
+                    WHERE request = '${number}' AND users.username = ${tables[i]}.author`;
+                    break;
                 default:
                     query = `SELECT * FROM ${tables[i]} WHERE request = '${number}'`;
                     break;
