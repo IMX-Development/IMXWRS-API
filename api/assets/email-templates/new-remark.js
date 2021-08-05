@@ -5,7 +5,7 @@ let base_url = process.env.EMAIL_LINK
 exports.newRemark = (user,id, manager,text) =>{
     let url = base_url + '/waivers/edit/' + id;
     return {
-        subject : `${manager} has added a remark in ${id}`,
+        subject : `${manager} has rejected ${id}`,
         html: `
         <!DOCTYPE html
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -106,7 +106,7 @@ exports.newRemark = (user,id, manager,text) =>{
                 }
                 
                 .quote{
-                    color: grey;
+                    color: rgb(119, 119, 119);
                 }
         
             </style>
@@ -129,7 +129,8 @@ exports.newRemark = (user,id, manager,text) =>{
             <div class="content">
                 <h4 class="welcome">Hello, ${ user }</h4>
                 <p class="text">
-                    <span class="mention"> ${ manager } </span> has added a remark in your waiver request with number <span class="marked">${ id }</span>.
+                    <span class="mention"> ${ manager } </span> has rejected your waiver request with number <span class="marked">${ id }</span>.
+                    With the following comment:
                 </p>
                 <p class="text quote">
                     " ${text} "
@@ -149,7 +150,7 @@ exports.newRemark = (user,id, manager,text) =>{
                                 <tr>
                                     <td class="button" bgcolor="#262a69">
                                         <a class="link" href="${ url }" target="_blank">
-                                            See remark and edit
+                                            See rejection and edit
                                         </a>
                                     </td>
                                 </tr>

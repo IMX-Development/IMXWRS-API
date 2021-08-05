@@ -196,7 +196,16 @@ exports.modifyWaiver = (req, res) => {
         }
 
         //Update remarks
-        query = `UPDATE remarks SET status = 'solved' WHERE request = '${id}'`;
+        query = `UPDATE requests SET revision = revision + 1 WHERE number = '${id}'`;
+
+        promises.push(Sql.request(query));
+
+        query = `UPDATE remarks 
+        SET status = 'solved', 
+        revision = (SELECT revision FROM requests WHERE number = '${id}') + 1,
+        solved = CURRENT_TIMESTAMP
+        WHERE request = '${id}'`;
+
         promises.push(Sql.request(query));
 
         Promise.all(promises).then(resps => {
