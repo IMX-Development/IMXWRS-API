@@ -1,6 +1,6 @@
 const Sql = require('../db/sql.js');
 
-const { sendEmail } = require('../helpers/send-email');
+const { sendEmail, sendMailAysnc } = require('../helpers/send-email');
 const templates = require('../helpers/email-templates');
 
 const { getOriginator, getInfoWithToken } = require('../middlewares/user.identification')
@@ -109,7 +109,7 @@ exports.update = (id, isManager) => {
                 resolve(false);
             }
             let needed = resp[0];
-            if (!isManager && needed.actions == 0) {
+            if (false && !isManager  && needed.actions == 0) {
                 let promises = [];
 
                 let query = `SELECT users.name as name FROM requests, users 
@@ -143,7 +143,7 @@ exports.update = (id, isManager) => {
 
                 });
             }
-            else if (needed.actions == 0 && needed.auth == 0) {
+            else if (/*needed.actions == 0 &&*/ needed.auth == 0) {
                 //Now we are talking
                 let promises = [];
                 promises.push(openWaiver(id));
@@ -159,7 +159,9 @@ exports.update = (id, isManager) => {
                         newNumber;
                     updateWaiver(id, number).then(_resp => {
                         //resolve(number);
-                        Promise.all(this.getEmailData(number)).then(resp => {
+                        Promise.all(this.getEmailData(number)).then(async(resp) => {
+                            console.log('---------------- DEBUG -----------------');
+                            console.log(resp);
                             let waiverData = resp[0][0];
                             let teamContact = resp[1];
                             let team = [];
@@ -170,7 +172,7 @@ exports.update = (id, isManager) => {
                                 emailList.push(t.email);
                             });
 
-                            sendEmail(
+                            await sendMailAysnc(
                                 waiverData['origEmail'],
                                 templates.waiverApproved(
                                     waiverData['originator'],
@@ -179,26 +181,19 @@ exports.update = (id, isManager) => {
                                     team,
                                     waiverData['customer'],
                                     waiverData['creationDate']
-                                ),
-                                (_cb => {
-                                    //Comment on production !!!WARNING!!!
-                                    // emailList = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com', 'lopezmurillo997@gmail.com'];
-                                    sendEmail(
-                                        actionsMailist,
-                                        templates.newActivity(
-                                            waiverData['originator'],
-                                            number,
-                                            id,
-                                            team,
-                                            waiverData['customer'],
-                                            waiverData['creationDate'],
-                                        ),
-                                        cb => {
-                                            console.log('Done ' + cb);
-                                        }
-                                    );
-                                })
-                            );
+                                ));
+                                //Comment on production !!!WARNING!!!
+                                // emailList = ['diskman199@gmail.com', 'i.lopez@mx.interplex.com', 'lopezmurillo997@gmail.com'];
+                                await sendMailAysnc(
+                                    emailList,
+                                    templates.newActivity(
+                                        waiverData['originator'],
+                                        number,
+                                        id,
+                                        team,
+                                        waiverData['customer'],
+                                        waiverData['creationDate'],
+                                    ));
 
                             resolve(true);
 

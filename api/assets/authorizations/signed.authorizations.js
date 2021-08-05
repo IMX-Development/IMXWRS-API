@@ -32,5 +32,7 @@ exports.getManagers = (type,needsManager,customer='') =>{
         signs.push(generalManager);
     }
     console.log(signs);
+    //Testing purposes
+    return ["'developer'"];
     return signs;
 }

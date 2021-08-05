@@ -21,9 +21,9 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
         <!DOCTYPE html
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml">
-        
+
         <head>
-        
+
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
             <title>New Waiver Template</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -35,13 +35,13 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
                     border-left: 10px;
                     margin-top: 10px;
                 }
-        
+
                 .logo-image {
                     height: 50px !important;
                     width: auto;
                     vertical-align: middle;
                 }
-        
+
                 .logo-title {
                     color: rgb(0, 0, 92);
                     font-size: 20px;
@@ -49,26 +49,26 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
                     margin-top: 15px;
                     margin-bottom: 15px;
                 }
-        
+
                 .logo {
                     margin-left: 10px;
                 }
-        
+
                 .content {
                     margin-left: 8px;
                 }
-        
+
                 .welcome {
                     font-weight: 300;
                     font-size: 18px;
                     color: black;
                 }
-        
+
                 .text {
                     font-size: 16px;
                     font-weight: 300;
                 }
-        
+
                 .ref {
                     background-color: rgb(38, 42, 105);
                     border: none;
@@ -80,23 +80,23 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
                     font-size: 16px;
                     border-radius: 5px;
                 }
-        
+
                 .ref:hover {
                     cursor: pointer;
                 }
-        
+
                 .invisible-a {
                     text-decoration: none;
                 }
-        
+
                 .marked {
                     font-family: Arial Bold, Arial, sans-serif; font-weight: bold;
                 }
-        
+
                 .button {
                     border-radius: 2px;
                 }
-        
+
                 .button a {
                     padding: 8px 12px;
                     border: 1px solid rgb(38, 42, 105);
@@ -115,7 +115,7 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
                 }
             </style>
         </head>
-        
+
         <body>
             <div>
                 <table>
@@ -134,7 +134,7 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
                 <h4 class="welcome">Hello, ${ user }</h4>
                 <p class="text">
                     Your <span class="marked">${ customer }</span> waiver request with number <span class="marked">${ oldId }</span>  created on ${ createdOn }
-                    has been approved. <br>The corresponding unique new number is <span class="marked new">${ id }</span> 
+                    has been fully acknowledged. <br>The corresponding unique new number is <span class="marked new">${ id }</span> 
                 </p>
                 <p class="text">
                     Please coordinate with <span class="marked"> ${ team } </span> in order to fully complete this waiver request.
@@ -142,7 +142,7 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
                 <p class="text">
                     You can check its status by clicking in the button below.
                 </p>
-        
+
                 <table width="100%" cellspacing="0" cellpadding="0">
                     <tr>
                         <td>
@@ -160,7 +160,7 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
                 </table>
             </div>
         </body>
-        
+
         </html>
         `
     };

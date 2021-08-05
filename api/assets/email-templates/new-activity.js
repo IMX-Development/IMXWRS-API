@@ -4,7 +4,7 @@ let base_url = process.env.EMAIL_LINK
 
 exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
     let url = base_url + '/waivers/view/' + id;
-    let url2 = base_url + '/tasks/pending';
+    let url2 = base_url + '/tasks/assigned';
     createdOn = new Date(createdOn).toString();
     if(Array.isArray(team)){
         if(team.length > 1){
@@ -141,7 +141,7 @@ exports.waiverApproved = (user,id, oldId, team, customer, createdOn) =>{
                 <h4 class="welcome">Hello, ${ team }</h4>
                 <p class="text">
                     A <span class="marked">${ customer }</span> waiver request with number <span class="marked new">${ id }</span> (formerly ${ oldId }) created on ${ createdOn }
-                    by ${ user } has been recently approved.
+                    by ${ user } has been recently fully acknowledged.
                 </p>
                 <p class="text">
                     Please check the activities you're involved in and complete them as soon as possible.
