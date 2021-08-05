@@ -13,7 +13,8 @@ exports.hasActivity = (name,id, team = ['teammate']) => {
         }
     }
 
-    let url = base_url + '/waivers/sign/' + id;
+    let url = base_url + '/waivers/view/' + id;
+    let url2 = base_url + 'tasks/assigned';
     
     return {
         subject : 'Waiver Request ' + id + ' needs your participation',
@@ -94,8 +95,8 @@ exports.hasActivity = (name,id, team = ['teammate']) => {
                     font-weight: bold;
                 }
         
-                .mention{
-                    color:rgb(0, 0, 100);
+                .mention {
+                    color: rgb(0, 0, 100);
                     font-family: Arial Bold, Arial, sans-serif;
                     font-weight: bold;
                     text-decoration: underline;
@@ -116,6 +117,11 @@ exports.hasActivity = (name,id, team = ['teammate']) => {
                     font-weight: bold;
                     display: inline-block;
                 }
+        
+                .separator{
+                    border-left: 10px solid #ffffff;
+                    border-right: 10px solid #ffffff;
+                }
             </style>
         </head>
         
@@ -124,8 +130,7 @@ exports.hasActivity = (name,id, team = ['teammate']) => {
                 <table>
                     <tr>
                         <td valign="top" style="vertical-align:top;">
-                            <img src="https://i.ibb.co/ZYgG6j2/logo-removebg-preview.png"
-                                width="50" height="50">
+                            <img src="https://i.ibb.co/ZYgG6j2/logo-removebg-preview.png" width="50" height="50">
                         </td>
                         <td valign="middle">
                             <span class="logo-title"> Waiver Requests System </span>
@@ -134,15 +139,22 @@ exports.hasActivity = (name,id, team = ['teammate']) => {
                 </table>
             </div>
             <div class="content">
-                <h4 class="welcome">Hello, ${ team } </h4>
+                <h4 class="welcome">Hello, ${ team }</h4>
                 <p class="text">
-                    <span class="mention"> ${ name } </span> has created a new Waiver Request with number <span class="marked">${ id }</span> 
+                    <span class="mention"> ${ name } </span> has created a new Waiver Request with number <span
+                        class="marked">${ id }</span>
                     and it needs your participation.
                 </p>
                 <p class="text">
-                    Please check the details about this waiver and sign your participation by clicking in the button below
-                    as soon as possible
+                    Please check the details about this waiver and check your role in this process by clicking in the button
+                    below
+                    as soon as possible in order to fully complete the required actions
                 </p>
+                <p class="text">
+                    Once you have completed the action you should close the activity. You can do this in the other
+                    button below
+                </p>
+        
         
                 <table width="100%" cellspacing="0" cellpadding="0">
                     <tr>
@@ -151,10 +163,19 @@ exports.hasActivity = (name,id, team = ['teammate']) => {
                                 <tr>
                                     <td class="button" bgcolor="#262a69">
                                         <a class="link" href="${ url }" target="_blank">
-                                            Review waiver
+                                            Review participation
+                                        </a>
+                                    </td>
+                                    <td class="separator">
+                                        or
+                                    </td>
+                                    <td class="button" bgcolor="#262a69">
+                                        <a class="link" href="${ url2 }" target="_blank">
+                                            Activities dashbord
                                         </a>
                                     </td>
                                 </tr>
+        
                             </table>
                         </td>
                     </tr>

@@ -109,20 +109,29 @@ exports.createWaviver = async(req, res) => {
 
                         destinataryPromises.push(getInfoWithToken(req));
                         destinataryPromises.push(getInfoWithField(Sql.convertToArray(req.body.actions), 'responsable'));
+                        destinataryPromises.push(getInfoWithField(Sql.convertToArray(req.body.managers),'manager'))
 
                         Promise.all(destinataryPromises).then( async (result) => {
                             console.log(result);
                             let originator = result[0][0];
                             let responsables = result[1];
+                            let managers = result[2];
                             
                             let creator = originator['name'];
                             
                             let actionsMailist = [];
+                            let managersMailist = [];
                             let team = [];
+                            let corp = [];
 
                             responsables.forEach(r => {
                                 actionsMailist.push(r['email']);
                                 team.push(r['name']);
+                            });
+
+                            managers.forEach(m =>{
+                                managersMailist.push(m['email']);
+                                corp.push(m['name']);
                             });
 
                             await sendMailAysnc(
@@ -132,6 +141,11 @@ exports.createWaviver = async(req, res) => {
                             await sendMailAysnc(
                                 actionsMailist,
                                 templates.hasActivity(creator,number,team)
+                            );
+
+                            await sendMailAysnc(
+                                managersMailist,
+                                templates.needsApproval(creator,number,corp)
                             );
 
                             console.log('All emails sent');
