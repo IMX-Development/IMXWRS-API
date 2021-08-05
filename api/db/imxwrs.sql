@@ -17,6 +17,7 @@ CREATE TABLE requests(
   requiresManager BIT NOT NULL DEFAULT 0,
   status VARCHAR(10) NOT NULL DEFAULT 'approving',
   area VARCHAR(30),
+  revision TINYINT DEFAULT 1,
   oldNumber VARCHAR(11) DEFAULT '',
   originator VARCHAR(30) NOT NULL
 );
@@ -42,6 +43,7 @@ CREATE TABLE actions(
   description TEXT NOT NULL,
   date DATE,
   signed VARCHAR(9) NOT NULL DEFAULT 'signed',
+  closed DATETIME DEFAULT NULL,
   responsable VARCHAR(30) NOT NULL,
   request VARCHAR(11) NOT NULL
 )
@@ -70,7 +72,6 @@ CREATE TABLE expiration(
   request VARCHAR(11) NOT NULL
 )
 
-
 CREATE TABLE externalAuthorization(
   id INT IDENTITY(1,1) PRIMARY KEY,
   title VARCHAR(40),
@@ -85,6 +86,7 @@ CREATE TABLE remarks(
   comment TEXT,
   date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   status VARCHAR(10) NOT NULL DEFAULT 'sent',
+  revision TINYINT DEFAULT NULL,
   manager VARCHAR(30) NOT NULL,
   request VARCHAR(11) NOT NULL,
 )

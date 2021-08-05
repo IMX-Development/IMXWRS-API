@@ -21,6 +21,11 @@ function query(query, data) {
     return request(req);
 }
 
+async function asyncQuery(query, body){
+    let req = getQuery(query, data);
+    return asyncRequest(req);
+}
+
 async function asyncRequest(query){
     console.info(query);
     return new Promise((resolve, reject) => {
@@ -196,6 +201,7 @@ module.exports = {
     query,
     request,
     asyncRequest,
+    asyncQuery,
     convertToArray,
     convertToArrayAddField,
     applyFilters,
