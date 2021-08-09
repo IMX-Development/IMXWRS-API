@@ -22,7 +22,7 @@ function query(query, data) {
 }
 
 async function asyncQuery(query, body){
-    let req = getQuery(query, data);
+    let req = getQuery(query, body);
     return asyncRequest(req);
 }
 

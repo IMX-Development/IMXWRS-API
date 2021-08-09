@@ -1,5 +1,38 @@
 const Sql = require('../db/sql.js');
 
+exports.updateBackups = async (req, res) => {
+    try {
+        let user = req.params.user;
+        let data = req.body.backups;
+
+        let body = data.map(d => ({
+            lender: user,
+            granted: d
+        }));
+
+        console.log(body);
+
+        let query = `DELETE FROM backups WHERE lender = '${user}'`;
+
+        await Sql.asyncRequest(query);
+
+        query = `INSERT INTO backups() VALUES ?`;
+
+        await Sql.asyncQuery(query,body);
+
+        res.json({
+            ok: true
+        });
+
+    } catch (e) {
+        console.log(e);
+        return res.json({
+            ok: false,
+            message: e
+        });
+    }
+}
+
 exports.getBackups = async (req, res) => {
     try {
         let user = req.params.user;
@@ -8,7 +41,7 @@ exports.getBackups = async (req, res) => {
         FROM users WHERE username = '${user}'`;
 
         let userInfo = await Sql.request(query);
-        
+
         query = `SELECT username, name, email, position 
         FROM users, backups 
         WHERE lender = '${user}' 

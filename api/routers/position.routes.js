@@ -6,5 +6,6 @@ module.exports = (app) =>{
     .put([Token.verifyUser], Positions.updateManagers);
 
     app.route('/position/:user')
-    .get(Positions.getBackups);
+    .get(Positions.getBackups)
+    .post(Positions.updateBackups);
 }
