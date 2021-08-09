@@ -24,6 +24,6 @@ module.exports = (cron) => {
     console.log('tasks => ' + tasks.length);
 
     tasks.forEach(t=>{
-        t.start();
+        // t.start();
     });
 }

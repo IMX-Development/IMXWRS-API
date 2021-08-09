@@ -15,6 +15,7 @@ var fileRoutes = require('./api/routers/files.routes');
 var statsRoutes = require('./api/routers/stats.routes');
 var waiverRoutes = require('./api/routers/waiver.routes');
 var waiversRoutes = require('./api/routers/waivers.routes');
+var positionRoutes = require('./api/routers/position.routes');
 var activitiesRoutes = require('./api/routers/activities.routes');
 var authorizationRoutes = require('./api/routers/authorizations.routes');
 
@@ -36,6 +37,7 @@ fileRoutes(app);
 statsRoutes(app);
 waiverRoutes(app);
 waiversRoutes(app);
+positionRoutes(app);
 activitiesRoutes(app);
 authorizationRoutes(app);
 
