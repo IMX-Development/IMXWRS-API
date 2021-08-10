@@ -4,6 +4,31 @@ const status = require('./status.controller');
 
 require('dotenv').config();
 
+exports.closeAction = async(req, res) =>{
+    try{
+        let id = req.params.id;
+        let status = req.body.status || 'closed';
+
+        let query = `UPDATE actions 
+        SET signed = '${status}',
+        closed = CURRENT_TIMESTAMP
+        WHERE id = '${id}'`;
+
+        await Sql.asyncRequest(query);
+
+        return res.json({
+            ok: true
+        });
+
+    }catch(e){
+        console.log(e);
+        return res.json({
+            ok: false,
+            message: e
+        });
+    }
+}
+
 exports.markAsDone = (req,res)=>{
     let id = req.body.id;
     let user = jwt.verify(req.token, process.env.TOKEN_SEED)['username'];

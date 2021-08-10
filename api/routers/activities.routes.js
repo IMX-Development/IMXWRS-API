@@ -9,4 +9,7 @@ module.exports = (app) => {
     app.route('/activities/pending')
     .get([token.verifyUser],Activities.getAssignedActivities)
     .put([token.verifyUser],Activities.markAsDone);
+
+    app.route('/action/:id')
+    .put([token.verifyUser],Activities.closeAction);
 }
