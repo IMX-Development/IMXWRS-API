@@ -35,7 +35,9 @@ CREATE TABLE authorizations(
   manager VARCHAR(30) NOT NULL,
   request VARCHAR(11) NOT NULL,
   signed VARCHAR(9) NOT NULL DEFAULT 'pending',
-  date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+  date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  position VARCHAR 40,
+  authorizator VARCHAR(30) DEFAULT NULL
 )
 
 CREATE TABLE actions(
@@ -105,6 +107,10 @@ CREATE TABLE backups(
   lender VARCHAR(30) NOT NULL,
   granted VARCHAR(30) NOT NULL
 )
+
+ALTER TABLE authorizations
+ADD CONSTRAINT FK_authorizator
+FOREIGN KEY (authorizator) REFERENCES users(username) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE backups
 ADD CONSTRAINT FK_backups_lender

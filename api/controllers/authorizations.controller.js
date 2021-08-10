@@ -69,9 +69,14 @@ exports.getApproved = (req, res) => {
 exports.authorizeWaiver = (req, res) => {
     let user = getUsername(req);
     let waiver = req.body.waiver;
+    let position = req.body.position;
 
-    let query = `UPDATE authorizations SET signed= 'signed', date = CURRENT_TIMESTAMP 
-                WHERE manager = '${user}' AND request = '${waiver}'`;
+    let query = `UPDATE authorizations 
+    SET signed= 'signed', 
+    date = CURRENT_TIMESTAMP,
+    authorizator = '${user}'
+    WHERE position = '${position}' 
+    AND request = '${waiver}'`;
 
     let promise = Sql.request(query);
 
