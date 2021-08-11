@@ -4,6 +4,7 @@ exports.getAuthorizationsData = async(req, res) =>{
     try{
         let user = req.params.user;
         let type = req.params.type;
+        let all = user == 'all' ? '1' : '0';
 
         let query;
 
@@ -11,7 +12,8 @@ exports.getAuthorizationsData = async(req, res) =>{
             query = `SELECT authorizations.date, authorizations.request, requests.customer 
             AS customer, requests.status AS waiverSatus, users.position as position, authorizations.signed as status
             FROM requests, authorizations, users
-            WHERE manager = '${ user }'
+            WHERE (manager = '${ user }'
+            OR 1 = ${all})
             AND requests.number = authorizations.request
             AND users.username = authorizations.manager
             ORDER BY date DESC`;
@@ -19,7 +21,8 @@ exports.getAuthorizationsData = async(req, res) =>{
             query = `SELECT authorizations.date, authorizations.request, requests.customer 
             AS customer, requests.status AS waiverSatus, users.position as position
             FROM requests, authorizations, users
-            WHERE manager = '${ user }'
+            WHERE (manager = '${ user }'
+            OR 1 = ${all})
             AND authorizations.signed = '${ type }'
             AND requests.number = authorizations.request
             AND users.username = authorizations.manager
@@ -47,6 +50,7 @@ exports.getActionData = async(req, res) =>{
     try{
         let user = req.params.user;
         let type = req.params.type;
+        let all = user == 'all' ? '1' : '0';
 
         let query;
 
@@ -54,14 +58,16 @@ exports.getActionData = async(req, res) =>{
             query = `SELECT description, actions.date, actions.request, requests.customer 
             AS customer, requests.status AS waiverSatus, actions.signed as status
             FROM requests, actions
-            WHERE responsable = '${ user }'
+            WHERE (responsable = '${ user }'
+            OR 1 = ${all})
             AND requests.number = actions.request
             ORDER BY date DESC`;
         }else{
             query = `SELECT description, actions.date, actions.request, requests.customer 
             AS customer, requests.status AS waiverSatus
             FROM requests, actions
-            WHERE responsable = '${ user }'
+            WHERE (responsable = '${ user }'
+            OR 1 = ${all})
             AND actions.signed = '${ type }'
             AND requests.number = actions.request
             ORDER BY date DESC`;
@@ -88,6 +94,7 @@ exports.getRemarksData = async(req, res) =>{
     try{
         let user = req.params.user;
         let type = req.params.type;
+        let all = user == 'all' ? '1' : '0';
 
         let query;
 
@@ -95,14 +102,17 @@ exports.getRemarksData = async(req, res) =>{
             query = `SELECT comment, remarks.date, requests.type, remarks.request, requests.customer 
             AS customer, requests.status AS waiverSatus, remarks.status as status 
             FROM requests, remarks
-            WHERE remarks.status = '${ type }'
+            WHERE (manager = '${ user }'
+            OR 1 = ${all})
+            remarks.status = '${ type }'
             AND requests.number = remarks.request
             ORDER BY date DESC`;
         }else{
             query = `SELECT comment, remarks.date, requests.type, remarks.request, requests.customer 
             AS customer, requests.status AS waiverSatus 
             FROM requests, remarks
-            WHERE manager = '${ user }'
+            WHERE (manager = '${ user }'
+            OR 1 = ${all})
             AND remarks.status = '${ type }'
             AND requests.number = remarks.request
             ORDER BY date DESC`;
@@ -129,18 +139,21 @@ exports.getWaiverData = async(req, res) =>{
     try{
         let user = req.params.user;
         let type = req.params.type;
+        let all = user == 'all' ? '1' : '0';
 
         let query;
 
         if(type == 'all'){
             query = `SELECT number, customer, status, type, typeNumber, area 
             FROM requests
-            WHERE originator = '${ user }'
+            WHERE (originator = '${ user }'
+            OR 1 = ${all})
             ORDER BY creationDate DESC`
         }else{
             query = `SELECT number, customer, type, typeNumber, area 
             FROM requests
-            WHERE originator = '${ user }'
+            WHERE (originator = '${ user }'
+            OR 1 = ${all})
             AND status = '${ type }'
             ORDER BY creationDate DESC`;
         }

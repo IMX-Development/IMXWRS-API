@@ -9,6 +9,8 @@ exports.getUser = (req,res) => {
     console.log(req.params.user);
 
     let user = req.params.user;
+    let all = user == 'all' ? '1' : '0';
+
     user = Sql.avoidInjection(user);
 
     let query = `SELECT username, name, email, position FROM users WHERE username = '${ user }'`;
@@ -17,24 +19,28 @@ exports.getUser = (req,res) => {
     query = `SELECT COUNT(status) as data, status as label 
                  FROM dbo.requests 
                  WHERE originator = '${ user }' 
+                 OR 1 = ${all}
                  GROUP BY status`;
     promises.push(Sql.request(query));
 
     query = `SELECT COUNT(signed) as data, signed as label 
                 FROM dbo.actions 
                 WHERE responsable = '${ user }' 
+                OR 1 = ${all}
                 GROUP BY signed`;
     promises.push(Sql.request(query));
 
     query = `SELECT COUNT(signed) as data, signed as label 
             FROM dbo.authorizations 
             WHERE manager = '${ user }' 
+            OR 1 = ${all}
             GROUP BY signed`;
     promises.push(Sql.request(query));
 
     query = `SELECT COUNT(status) as data, status as label 
             FROM dbo.remarks 
-            WHERE manager = '${ user }' 
+            WHERE manager = '${ user }'
+            OR 1 = ${all}
             GROUP BY status`;
     promises.push(Sql.request(query));
 

@@ -71,7 +71,8 @@ exports.getWaiver = (req, res) => {
 
             switch (i) {
                 case 1:
-                    query = `SELECT ${tables[i]}.*,users.name as name, users.position as title 
+                    query = `SELECT ${tables[i]}.*,users.name as name, users.position as title,
+                    (SELECT name FROM users WHERE username = ${tables[i]}.authorizator) as authBy 
                     FROM ${tables[i]}, users 
                     WHERE request = '${number}' AND users.username = ${tables[i]}.manager`;
                     break;
