@@ -16,4 +16,7 @@ module.exports = (app) => {
     app.route('/stats/data/authorizations/:user/:type')
     .get(Stats.getAuthorizationsData);
 
+    app.route('/stats/data/acknowledgements/:user/:type')
+    .get(Stats.getAuthorizationsData);
+
 }

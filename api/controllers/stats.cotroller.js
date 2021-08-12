@@ -148,6 +148,7 @@ exports.getWaiverData = async(req, res) =>{
             FROM requests
             WHERE (originator = '${ user }'
             OR 1 = ${all})
+            AND (0 = ${all} OR status!='closed')
             ORDER BY creationDate DESC`
         }else{
             query = `SELECT number, customer, type, typeNumber, area 
@@ -155,6 +156,7 @@ exports.getWaiverData = async(req, res) =>{
             WHERE (originator = '${ user }'
             OR 1 = ${all})
             AND status = '${ type }'
+            AND (0 = ${all} OR status !='closed')
             ORDER BY creationDate DESC`;
         }
 

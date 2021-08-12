@@ -18,8 +18,9 @@ exports.getUser = (req,res) => {
 
     query = `SELECT COUNT(status) as data, status as label 
                  FROM dbo.requests 
-                 WHERE originator = '${ user }' 
-                 OR 1 = ${all}
+                 WHERE (originator = '${ user }' 
+                 OR 1 = ${all})
+                 AND (0 = ${all} OR status != 'closed')
                  GROUP BY status`;
     promises.push(Sql.request(query));
 
@@ -51,8 +52,8 @@ exports.getUser = (req,res) => {
             stats : {
                 waivers : resps[1],
                 actions : resps[2],
-                authorizations : resps[3],
-                remarks  : resps[4]
+                acknowledgements : resps[3],
+                // remarks  : resps[4]
             }
         });
     },error=>{

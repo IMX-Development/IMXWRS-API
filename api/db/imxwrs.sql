@@ -34,7 +34,7 @@ CREATE TABLE users(
 CREATE TABLE authorizations(
   manager VARCHAR(30) NOT NULL,
   request VARCHAR(11) NOT NULL,
-  signed VARCHAR(9) NOT NULL DEFAULT 'pending',
+  signed VARCHAR(12) NOT NULL DEFAULT 'pending',
   date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   position VARCHAR 40,
   authorizator VARCHAR(30) DEFAULT NULL

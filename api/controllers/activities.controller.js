@@ -9,8 +9,11 @@ exports.closeAction = async(req, res) =>{
         let id = req.params.id;
         let status = req.body.status || 'closed';
 
-        let query = `UPDATE actions 
-        SET signed = '${status}',
+        let query = `UPDATE actions
+        SET signed = CASE 
+        WHEN (CAST(CURRENT_TIMESTAMP AS DATE) > date) 
+            THEN 'closed late' 
+            ELSE '${status}' END, 
         closed = CURRENT_TIMESTAMP
         WHERE id = '${id}'`;
 
@@ -74,7 +77,7 @@ exports.getPendingActivities = (req,res)=>{
     let user = jwt.verify(req.token, process.env.TOKEN_SEED);
     let query = `SELECT requests.customer as customer, actions.*, requests.status as status FROM 
                 dbo.requests, dbo.actions WHERE requests.number = actions.request 
-                AND actions.signed = 'pending' AND actions.responsable = '${user.username}' ORDER BY actions.date ASC`;
+                AND actions.signed NOT LIKE '%closed%' AND actions.responsable = '${user.username}' ORDER BY actions.date ASC`;
 
     let promise = Sql.request(query);
 
