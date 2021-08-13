@@ -147,7 +147,7 @@ const getRandom = () => {
 }
 
 exports.getUsers = (req, res) => {
-    var query = "SELECT username,name,position,email FROM users "; //WHERE position = 'employee'";
+    var query = "SELECT username,name,position,email FROM users ORDER BY name ASC "; //WHERE position = 'employee'";
     let promise = Sql.request(query);
     promise.then(result => {
         res.json({
