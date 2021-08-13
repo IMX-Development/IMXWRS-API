@@ -159,6 +159,9 @@ exports.modifyWaiver = (req, res) => {
     if (body != '') {
         query = `DELETE FROM actions WHERE id NOT IN ${body} AND request = '${id}'`;
         promises.push(Sql.request(query));
+    }else{
+        query = `DELETE FROM actions WHERE request = '${id}'`;
+        promises.push(Sql.request(query));
     }
 
     Promise.all(promises).then(resp => {
@@ -210,6 +213,9 @@ exports.modifyWaiver = (req, res) => {
 
         promises.push(Sql.request(query));
 
+        /***
+         * Request reauth!!!!!
+         */
         Promise.all(promises).then(resps => {
             let emailPromise = status.resendActivity(id, req.body.equalActions);
             console.log('Resending activities...');
