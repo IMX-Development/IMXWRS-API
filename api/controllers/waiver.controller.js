@@ -131,6 +131,14 @@ exports.modifyWaiver = (req, res) => {
     let body = req.body;
     let id = req.body.number;
 
+    // console.log(req.body.newAuth);
+    let keepAuth = `( ${req.body.keepAuth.map(k => `'${k}'`).toString()} )`;
+    console.log(keepAuth);
+
+    // return res.json({
+    //     ok: false
+    // });
+
     //Update body of waiver
     let query = "UPDATE requests SET () WHERE ? ";
     promises.push(Sql.update(query, body));
@@ -140,7 +148,7 @@ exports.modifyWaiver = (req, res) => {
     promises.push(Sql.request(query));
 
     //Update auth 
-    query = `DELETE FROM authorizations WHERE request = '${id}'`;
+    query = `DELETE FROM authorizations WHERE request = '${id}' AND position NOT IN ${keepAuth}`;
     promises.push(Sql.request(query));
     //Update required waivers (it's easier to delete everything and then add it again)
     query = `DELETE FROM waivers WHERE request = '${id}'`;
@@ -190,7 +198,7 @@ exports.modifyWaiver = (req, res) => {
         promises.push(Sql.query(query, body));
 
         query = "INSERT INTO authorizations() VALUES ?";
-        body = Sql.convertToArrayAddField(req.body.authorizations, id);
+        body = Sql.convertToArrayAddField(req.body.newAuth, id);
         promises.push(Sql.query(query, body));
 
         if (req.body.newActions != null && req.body.newActions.length > 0) {

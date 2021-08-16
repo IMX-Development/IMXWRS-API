@@ -33,6 +33,6 @@ exports.getManagers = (type,needsManager,customer='') =>{
     }
     console.log(signs);
     //Testing purposes
-    return ["'developer'"];
+    // return ["'developer'"];
     return signs;
 }
