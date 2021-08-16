@@ -4,6 +4,27 @@ const { sendEmail } = require('../helpers/send-email');
 const templates = require('../helpers/email-templates');
 var identification = require('../middlewares/user.identification');
 
+exports.addUser = async(req, res) =>{
+    try{
+        let user = req.body.user;
+        console.log(user);
+
+        let query = `INSERT INTO users() VALUES ?`;
+
+        await Sql.asyncQuery(query,user);
+        
+        return res.json({
+            ok: true
+        });
+    }catch(e){
+        console.log(e);
+        return res.json({
+            ok: false, 
+            message: e
+        });
+    }
+}
+
 exports.getUser = (req,res) => {
     let promises = [];
     console.log(req.params.user);

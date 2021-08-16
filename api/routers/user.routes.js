@@ -6,6 +6,9 @@ module.exports = (app) => {
     .post(Users.getUsers)
     .get(Users.getUsers);
 
+    app.route('/user')
+    .post(Users.addUser)
+
     app.route('/user/recover')
     .post(Users.recoverPassword)
     .put([token.verifyUser], Users.changePassword);
