@@ -5,6 +5,57 @@ const templates = require('../helpers/email-templates');
 
 const { getOriginator, getInfoWithToken } = require('../middlewares/user.identification')
 
+exports.resendAuth = (id, authList) => {
+
+    let promise = new Promise((resolve, reject) => {
+        let promises = [];
+
+        let query = `SELECT users.name as name FROM requests, users 
+                WHERE number = '${id}' AND requests.originator = users.username`;
+        promises.push(Sql.request(query));
+
+        query = `SELECT DISTINCT users.email, users.name FROM users, authorizations 
+                WHERE users.username = authorizations.manager AND 
+                authorizations.request = '${ id }' AND authorizations.signed = 'pending'`;
+
+        // if(authList != ''){
+        //     query = query + ` AND authorizations.manager NOT IN ${ authList }`;
+        // }
+
+        promises.push(Sql.request(query));
+
+        Promise.all(promises).then(resps => {
+            console.log(resps);
+            let originator = resps[0][0]['name'];
+            let mailList = [];
+            let receivers = [];
+
+            resps[1].forEach(m => {
+                mailList.push(m['email']);
+                receivers.push(m['name']);
+            });
+
+            if(mailList.length > 0){
+                sendEmail(
+                    mailList,
+                    templates.needsApproval(originator, id, receivers),
+                    (cb => {
+                        console.log('Done re sending authorizations with status ' + cb);
+                        resolve(cb);
+                    })
+                );
+            }else{
+                resolve(true);
+            }
+
+        }, error => {
+            console.log(error);
+            reject('query');
+        });
+    });
+    return promise;
+}
+
 exports.resendActivity = (id, actions) => {
 
     let promise = new Promise((resolve, reject) => {

@@ -148,7 +148,12 @@ exports.modifyWaiver = (req, res) => {
     promises.push(Sql.request(query));
 
     //Update auth 
-    query = `DELETE FROM authorizations WHERE request = '${id}' AND position NOT IN ${keepAuth}`;
+    if(req.body.keepAuth.length == 0){
+        query = `DELETE FROM authorizations WHERE request = '${id}'`;
+        keepAuth = '';
+    }else{
+        query = `DELETE FROM authorizations WHERE request = '${id}' AND position NOT IN ${keepAuth}`;
+    }
     promises.push(Sql.request(query));
     //Update required waivers (it's easier to delete everything and then add it again)
     query = `DELETE FROM waivers WHERE request = '${id}'`;
@@ -197,9 +202,11 @@ exports.modifyWaiver = (req, res) => {
         body = Sql.convertToArrayAddField(req.body.parts, id);
         promises.push(Sql.query(query, body));
 
-        query = "INSERT INTO authorizations() VALUES ?";
-        body = Sql.convertToArrayAddField(req.body.newAuth, id);
-        promises.push(Sql.query(query, body));
+        if(req.body.newAuth != null && req.body.newAuth.length > 0){
+            query = "INSERT INTO authorizations() VALUES ?";
+            body = Sql.convertToArrayAddField(req.body.newAuth, id);
+            promises.push(Sql.query(query, body));
+        }
 
         if (req.body.newActions != null && req.body.newActions.length > 0) {
             query = "INSERT INTO actions() VALUES ?";
@@ -224,21 +231,24 @@ exports.modifyWaiver = (req, res) => {
         /***
          * Request reauth!!!!!
          */
-        Promise.all(promises).then(resps => {
-            let emailPromise = status.resendActivity(id, req.body.equalActions);
-            console.log('Resending activities...');
-            emailPromise.then(resp => {
+        Promise.all(promises).then(async(resps) => {
+            // let emailPromise = status.resendActivity(id, req.body.equalActions);
+            // console.log('Resending activities...');
+            // let authPromise = status.resendAuth(id, keepAuth);
+
+            try{
+                await status.resendActivity(id, req.body.equalActions);
+                await status.resendAuth(id, keepAuth);
                 res.json({
                     ok: true
                 });
-            }, error => {
-                console.log(error);
+            }catch(e){
+                console.log(e);
                 res.json({
                     ok: true,
                     message: 'Cannot send emails'
                 });
-            });
-
+            }
         }, error => {
             console.log(error);
             res.json({
