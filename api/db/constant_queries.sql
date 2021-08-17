@@ -7,3 +7,5 @@ WHEN (CAST(CURRENT_TIMESTAMP AS DATE) > date)
         'closed' 
     END,
 closed = CURRENT_TIMESTAMP;
+
+UPDATE actions SET signed = 'expired' WHERE CAST(CURRENT_TIMESTAMP AS DATE) > date;
