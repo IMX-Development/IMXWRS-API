@@ -113,7 +113,7 @@ exports.getAuthorizations = (req, res) => {
                 WHERE requests.number = authorizations.request AND 
                 requests.originator = users.username AND  
                 authorizations.manager = '${user}' AND authorizations.signed != 'signed'
-                ORDER BY pendingActivities ASC, requests.status DESC, requests.number ASC`;
+                ORDER BY requests.creationDate DESC, pendingActivities ASC, requests.status DESC, requests.number ASC`;
     let promise = Sql.request(query);
 
     promise.then(resp => {

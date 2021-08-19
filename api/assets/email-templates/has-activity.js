@@ -141,7 +141,7 @@ exports.hasActivity = (name,id, team = ['teammate']) => {
             <div class="content">
                 <h4 class="welcome">Hello, ${ team }</h4>
                 <p class="text">
-                    <span class="mention"> ${ name } </span> has created a new Waiver Request with number <span
+                    <span class="mention"> ${ name } </span> has created or edited a Waiver Request with number <span
                         class="marked">${ id }</span>
                     and it needs your participation.
                 </p>

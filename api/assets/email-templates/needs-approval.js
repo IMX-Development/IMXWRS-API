@@ -134,7 +134,7 @@ exports.needsApproval = (name,id,team = 'managers') => {
             <div class="content">
                 <h4 class="welcome">Hello, ${ team }</h4>
                 <p class="text">
-                    <span class="mention"> ${ name } </span> has created a new Waiver Request with number <span class="marked">${ id }</span> 
+                    <span class="mention"> ${ name } </span> has created or edited a Waiver Request with number <span class="marked">${ id }</span> 
                     and it needs your acknowledgment.
                 </p>
                 <p class="text">
