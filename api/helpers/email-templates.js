@@ -21,5 +21,5 @@ module.exports = {
     pendingActivity : pendingActivity.weeklyReminder,
     unfinishedWaiver : unfinishedWaiver.weeklyReminder,
     pswReminder: pswReminder.actionReminder,
-    pswEscalation: pswEscalation.pswEscalation
+    pswEscalation: pswEscalation.actionReminder,
 };
