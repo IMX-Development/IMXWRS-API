@@ -13,6 +13,7 @@ exports.pswSendActionReminders = () => {
         AND actions.request = requests.number
         AND requests.status = 'open'
         AND actions.closed IS NULL
+        AND requests.typeNumber = 5
         AND CAST(GETDATE() AS DATE) = 
         DATEADD(d, -${d}, actions.date)`;
 

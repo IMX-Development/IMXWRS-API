@@ -5,7 +5,15 @@ const templates = require('../helpers/email-templates');
 
 exports.pswSendActionReminders = () => {
 
-    let query = `SELECT DISTINCT users.email AS email FROM
+    let manager = `SELECT email FROM users WHERE position = 'npi manager'`;
+    manager = manager[0].email;
+
+    let query = `SELECT users.email AS email,
+        users.name as name, actions.id as id,
+        actions.description as description, 
+        actions.request as request, 
+        actions.date as date
+        FROM
         users, actions, requests
         WHERE users.username = actions.responsable
         AND actions.request = requests.number
@@ -13,16 +21,18 @@ exports.pswSendActionReminders = () => {
         AND actions.closed IS NULL
         AND requests.typeNumber = 5
         AND CAST(GETDATE() AS DATE) = 
-        DATEADD(d, 1, actions.date)`;
+        DATEADD(d, 5, actions.date)`;
 
     let resp = await Sql.asyncRequest(query);
 
     if (resp.length > 0) {
         let receiverList = resp.map(r => r.email);
 
+        receiverList.push(manager);
+
         await sendMailAysnc(
             receiverList,
-            templates.pswExpired()
+            templates.pswFirstEscalation(resp)
         );
     }
 }
