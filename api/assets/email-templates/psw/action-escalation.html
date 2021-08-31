@@ -101,6 +101,26 @@
             border-left: 10px solid #ffffff;
             border-right: 10px solid #ffffff;
         }
+
+        
+        .tabla td, th{
+            word-break: break-all;
+            border: 1px solid gray;
+            font-size: 16px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .tabla {
+            border-spacing: 0px;
+            border-collapse: separate;
+        }
+
+        .logo-link {
+            color: rgb(0, 0, 92);
+            font-size: 16px;
+            font-weight: 600;
+        }
     </style>
 </head>
 
@@ -118,15 +138,45 @@
         </table>
     </div>
     <div class="content">
-        <h4 class="welcome">Hello, teammate </h4>
+        <h4 class="welcome">Hello </h4>
         <p class="text">
-            You have pending actions that are about to expire on ${ lapse }.
+            This is the list of expired actions related to PSWM
         </p>
         <p class="text">
-            Please take care of these actions as soon as possible in order to fulfil the PSW.
+            Please take care of these actions as soon as possible
         </p>
-        <p class="text">
-            You can review these activities by clicking in the buttons below
+
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>ID action</th>
+                    <th>Description</th>
+                    <th>Responsible</th>
+                    <th>Commitment date</th>
+                    <th>PSW ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Placeholder</td>
+                    <td>Placeholder</td>
+                    <td>Placeholder</td>
+                    <td>Placeholder</td>
+                    <td>Placeholder</td>
+                </tr>
+                <tr>
+                    <td>Placeholder</td>
+                    <td>Placeholder</td>
+                    <td>Placeholder</td>
+                    <td>Placeholder</td>
+                    <td>Placeholder</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="text"> 
+            You can see the PSW by clicking in the PSW ID
+            or if you're reponsible you can review the actions in the button below
         </p>
 
         <table width="100%" cellspacing="0" cellpadding="0">
