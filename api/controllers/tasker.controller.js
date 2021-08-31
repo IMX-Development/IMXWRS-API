@@ -3,6 +3,11 @@ const events = require('../helpers/tasks');
 
 module.exports = (cron) => {
     let everyMondayMorning = '0 0 8 * * 1';
+    let pswActionReminder = '0 15 2 * * *';
+    let pswActionExpired = '0 20 2 * * *';
+    let pswDailyEscalation = '0 25 2 * * *';
+    let pswWeeklyEscalation = '0 30 2 * * *';
+
     let everyDay = '0 0 2 * * *';
     let tasks = [];
     
@@ -13,6 +18,10 @@ module.exports = (cron) => {
     });
 
     tasks.push(task);
+
+    task = cron.schedule(pswActionReminder, () => {
+
+    });
 
     task = cron.schedule('0 0 7 * * 1', ()=>{
         let date = new Date().toString();

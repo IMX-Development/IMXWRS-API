@@ -3,12 +3,13 @@ require('dotenv').config();
 let base_url = process.env.EMAIL_LINK;
 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
 
-exports.actionReminder = ( day ) => {
+exports.actionReminder = () => {
     let url = base_url + '/tasks/assigned';
     
-    day = new Date(day);
+    let today = new Date();
+    today.setDate(today.getDate() - 1);
 
-    let date = day.toLocaleString('en-US', options);
+    let date = today.toLocaleString('en-US', options);
     
     return {
         subject : `PSW Action is expired`,
@@ -167,5 +168,3 @@ exports.actionReminder = ( day ) => {
         `
     };
 }
-
-console.log(this.actionReminder('01-01-01').html);
