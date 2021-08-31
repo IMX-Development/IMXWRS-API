@@ -14,7 +14,7 @@ exports.needsApproval = (name,id,team = 'managers') => {
     }
     let url = base_url + '/waivers/authorize/' + id;
     return {
-        subject : 'Waiver Request ' + id + ' needs your approval',
+        subject : 'Waiver Request ' + id + ' needs your acknowledgment',
         html : `
         <!DOCTYPE html
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
