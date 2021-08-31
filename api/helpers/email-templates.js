@@ -9,6 +9,8 @@ const pendingActivity = require('../assets/email-templates/pending-activity');
 const unfinishedWaiver = require('../assets/email-templates/unfinished-waiver');
 const pswReminder = require('../assets/email-templates/psw/action-reminder');
 const pswEscalation = require('../assets/email-templates/psw/action-escalation');
+const pswExpired = require('../assets/email-templates/psw/action-expired');
+const pswFirstEscalation = require('../assets/email-templates/psw/first-escalation');
 
 module.exports = {
     newWaiver : newWaiver.createdWaiver,
@@ -22,4 +24,6 @@ module.exports = {
     unfinishedWaiver : unfinishedWaiver.weeklyReminder,
     pswReminder: pswReminder.actionReminder,
     pswEscalation: pswEscalation.actionReminder,
+    pswExpired: pswExpired.pswEscalation,
+    pswFirstEscalation: pswFirstEscalation.actionReminder
 };

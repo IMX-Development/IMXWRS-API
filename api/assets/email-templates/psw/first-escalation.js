@@ -170,7 +170,7 @@ exports.actionReminder = ( actions ) => {
                             <img src="https://i.ibb.co/ZYgG6j2/logo-removebg-preview.png" width="50" height="50">
                         </td>
                         <td valign="middle">
-                            <span class="logo-title"> Waiver Requests System - PSW</span>
+                            <span class="logo-title"> Waiver Requests System - PSW </span>
                         </td>
                     </tr>
                 </table>
@@ -178,10 +178,10 @@ exports.actionReminder = ( actions ) => {
             <div class="content">
                 <h4 class="welcome">Hello </h4>
                 <p class="text">
-                    This is the list of expired actions related to PSW
+                    These actions expired 5 days ago
                 </p>
                 <p class="text">
-                    Please take care of these actions as soon as possible
+                    Please take care of these actions as soon as possible.
                 </p>
         
                 <table class="tabla">
