@@ -1,9 +1,10 @@
 const events = require('../helpers/tasks');
 
-console.log('hola');
+// console.log('hola');
 // events.pswActionExpired();
 // events.pswActionReminders();
-events.pswFirstEscalation();
+// events.pswFirstEscalation();
+// events.pswWeeklyScalation();
 
 module.exports = (cron) => {
     let everyMondayMorning = '0 0 8 * * 1';

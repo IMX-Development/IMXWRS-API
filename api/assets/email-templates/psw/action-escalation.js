@@ -16,17 +16,19 @@ exports.actionReminder = ( actions ) => {
             request,
             name,
             date,
+            delay
         } = action;
         const waiverLink = base_url + '/waivers/view/' + request;
         const actionLink = base_url + '/waivers/mark/' + request + '/' + id;
         const commitment = Utils.convertDate(date);
-
+        const days = delay + ' days';
         tbody += `
         <tr>
             <td><a href="${ actionLink }" class="logo-link">${ id }</a></td>
             <td>${ description }</td>
             <td>${ name }</td>
             <td>${ commitment }</td>
+            <td>${ days }</td>
             <td><a href="${ waiverLink }" class="logo-link">${ request }</a></td>
 
         </tr>
@@ -192,6 +194,7 @@ exports.actionReminder = ( actions ) => {
                             <th>Description</th>
                             <th>Responsible</th>
                             <th>Commitment date</th>
+                            <th>Delay</th>
                             <th>PSW ID</th>
                         </tr>
                     </thead>
