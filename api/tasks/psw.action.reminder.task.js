@@ -3,10 +3,10 @@ var Sql = require('../db/sql.js');
 const { sendMailAysnc } = require('../helpers/send-email');
 const templates = require('../helpers/email-templates');
 
-exports.pswSendActionReminders = () => {
+exports.pswSendActionReminders = async() => {
     let dates = [15, 10, 5, 0];
 
-    dates.forEach(d => {
+    dates.forEach(async(d) => {
         let query = `SELECT DISTINCT users.email AS email FROM
         users, actions, requests
         WHERE users.username = actions.responsable

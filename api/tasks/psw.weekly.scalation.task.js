@@ -3,7 +3,7 @@ var Sql = require('../db/sql.js');
 const { sendMailAysnc } = require('../helpers/send-email');
 const templates = require('../helpers/email-templates');
 
-exports.pswSendActionReminders = () => {
+exports.pswSendActionReminders = async() => {
 
     let manager = `SELECT email FROM users WHERE position = 'npi manager'`;
     manager = manager[0].email;
@@ -20,8 +20,7 @@ exports.pswSendActionReminders = () => {
         AND requests.status = 'open'
         AND actions.closed IS NULL
         AND requests.typeNumber = 5
-        AND CAST(GETDATE() AS DATE) = 
-        DATEADD(d, 5, actions.date)`;
+        AND DATEDIFF(d, actions.date ,GETDATE()) > 5`;
 
     let resp = await Sql.asyncRequest(query);
 
@@ -32,7 +31,7 @@ exports.pswSendActionReminders = () => {
 
         await sendMailAysnc(
             receiverList,
-            templates.pswFirstEscalation(resp)
+            templates.pswEscalation(resp)
         );
     }
 }

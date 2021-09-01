@@ -3,7 +3,7 @@ var Sql = require('../db/sql.js');
 const { sendMailAysnc } = require('../helpers/send-email');
 const templates = require('../helpers/email-templates');
 
-exports.pswSendActionReminders = () => {
+exports.pswSendActionReminders = async() => {
 
     let query = `SELECT DISTINCT users.email AS email FROM
         users, actions, requests
@@ -14,6 +14,8 @@ exports.pswSendActionReminders = () => {
         AND requests.typeNumber = 5
         AND CAST(GETDATE() AS DATE) = 
         DATEADD(d, 1, actions.date)`;
+
+    // query = `SELECT 'i.lopez@mx.interplex.com' as email`;
 
     let resp = await Sql.asyncRequest(query);
 
