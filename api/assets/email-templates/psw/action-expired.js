@@ -142,7 +142,7 @@ exports.actionReminder = () => {
                     Please take care of these actions as soon as possible in order to fulfil correctly the PSW.
                 </p>
                 <p class="text">
-                    You must review these action by clicking in the buttons below
+                    You must review these action by clicking in the button below
                 </p>
         
                 <table width="100%" cellspacing="0" cellpadding="0">

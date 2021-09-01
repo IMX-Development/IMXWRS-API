@@ -24,6 +24,6 @@ module.exports = {
     unfinishedWaiver : unfinishedWaiver.weeklyReminder,
     pswReminder: pswReminder.actionReminder,
     pswEscalation: pswEscalation.actionReminder,
-    pswExpired: pswExpired.pswEscalation,
+    pswExpired: pswExpired.actionReminder,
     pswFirstEscalation: pswFirstEscalation.actionReminder
 };

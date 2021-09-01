@@ -12,7 +12,7 @@ exports.actionReminder = ( period ) => {
     let days = period == 1 ? 'day' : 'days';
     let day = today.toLocaleString('en-US', options);
 
-    let lapse = `${ period } ${days}, in ${day}`;
+    let lapse = `${ period } ${days}, on ${day}`;
     
     return {
         subject : `PSW pending actions reminder - ${period} ${days} left`,
@@ -140,7 +140,7 @@ exports.actionReminder = ( period ) => {
             <div class="content">
                 <h4 class="welcome">Hello, teammate </h4>
                 <p class="text">
-                    You have pending actions that are about to expire on ${ lapse }.
+                    You have pending actions that are about to expire in ${ lapse }.
                 </p>
                 <p class="text">
                     Please take care of these actions as soon as possible in order to fulfil the PSW.

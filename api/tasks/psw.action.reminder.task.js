@@ -6,7 +6,7 @@ const templates = require('../helpers/email-templates');
 exports.pswSendActionReminders = async() => {
     let dates = [15, 10, 5, 0];
 
-    dates.forEach(async(d) => {
+    for(const d of dates) {
         let query = `SELECT DISTINCT users.email AS email FROM
         users, actions, requests
         WHERE users.username = actions.responsable
@@ -16,6 +16,8 @@ exports.pswSendActionReminders = async() => {
         AND requests.typeNumber = 5
         AND CAST(GETDATE() AS DATE) = 
         DATEADD(d, -${d}, actions.date)`;
+
+        // query = `SELECT 'i.lopez@mx.interplex.com' as email`;
 
         let resp = await Sql.asyncRequest(query);
 
@@ -27,5 +29,5 @@ exports.pswSendActionReminders = async() => {
                 templates.pswReminder(d)
             );
         }
-    });
+    }
 }
