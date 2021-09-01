@@ -142,11 +142,12 @@ exports.actionReminder = ( actions ) => {
         
                 
                 .tabla td, th{
-                    word-break: break-all;
+                    /*word-break: break-all;*/
                     border: 1px solid gray;
                     font-size: 16px;
                     padding-left: 10px;
                     padding-right: 10px;
+                    text-align: center;
                 }
         
                 .tabla {
@@ -187,7 +188,7 @@ exports.actionReminder = ( actions ) => {
                 <table class="tabla">
                     <thead>
                         <tr>
-                            <th>ID action</th>
+                            <th>Action ID</th>
                             <th>Description</th>
                             <th>Responsible</th>
                             <th>Commitment date</th>
