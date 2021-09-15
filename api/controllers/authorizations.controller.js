@@ -48,7 +48,10 @@ exports.getApproved = (req, res) => {
     let query = `SELECT number, customer, status, creationDate 
                 FROM  requests WHERE number in (
                     SELECT TOP 50 request FROM authorizations 
-                    WHERE manager = '${user}' AND signed = 'signed' ORDER BY authorizations.date
+                    WHERE (
+                        manager = '${user}'
+                        OR manager IN (SELECT lender FROM backups WHERE granted = '${user}' AND enabled = 1)) 
+                    AND signed = 'signed' ORDER BY authorizations.date
                 )`;
 
     let promise = Sql.request(query);
@@ -112,7 +115,9 @@ exports.getAuthorizations = (req, res) => {
                 authorizations.* FROM requests, authorizations, users 
                 WHERE requests.number = authorizations.request AND 
                 requests.originator = users.username AND  
-                authorizations.manager = '${user}' AND authorizations.signed != 'signed'
+                (authorizations.manager = '${user}'
+                OR authorizations.manager IN (SELECT lender FROM backups WHERE granted = '${user}' AND enabled = 1)
+                ) AND authorizations.signed != 'signed'
                 ORDER BY requests.creationDate DESC, pendingActivities ASC, requests.status DESC, requests.number ASC`;
     let promise = Sql.request(query);
 

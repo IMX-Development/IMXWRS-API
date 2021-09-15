@@ -23,7 +23,8 @@ exports.login = async(req,res)=>{
         console.log([password, user.password]);
         
         let roles = await Sql.asyncRequest(`SELECT DISTINCT position FROM users, backups
-        WHERE backups.lender = users.username AND backups.granted = '${username}'`);
+        WHERE backups.lender = users.username AND backups.granted = '${username}'
+        AND backups.enabled = 1`);
 
         if(user.password == password || user.temporal == password){
             let signValues = {
@@ -76,7 +77,8 @@ exports.refresh = async(req,res) =>{
         const token = jwt.sign({username: user.username}, process.env.TOKEN_SEED);
 
         const roles = await Sql.asyncRequest(`SELECT DISTINCT position FROM users, backups
-        WHERE backups.lender = users.username AND backups.granted = '${aUser['username']}'`);
+        WHERE backups.lender = users.username AND backups.granted = '${aUser['username']}'
+        AND backups.enabled = 1`);
 
         return res.json({
             ok: true,

@@ -9,3 +9,5 @@ WHEN (CAST(CURRENT_TIMESTAMP AS DATE) > date)
 closed = CURRENT_TIMESTAMP;
 
 UPDATE actions SET signed = 'expired' WHERE CAST(CURRENT_TIMESTAMP AS DATE) > date;
+
+(SELECT lender FROM backups WHERE granted = '${user}' AND enabled = 1);
