@@ -3,12 +3,12 @@ const Sql = require('../db/sql.js');
 exports.updateBackups = async (req, res) => {
     try {
         let user = req.params.user;
-        let data = req.body.backups;
+        let body = req.body.backups;
 
-        let body = data.map(d => ({
-            lender: user,
-            granted: d
-        }));
+        // let body = data.map(d => ({
+        //     lender: user,
+        //     granted: d
+        // }));
 
         console.log(body);
 
@@ -42,7 +42,7 @@ exports.getBackups = async (req, res) => {
 
         let userInfo = await Sql.request(query);
 
-        query = `SELECT username, name, email, position 
+        query = `SELECT username, name, email, position, CAST(enabled as NUMERIC) as enabled
         FROM users, backups 
         WHERE lender = '${user}' 
         AND users.username = backups.granted`;

@@ -105,7 +105,8 @@ CREATE TABLE evidences(
 
 CREATE TABLE backups(
   lender VARCHAR(30) NOT NULL,
-  granted VARCHAR(30) NOT NULL
+  granted VARCHAR(30) NOT NULL,
+  enabled BIT DEFAULT 0
 )
 
 ALTER TABLE authorizations
