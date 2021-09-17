@@ -25,8 +25,36 @@ module.exports = (cron) => {
     tasks.push(task);
 
     task = cron.schedule(pswActionReminder, () => {
-
+        let date = new Date().toString();
+        console.log('Running task at ' + date);
+        events.pswActionReminders();
     });
+
+    tasks.push(task);
+
+    task = cron.schedule(pswActionExpired, () => {
+        let date = new Date().toString();
+        console.log('Running task at ' + date);
+        events.pswActionExpired();
+    });
+
+    tasks.push(task);
+
+    task = cron.schedule(pswDailyEscalation, () => {
+        let date = new Date().toString();
+        console.log('Running task at ' + date);
+        events.pswDailyEscalation();
+    });
+
+    tasks.push(task);
+
+    task = cron.schedule(pswWeeklyEscalation, () => {
+        let date = new Date().toString();
+        console.log('Running task at ' + date);
+        events.pswWeeklyScalation();
+    });
+
+    tasks.push(task);
 
     task = cron.schedule('0 0 7 * * 1', ()=>{
         let date = new Date().toString();
@@ -44,7 +72,7 @@ module.exports = (cron) => {
 
     tasks.push(task);
 
-    console.log('tasks => ' + tasks.length);
+    console.log(tasks.length + ' scheduled tasks waiting');
 
     tasks.forEach(t=>{
         t.start();
