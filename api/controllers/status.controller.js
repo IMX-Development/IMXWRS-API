@@ -14,8 +14,11 @@ exports.resendAuth = (id, authList) => {
                 WHERE number = '${id}' AND requests.originator = users.username`;
         promises.push(Sql.request(query));
 
-        query = `SELECT DISTINCT users.email, users.name FROM users, authorizations 
-                WHERE users.username = authorizations.manager AND 
+        query = `SELECT DISTINCT users.email, users.name 
+                FROM users, authorizations, backups 
+                WHERE 
+                (users.username = authorizations.manager
+                OR (backups.lender = authorizations.manager AND backups.granted = users.username AND backups.enabled = 1))
                 authorizations.request = '${ id }' AND authorizations.signed = 'pending'`;
 
         // if(authList != ''){

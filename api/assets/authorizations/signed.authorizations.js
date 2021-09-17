@@ -2,7 +2,8 @@ const signatures = [
     ["'developer'","'operations manager'", "'quality manager'","'engineering manager'"],
     ["'developer'", "'operations manager'", "'quality manager'"],
     ["'developer'","'finances manager'","'operations manager'", "'quality manager'","'engineering manager'"],
-    ["'developer'","'finances manager'","'general manager'","'operations manager'", "'quality manager'","'engineering manager'"]
+    ["'developer'","'finances manager'","'general manager'","'operations manager'", "'quality manager'","'engineering manager'"],
+    ["'developer'","'general manager'","'operations manager'","'quality manager'","'npi manager'"]
 ];
 
 const specialCustomers = [
@@ -34,5 +35,8 @@ exports.getManagers = (type,needsManager,customer='') =>{
     console.log(signs);
     //Testing purposes
     // return ["'developer'"];
+
+    //Comment to make production!
+    signs.shift();
     return signs;
 }
