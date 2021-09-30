@@ -12,6 +12,10 @@ module.exports = (cron) => {
     let pswActionExpired = '0 20 2 * * *';
     let pswDailyEscalation = '0 25 2 * * *';
     let pswWeeklyEscalation = '0 30 2 * * *';
+    let waiverActionReminder = '0 15 3 * * *';
+    let waiverActionExpired = '0 20 3 * * *';
+    let waiverDailyEscalation = '0 25 3 * * *';
+    let waiverWeeklyEscalation = '0 30 3 * * *';
 
     let everyDay = '0 0 2 * * *';
     let tasks = [];
@@ -72,9 +76,41 @@ module.exports = (cron) => {
 
     tasks.push(task);
 
-    console.log(tasks.length + ' scheduled tasks waiting');
+    task = cron.schedule(waiverActionReminder, () => {
+        let date = new Date().toString();
+        console.log('Running task at ' + date);
+        events.waiverActionReminders();
+    });
+
+    tasks.push(task);
+
+    task = cron.schedule(waiverActionExpired, () => {
+        let date = new Date().toString();
+        console.log('Running task at ' + date);
+        events.waiverActionExpired();
+    });
+
+    tasks.push(task);
+
+    task = cron.schedule(waiverDailyEscalation, () => {
+        let date = new Date().toString();
+        console.log('Running task at ' + date);
+        events.waiverDailyEscalation();
+    });
+
+    tasks.push(task);
+
+    task = cron.schedule(waiverWeeklyEscalation, () => {
+        let date = new Date().toString();
+        console.log('Running task at ' + date);
+        events.waiverWeeklyScalation();
+    });
+
+    tasks.push(task);
 
     tasks.forEach(t=>{
         t.start();
     });
+
+    console.log(tasks.length + ' scheduled tasks waiting');
 }
