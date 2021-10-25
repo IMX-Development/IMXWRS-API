@@ -1,5 +1,6 @@
 require('dotenv').config();
-var cron = require('node-cron');
+const cron = require('node-cron');
+const fs = require('fs');
 
 var express = require('express'),
     app = express(),
@@ -45,5 +46,13 @@ console.clear();
 scheduledTasks(cron);
 
 app.listen(port,()=>{
-    console.log('Server running in port ' + port)
+    console.log(`Server running in port ${port} on ${process.env.NODE_ENV || 'development' } mode`);
+    if (process.env.NODE_ENV == 'production') {
+        fs.appendFile('daemon/calibracionesapi.restarts.log', 
+        new Date() + ': Server restarted\n', (err) => {
+            if(err){
+                console.log("Couldn't update log");
+            }
+        });
+    }
 });

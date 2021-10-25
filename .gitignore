@@ -4,3 +4,4 @@ node_modules
 assets/.DS_Store
 api/db/backup/users.txt
 api/db/backup/query.txt
+daemon
