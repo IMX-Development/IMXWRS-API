@@ -6,7 +6,9 @@ module.exports = (app) => {
     .get( (req, res) => res.json({
         ok: true,
         message: "Server running!" ,
-        date: new Date().toString() 
+        date: new Date().toString(),
+        EMAIL_ON: process.env.EMAIL_ON,
+        DEBUG_MAIL: process.env.DEBUG_MAIL
     }));
     app.route('/auth/login')
     .post(Auth.login)
