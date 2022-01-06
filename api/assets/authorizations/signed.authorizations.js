@@ -1,8 +1,8 @@
 const signatures = [
     ["'developer'","'operations manager'", "'quality manager'","'engineering manager'"],
-    ["'developer'", "'operations manager'", "'quality manager'"],
-    ["'developer'","'finances manager'","'operations manager'", "'quality manager'","'engineering manager'"],
-    ["'developer'","'finances manager'","'general manager'","'operations manager'", "'quality manager'","'engineering manager'"],
+    ["'developer'", "'operations manager'", "'quality manager'","'engineering manager'"],
+    ["'developer'","'materials manager'","'operations manager'", "'quality manager'","'engineering manager'"],
+    ["'developer'","'materials manager'","'general manager'","'operations manager'", "'quality manager'","'engineering manager'"],
     ["'developer'","'general manager'","'operations manager'","'quality manager'","'npi manager'"]
 ];
 
@@ -37,6 +37,7 @@ exports.getManagers = (type,needsManager,customer='') =>{
     // return ["'developer'"];
 
     //Comment to make production!
+    //Delete developer as required signature, not needed in production
     signs.shift();
     return signs;
 }

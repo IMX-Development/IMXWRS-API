@@ -8,7 +8,8 @@ const templates = require('../helpers/email-templates');
 
 exports.getData = (req, res) => {
     let username = getUser(req);
-    let query = `SELECT number, customer, creationDate, status, typeNumber 
+    let query = `SELECT number, customer, creationDate, status, typeNumber,
+                (SELECT COUNT(*) FROM actions WHERE status != 'closed' AND requests.number = actions.request) as pendingActions
                 FROM requests WHERE originator = '${ username }' ?
                 ORDER BY creationDate DESC`;
 
@@ -39,14 +40,15 @@ exports.createWaviver = async(req, res) => {
 
     let number = '';
     let date = new Date().getFullYear().toString().substring(2, 4);
+    //Tal hubiera sido mejor restarle 2000 y convertir a string, no creo que este sistema dure mas de 80 años..
 
     let query = `SELECT 
         (SELECT COALESCE(MAX(SUBSTRING(number,6,4))+1,1) 
         FROM dbo.requests 
-        WHERE LEFT(number,3) = 'TWR' AND SUBSTRING(number,4,2) = '21') as num1, 
+        WHERE LEFT(number,3) = 'TWR' AND SUBSTRING(number,4,2) = '${ date }') as num1, 
         (SELECT COALESCE(MAX(SUBSTRING(oldNumber,6,4))+1,1) 
         FROM dbo.requests 
-        WHERE LEFT(oldNumber,3) = 'TWR' AND SUBSTRING(oldNumber,4,2) = '21') as num2`;
+        WHERE LEFT(oldNumber,3) = 'TWR' AND SUBSTRING(oldNumber,4,2) = '${ date }') as num2`;
 
     let promise = Sql.request(query);
 
