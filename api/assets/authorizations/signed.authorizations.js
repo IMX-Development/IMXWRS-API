@@ -36,8 +36,10 @@ exports.getManagers = (type,needsManager,customer='') =>{
     //Testing purposes
     // return ["'developer'"];
 
-    //Comment to make production!
+    //Uncomment to make production!
     //Delete developer as required signature, not needed in production
-    signs.shift();
+    
+    signs = signs.filter(m => m != "'developer'");
+
     return signs;
 }
