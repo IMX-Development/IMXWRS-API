@@ -8,7 +8,9 @@ var config = {
     server: process.env.HOST,
     database: process.env.DATABASE,
     options: {
-        instanceName: 'SQLEXPRESS'
+        instanceName: process.env.INSTANCE,
+        trustServerCertificate: true,
+        port: 1433,
     }
 }
 
