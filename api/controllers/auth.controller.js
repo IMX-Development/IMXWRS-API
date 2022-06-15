@@ -1,7 +1,134 @@
 const Sql = require('../db/sql.js');
 const jwt = require('jsonwebtoken');
-
+const { sso } = require('node-expose-sspi');
 require('dotenv').config();
+
+exports.loginWithSSO = async(req, res) => {
+    try {
+        const domain = sso.getDefaultDomain();
+        credentials = { // : UserCredential 
+            domain,
+            user: req.body.username,
+            password: req.body.password,
+        };
+        const ssoObject = await sso.connect(credentials);
+
+        if (!ssoObject) {
+            return res.json({
+                ok: false,
+                error: 'Invalid credentials'
+            });
+        }
+
+        if (req.session) {
+            req.session.sso = ssoObject;
+        }
+
+        const resp = await getToken(ssoObject);
+        return res.json({
+            ok: true,
+            ...resp
+        });
+
+    } catch (e) {
+        console.log("ERROR", e)
+        if (e.message == 'Error: Usuario duplicado!') {
+            console.log("res",e);
+            return res.status(409).send({
+                ok: false,
+                error: "usuario duplicado"
+            })
+        } else {
+            res.status(500).send({
+                ok: false,
+                error: e
+            });
+        }
+    }
+}
+
+const getToken = async (sso) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const email = sso.user.adUser.mail[0]
+            const user = {
+                name: sso.user.name,
+                domain: sso.user.domain,
+                displayName: sso.user.displayName,
+                email: email
+            }
+
+            if (user.domain != 'INTERPLEX') {
+                console.log('Not in domain!');
+                reject('Not in domain');
+            }
+
+            const respuesta = await getUser(user)
+            return resolve({
+                ...respuesta
+            })
+
+        } catch (error) {
+            print("ERROR TOKEN", error)
+            reject(new Error(error))
+        }
+    })
+}
+
+let getUser = async (user) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let query = `SELECT * FROM users WHERE email = '${user.email}'`
+            let response = await Sql.request(query);
+
+            if (response.length > 2) {
+                reject(new Error("Usuario duplicado!"))
+            }
+
+            else if (!response || response.length == 0) { //Si no existe el usuario, lo creamos
+
+                const body = [{
+                    username: user.name,
+                    name: user.displayName,
+                    email: user.email,
+                    position: 'user',
+                    password: 'Interplex.1',
+                }];
+
+                query = 'INSERT INTO users() VALUES ?';
+                
+                await Sql.query(query, body);
+
+                response = [body];
+            }
+
+            const bdUser = response[0];
+
+            const awtInfo = {
+                username: bdUser.username,
+            };
+            const token = jwt.sign(awtInfo, process.env.TOKEN_SEED);
+
+            let roles = await Sql.asyncRequest(`SELECT DISTINCT position FROM users, backups
+            WHERE backups.lender = users.username AND backups.granted = '${bdUser.username}'
+            AND backups.enabled = 1`);
+            
+
+            resolve({
+                token,
+                user: {
+                    username: bdUser.username,
+                    position: bdUser.position,
+                    name: bdUser.name,
+                    email: bdUser.email,
+                    roles: roles
+                }
+            });
+        } catch (error) {
+            console.log("ERROR EN USUARIO", error)
+        }
+    })
+}
 
 exports.login = async(req,res)=>{
     let { username, password } = req.body;

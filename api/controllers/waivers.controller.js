@@ -212,7 +212,7 @@ exports.getAuthorizations = (req, res) => {
 
 //Here we'll filter data later
 exports.getWaivers = (req, res) => {
-    let query = `SELECT number, customer, creationDate, users.name as name, status
+    let query = `SELECT number, customer, creationDate, users.name as name, status, area
     FROM requests, users
     WHERE users.username = requests.originator ?  
     ORDER BY creationDate DESC;`;
